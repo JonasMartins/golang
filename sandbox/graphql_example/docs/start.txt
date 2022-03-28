@@ -1,0 +1,6 @@
+source: https://www.howtographql.com/graphql-go/1-getting-started/
+
+
+correctely install gqlgen:
+
+https://github.com/99designs/gqlgen
