@@ -1,0 +1,13 @@
+
+source: https://github.com/golang-migrate/migrate/blob/master/database/postgres/TUTORIAL.md
+
+
+set postgres tag needed to run migrations
+go build -tags 'postgres' -ldflags="-X main.Version=1.0.0" -o $GOPATH/bin/migrate github.com/golang-migrate/migrate/v4/cmd/migrate/
+
+set postgres url variable:
+export POSTGRESQL_URL='postgres://dev:_development@localhost:5432/hackernews?sslmode=disable'
+
+run the migration:
+
+migrate -database ${POSTGRESQL_URL} -path internal/pkg/db/migrations/postgresql up
