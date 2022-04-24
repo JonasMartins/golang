@@ -10,3 +10,8 @@ docker build -t my_docker_image_name .
 
 run:
 docker run --rm -p 8080:8080 my_docker_image_name
+
+
+list docker images:
+
+docker images ls

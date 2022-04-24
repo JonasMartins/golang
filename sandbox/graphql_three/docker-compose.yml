@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=_development
+      - POSTGRES_USER=dev
+      - POSTGRES_DB=graphql_three
+
+
+
+
+
+
+
