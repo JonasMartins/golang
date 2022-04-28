@@ -19,7 +19,6 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	}
 	r.todos = append(r.todos, todo)
 	return todo, nil
-
 }
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
