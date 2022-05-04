@@ -1,0 +1,48 @@
+
+" install vplug:
+" Needed git installed
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" vimrc source and PlugInstall
+
+syntax on
+set number
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set t_Co=256
+set bg=light
+set incsearch " incremental search
+set hlsearch  " highlight search
+set termwinsize=12x0 " terminal size
+set splitbelow " always split below
+set mouse=a " mouse drag on window splits
+
+
+" ============================== MAPPINGS
+
+" Basics
+imap jj <Esc>
+:nnoremap <Space> :
+
+
+" Tab Navigation
+map <C-L> gt
+map <C-H> gT
+noremap <C-t> :tabnew<CR>
+
+" ============================== PLUGINS
+
+call plug#begin()
+    Plug 'morhetz/gruvbox'
+call plug#end()
+
+
+colorscheme gruvbox
+
+
+" autosource .vimrc after save
+autocmd! BufWritePost $MYVIMRC source $MYVIMRC | echom "Reload $NVIMRC"
+
+
+
+
