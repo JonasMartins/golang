@@ -22,11 +22,10 @@ RUN go get -d -v ./...
 # Install the package
 RUN go install -v ./...
 
-# Build the Go app
-RUN go build -o /build
+# Setup hot-reload for dev
+RUN go get github.com/githubnemo/CompileDeamon
+RUN go get -v golang.org/x/tools/gopls
 
-# Expose port 8080 to the outside world
-EXPOSE 8080
+ENTRYPOINT CompileDeamon --build="go build -a -installsuffix gco -o main ." --command=./main
 
-# Run the executable
-CMD [ "/build" ]
+
