@@ -10,7 +10,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set t_Co=256
-set bg=light
+set bg=dark
 set incsearch " incremental search
 set hlsearch  " highlight search
 set termwinsize=12x0 " terminal size
@@ -18,10 +18,18 @@ set splitbelow " always split below
 set mouse=a " mouse drag on window splits
 
 
+" ============================== RANDOM
+"  saving undi, swp and backup files in a better location
+set backupdir=/tmp//
+set directory=/tmp//
+set undodir=/tmp//
+
+
 " ============================== MAPPINGS
 
 " Basics
 imap jj <Esc>
+imap jk <Esc>
 :nnoremap <Space> :
 
 
@@ -34,7 +42,21 @@ noremap <C-t> :tabnew<CR>
 
 call plug#begin()
     Plug 'morhetz/gruvbox'
+    Plug 'preservim/nerdtree'
 call plug#end()
+
+
+
+" ============================== NERDTREE
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+" Open the existing NERDTree on each new Tab
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+
+let NERDTreeMapOpenInTab='<ENTER>'
 
 
 colorscheme gruvbox
