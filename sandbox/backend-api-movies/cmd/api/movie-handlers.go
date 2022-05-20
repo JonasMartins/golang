@@ -15,6 +15,9 @@ func (app *application) getOneMovie(w http.ResponseWriter, r *http.Request) {
 	id := params.ByName("id")
 	if len(id) == 0 {
 		app.logger.Print(errors.New("invalid id"))
+		app.errorJSON(w, errors.New("invalid id"))
+
+		return
 	}
 
 	movie := models.Movie{
