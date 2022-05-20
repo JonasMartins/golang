@@ -16,16 +16,16 @@ func NewModels(db *sql.DB) Models {
 }
 
 type Movie struct {
-	ID          string       `json:"id"`
-	Title       string       `json:"title"`
-	Description string       `json:"description"`
-	Year        int          `json:"year"`
-	ReleaseDate time.Time    `json:"release_date"`
-	Runtime     int          `json:"runtime"`
-	Rating      float32      `json:"rating"`
-	CreatedAt   time.Time    `json:"-"`
-	UpdatedAt   time.Time    `json:"-"`
-	MovieGenre  []MovieGenre `json:"genres"`
+	ID          string            `json:"id"`
+	Title       string            `json:"title"`
+	Description string            `json:"description"`
+	Year        int               `json:"year"`
+	ReleaseDate time.Time         `json:"release_date"`
+	Runtime     int               `json:"runtime"`
+	Rating      float32           `json:"rating"`
+	CreatedAt   time.Time         `json:"-"`
+	UpdatedAt   time.Time         `json:"-"`
+	MovieGenre  map[string]string `json:"genres"`
 }
 
 type Genre struct {
