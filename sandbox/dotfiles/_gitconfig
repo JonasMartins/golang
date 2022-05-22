@@ -1,0 +1,7 @@
+[user]
+	name = jonasMartins
+	email = jonas.w.martins@gmail.com
+[core]
+	editor = vim
+[commit]
+	template = /Users/jonasmartinssouza/.gitmessage
