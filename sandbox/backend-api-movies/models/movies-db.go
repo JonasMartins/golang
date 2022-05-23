@@ -134,3 +134,30 @@ func (m *DBModel) All() ([]*Movie, error) {
 
 	return movies, nil
 }
+
+func (m *DBModel) InertMovie(movie Movie) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	stmt := `insert into movies (title, description, year, realese_date, runtime, rating, created_at, updated_at)
+				values ($1,$2,$3,$4,$5,$6,$7,$8,$9)`
+
+	_, err := m.DB.ExecContext(ctx, stmt,
+		movie.Title,
+		movie.Description,
+		movie.Year,
+		movie.ReleaseDate,
+		movie.Runtime,
+		movie.Rating,
+		movie.CreatedAt,
+		movie.UpdatedAt,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
