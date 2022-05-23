@@ -20,6 +20,8 @@ func (app *application) routes() http.Handler {
 
 	auth := alice.New(app.verifyToken)
 
+	router.HandlerFunc(http.MethodPost, "/v1/graphql", app.moviesGraphql)
+
 	router.HandlerFunc(http.MethodPost, "v1/register", app.Register)
 
 	router.HandlerFunc(http.MethodGet, "/status", app.statusHandler)
@@ -27,9 +29,7 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodGet, "/v1/movies", app.getAllMovies)
 
 	router.POST("/v1/admin/editmovie", app.wrap(auth.ThenFunc(app.updateMovie)))
-
-	// router.HandlerFunc(http.MethodPost, "/v1/admin/editmovie", app.updateMovie)
-	router.HandlerFunc(http.MethodGet, "/v1/admin/deletemovie/:id", app.deleteMovie)
+	router.GET("/v1/admin/deletemovie/:id", app.wrap(auth.ThenFunc(app.deleteMovie)))
 
 	return app.enableCORS(router)
 }

@@ -24,7 +24,13 @@ func (app *application) statusHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(js)
 }
 
-func (app *application) errorJSON(w http.ResponseWriter, err error) {
+func (app *application) errorJSON(w http.ResponseWriter, err error, status ...int) {
+	statusCode := http.StatusBadRequest
+
+	if len(status) > 0 {
+		statusCode = status[0]
+	}
+
 	type jsonError struct {
 		Message string
 	}
@@ -33,5 +39,5 @@ func (app *application) errorJSON(w http.ResponseWriter, err error) {
 		Message: err.Error(),
 	}
 
-	app.writeJSON(w, http.StatusBadRequest, _error, "error")
+	app.writeJSON(w, statusCode, _error, "error")
 }
