@@ -78,6 +78,12 @@ func (app *application) updateMovie(w http.ResponseWriter, r *http.Request) {
 
 	var movie models.Movie
 
+	if payload.ID != "" {
+		m, _ := app.models.DB.Get(payload.ID)
+		movie = *m
+		movie.UpdatedAt = time.Now()
+	}
+
 	movie.ID = payload.ID
 	movie.Title = payload.Title
 	movie.Description = payload.Description
@@ -91,6 +97,12 @@ func (app *application) updateMovie(w http.ResponseWriter, r *http.Request) {
 
 	if movie.ID == "" {
 		err = app.models.DB.InertMovie(movie)
+		if err != nil {
+			app.errorJSON(w, err)
+			return
+		}
+	} else {
+		err = app.models.DB.UpdateMovie(movie)
 		if err != nil {
 			app.errorJSON(w, err)
 			return
