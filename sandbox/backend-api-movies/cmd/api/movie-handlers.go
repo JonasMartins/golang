@@ -65,7 +65,25 @@ type MoviePayload struct {
 	Rating      string `json:"rating"`
 }
 
-func (app *application) deleteMovie(w http.ResponseWriter, r *http.Request) {}
+func (app *application) deleteMovie(w http.ResponseWriter, r *http.Request) {
+
+	params := httprouter.ParamsFromContext(r.Context())
+
+	err := app.models.DB.DeleteMovie(params.ByName("id"))
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+	ok := jesonResp{
+		Ok: true,
+	}
+
+	err = app.writeJSON(w, http.StatusOK, ok, "response")
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+}
 func (app *application) updateMovie(w http.ResponseWriter, r *http.Request) {
 
 	var payload MoviePayload

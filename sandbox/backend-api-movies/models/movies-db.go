@@ -163,7 +163,6 @@ func (m *DBModel) UpdateMovie(movie Movie) error {
 }
 
 func (m *DBModel) InertMovie(movie Movie) error {
-
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -184,7 +183,20 @@ func (m *DBModel) InertMovie(movie Movie) error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (m *DBModel) DeleteMovie(id string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	stmt := "delete from movies where id = $1"
+
+	_, err := m.DB.ExecContext(ctx, stmt, id)
+
+	if err != nil {
+		return err
+	}
 
 	return nil
-
 }
