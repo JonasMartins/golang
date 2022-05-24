@@ -1,0 +1,5 @@
+make up_build
+all the necessary to run the docker image, with
+the file init_broker-service.dockerfile
+then after the executable brokerApp was generated, then 
+the content of broker-service.dockerfile must be used after.
