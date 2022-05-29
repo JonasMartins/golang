@@ -19,24 +19,32 @@ set mouse=a " mouse drag on window splits
 
 
 " ============================== RANDOM
-"  saving undi, swp and backup files in a better location
-set backupdir=/tmp//
-set directory=/tmp//
-set undodir=/tmp//
-
+set nobackup
+set noswapfile
+set noundofile
 
 " ============================== MAPPINGS
 
 " Basics
 imap jj <Esc>
 imap jk <Esc>
+imap kl <Esc> 
 :nnoremap <Space> :
+
+
+" Commands
+:nnoremap bf :buffers<CR>
+:nnoremap bn :bn<CR>
+:nnoremap bp :bp<CR>
+
 
 
 " Tab Navigation
 map <C-L> gt
 map <C-H> gT
 noremap <C-t> :tabnew<CR>
+
+
 
 " ============================== PLUGINS
 
