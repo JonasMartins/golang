@@ -7,7 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"server/graph/model"
+	"server/src/graph/model"
 	"strconv"
 	"sync"
 	"sync/atomic"

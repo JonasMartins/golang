@@ -1,7 +1,10 @@
 
 lint:
 	@echo "Running linter"
-	cd ../server && golangci-lint run
+	cd ../server/src && golangci-lint run
 	@echo "Formatting..."
-	cd ../server && go fmt ./
+	cd ../server/src && go fmt ./
 	@echo "Done"
+local:
+	@echo "Running development local"
+	cd ../server/src && go run server.go
