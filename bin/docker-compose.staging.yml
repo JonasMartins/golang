@@ -4,3 +4,18 @@ services:
         build:
             context: ./../server
             dockerfile: ./../server/server.dev.dockerfile
+        environment:
+            DNS: "host=postgres port=5432 user=dev password=_development dbname=dev_sc sslmode=disable timezone=UTC connect_timeout=5"
+    postgres:
+        image: 'postgres:14.0'
+        ports:
+            - "5432:5432"
+        deploy:
+            mode: replicated
+            replicas: 1
+        environment:
+            POSTGRES_USER: dev
+            POSTGRES_PASSWORD: _development
+            POSTGRES_DB: dev_sc
+        volumes:
+            - ./db-data/postgres/:/var/lib/postgresql/data/
