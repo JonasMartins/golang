@@ -8,3 +8,6 @@ lint:
 local:
 	@echo "Running development local"
 	cd ../server/src && go run server.go
+test:
+	@echo "Running all tests"
+	cd ../server/test && go test ./...

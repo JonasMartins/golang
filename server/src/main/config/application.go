@@ -17,6 +17,11 @@ import (
 
 const defaultPort string = "4000"
 
+type Application interface {
+	Run()
+	Build() *application
+}
+
 type application struct {
 	srv    *handler.Server
 	logger *log.Logger
@@ -24,17 +29,22 @@ type application struct {
 	host   string
 }
 
-func Run() {
-	app := build()
+func Run() error {
+	app, err := Build()
+	if err != nil {
+		return err
+	}
 
 	http.Handle("/", playground.Handler("Project", "/query"))
 	http.Handle("/query", app.srv)
 
 	app.logger.Printf("server running at: http://%s:%d", app.host, app.port)
 	app.logger.Fatal(http.ListenAndServe(fmt.Sprintf("%s%d", ":", app.port), nil))
+
+	return nil
 }
 
-func build() *application {
+func Build() (*application, error) {
 
 	err := godotenv.Load()
 	if err != nil {
@@ -68,5 +78,9 @@ func build() *application {
 		host:   host,
 	}
 
-	return &app
+	if err != nil {
+		return nil, err
+	}
+
+	return &app, nil
 }

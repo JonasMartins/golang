@@ -1,0 +1,5 @@
+
+Generating mocks based on a file with a interface:
+
+example:
+mockgen -source=src/main/config/application.go -destination test/main/config/application.spec.go -package mocks Application
