@@ -9,6 +9,8 @@ import (
 
 	"server/src/graph"
 	"server/src/graph/generated"
+	"server/src/infra/orm/gorm/config/db"
+	dbHandler "server/src/infra/orm/gorm/repositories"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -17,12 +19,7 @@ import (
 
 const defaultPort string = "4000"
 
-type Application interface {
-	Run()
-	Build() *application
-}
-
-type application struct {
+type Application struct {
 	srv    *handler.Server
 	logger *log.Logger
 	port   uint16
@@ -35,6 +32,11 @@ func Run() error {
 		return err
 	}
 
+	DB := db.Init()
+	orm := dbHandler.New(DB)
+
+	fmt.Println("orm ", orm)
+
 	http.Handle("/", playground.Handler("Project", "/query"))
 	http.Handle("/query", app.srv)
 
@@ -44,7 +46,7 @@ func Run() error {
 	return nil
 }
 
-func Build() (*application, error) {
+func Build() (*Application, error) {
 
 	err := godotenv.Load()
 	if err != nil {
@@ -71,7 +73,7 @@ func Build() (*application, error) {
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	srv := handler.NewDefaultServer(schema)
 
-	app := application{
+	app := Application{
 		srv:    srv,
 		logger: logger,
 		port:   uint16(port),
