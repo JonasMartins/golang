@@ -1,0 +1,7 @@
+log in into postgres user
+
+sudo -i -u postgres
+
+connect into database:
+
+psql -U user_name -h localhost db_name
