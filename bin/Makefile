@@ -1,3 +1,26 @@
+SERVER_BINARY=serverApp
+
+up:
+	@echo "Starting docker images..."
+	docker-compose -f docker-compose.staging.yml up
+	@echo "Docker images started"
+
+up_build: build_server
+	@echo "Stopping docker images (if running...)"
+	docker-compose -f docker-compose.staging.yml down
+	@echo "Building and starting docker images..."
+	docker-compose -f docker-compose.staging.yml up --build -d
+	@echo "Docker images built and started."
+
+down:
+	@echo "Stopping docker compose..."
+	docker-compose -f docker-compose.staging.yml down -v
+	@echo "Done"
+
+build_server:
+	@echo "Building server binary..."
+	cd ../server/src && env GOOS=linux CGO_ENABLED=0 go build -o ${SERVER_BINARY} ./server.go
+	@echo "Done"
 
 lint:
 	@echo "Running linter"
