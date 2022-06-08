@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	application "src/main/config"

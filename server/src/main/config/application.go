@@ -7,10 +7,10 @@ import (
 	"os"
 	"strconv"
 
-	"server/src/graph"
-	"server/src/graph/generated"
-	"server/src/infra/orm/gorm/config/db"
-	dbHandler "server/src/infra/orm/gorm/repositories"
+	"src/graph"
+	"src/graph/generated"
+	"src/infra/orm/gorm/config/db"
+	dbHandler "src/infra/orm/gorm/repositories"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"

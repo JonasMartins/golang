@@ -1,7 +1,7 @@
 package user
 
 import (
-	base "server/src/infra/orm/gorm/models/base"
+	base "src/infra/orm/gorm/models/base"
 )
 
 type User struct {

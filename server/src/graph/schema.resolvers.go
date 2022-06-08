@@ -6,8 +6,8 @@ package graph
 import (
 	"context"
 	"fmt"
-	"server/src/graph/generated"
-	"server/src/graph/model"
+	"src/graph/generated"
+	"src/graph/model"
 )
 
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
