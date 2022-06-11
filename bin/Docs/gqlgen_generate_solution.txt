@@ -1,0 +1,24 @@
+
+
+To solve this issue exposed in:
+
+https://github.com/99designs/gqlgen/issues/1483
+ghost commented on 26 Oct 2021
+
+When you follow the tutorial, you end up with a folder graph and a file resolver.go inside it. In it, you add //go:generate go run github.com/99designs/gqlgen and to make it work, you add //go:generate go get github.com/99designs/gqlgen/cmd@v0.14.0 right before that. For reference, this is how my resolver.go looks like:
+
+package graph
+
+//go:generate go get github.com/99designs/gqlgen/cmd@v0.14.0
+//go:generate go run github.com/99designs/gqlgen
+
+type Resolver struct{}
+
+So adding those two lines at src/graph/resolver.go
+
+and running at src dir:
+
+go generate ./...
+
+solves the problem, but, it is needed to clear the file schema.resolvers.go with the 
+schema's old version. 
