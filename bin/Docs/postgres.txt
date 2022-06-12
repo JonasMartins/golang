@@ -9,3 +9,11 @@ psql -U user_name -h localhost db_name
 stop, start postgres
 
 systemctl status/start/stop postgresql
+
+
+
+USEFUL COMMANDS ON PSQL 
+
+\du  -> info about the users
+\dt  -> info about the relations
+\d table_name => info about a specific relation
