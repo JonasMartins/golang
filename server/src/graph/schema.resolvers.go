@@ -8,10 +8,39 @@ import (
 	"fmt"
 	"src/graph/generated"
 	"src/graph/model"
+	"src/infra/orm/gorm/models/user"
 )
 
 func (r *mutationResolver) RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.RegisterUserResponse, error) {
-	panic(fmt.Errorf("not implemented"))
+
+	/*
+		base := base.Base{
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		}
+	*/
+
+	_user := user.User{
+		Email:    input.Email,
+		Name:     input.Name,
+		Password: input.Password,
+	}
+
+	fmt.Println("user ", _user)
+
+	if result := r.DB.Create(&_user); result.Error != nil {
+		fmt.Println(result.Statement.Vars...)
+		return nil, result.Error
+	} else {
+		fmt.Println("result ", result)
+		response := model.RegisterUserResponse{
+			Token: "",
+			ID:    "",
+			Name:  "",
+		}
+
+		return &response, nil
+	}
 }
 
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {

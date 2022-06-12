@@ -10,7 +10,6 @@ import (
 	"src/graph"
 	"src/graph/generated"
 	"src/infra/orm/gorm/config/db"
-	dbHandler "src/infra/orm/gorm/repositories"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -32,10 +31,7 @@ func Run() error {
 		return err
 	}
 
-	DB := db.Init()
-	orm := dbHandler.New(DB)
-
-	fmt.Println("orm ", orm)
+	//fmt.Println("orm ", orm)
 
 	http.Handle("/", playground.Handler("Project", "/query"))
 	http.Handle("/query", app.srv)
@@ -69,7 +65,11 @@ func Build() (*Application, error) {
 		log.Fatal("Error defiing the server port.")
 	}
 
-	schema := generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}})
+	db := db.Init()
+
+	schema := generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{
+		DB: db,
+	}})
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	srv := handler.NewDefaultServer(schema)
 
