@@ -9,32 +9,51 @@ import (
 	"src/graph/generated"
 	"src/graph/model"
 	"src/infra/orm/gorm/models/user"
+	"time"
+
+	jwtLocal "src/main/auth/jwt"
+
+	"github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (r *mutationResolver) RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.RegisterUserResponse, error) {
 
-	/*
-		base := base.Base{
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
-		}
-	*/
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 12)
+	if err != nil {
+		return nil, err
+	}
 
 	_user := user.User{
 		Email:    input.Email,
 		Name:     input.Name,
-		Password: input.Password,
+		Password: string(hashedPassword),
 	}
 
 	if result := r.DB.Create(&_user); result.Error != nil {
-		fmt.Println(result.Statement.Vars...)
 		return nil, result.Error
 	} else {
-		fmt.Println("result ", result)
+
+		expirationTime := time.Now().Add(2 * (time.Hour * 24))
+
+		claims := &jwtLocal.ClaimsType{
+			Username: _user.Name,
+			StandardClaims: jwt.StandardClaims{
+				ExpiresAt: expirationTime.Unix(),
+			},
+		}
+
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+		tokenString, err := token.SignedString(jwtLocal.GetJwtSecret())
+		if err != nil {
+			return nil, err
+		}
+
 		response := model.RegisterUserResponse{
-			Token: "",
-			ID:    "",
-			Name:  "",
+			Token: tokenString,
+			ID:    _user.Id.String(),
+			Name:  _user.Name,
 		}
 
 		return &response, nil

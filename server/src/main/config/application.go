@@ -31,8 +31,6 @@ func Run() error {
 		return err
 	}
 
-	//fmt.Println("orm ", orm)
-
 	http.Handle("/", playground.Handler("Project", "/query"))
 	http.Handle("/query", app.srv)
 
