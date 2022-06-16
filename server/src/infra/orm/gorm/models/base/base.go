@@ -8,14 +8,14 @@ import (
 )
 
 type Base struct {
-	Id        uuid.UUID      `gorm:"type:uuid;primary_key;default:uuid_generate_v3()"`
+	Id        uuid.UUID      `gorm:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	CreatedAt time.Time      `json:"-"`
 	UpdatedAt time.Time      `json:"-"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-func (base *Base) BeforeCreate(db *gorm.DB) error {
+func (base *Base) BeforeCreate(db *gorm.DB) (err error) {
 	uuid := uuid.NewV4()
-	db.Statement.SetColumn("ID", uuid)
-	return db.Error
+	db.Statement.SetColumn("Id", uuid)
+	return nil
 }

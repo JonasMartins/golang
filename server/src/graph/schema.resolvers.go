@@ -26,8 +26,6 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 		Password: input.Password,
 	}
 
-	fmt.Println("user ", _user)
-
 	if result := r.DB.Create(&_user); result.Error != nil {
 		fmt.Println(result.Statement.Vars...)
 		return nil, result.Error
