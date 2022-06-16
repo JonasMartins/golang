@@ -13,6 +13,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/go-chi/chi"
 	"github.com/joho/godotenv"
 )
 
@@ -30,12 +31,13 @@ func Run() error {
 	if err != nil {
 		return err
 	}
+	router := chi.NewRouter()
 
-	http.Handle("/", playground.Handler("Project", "/query"))
-	http.Handle("/query", app.srv)
+	router.Handle("/", playground.Handler("Project", "/query"))
+	router.Handle("/query", app.srv)
 
 	app.logger.Printf("server running at: http://%s:%d", app.host, app.port)
-	app.logger.Fatal(http.ListenAndServe(fmt.Sprintf("%s%d", ":", app.port), nil))
+	app.logger.Fatal(http.ListenAndServe(fmt.Sprintf("%s%d", ":", app.port), router))
 
 	return nil
 }
