@@ -5,7 +5,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"src/graph/generated"
 	"src/graph/model"
 	"src/infra/orm/gorm/models/user"
@@ -13,7 +12,7 @@ import (
 
 	jwtLocal "src/main/auth/jwt"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -36,11 +35,9 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 
 		expirationTime := time.Now().Add(2 * (time.Hour * 24))
 
-		claims := &jwtLocal.ClaimsType{
-			Username: _user.Name,
-			StandardClaims: jwt.StandardClaims{
-				ExpiresAt: expirationTime.Unix(),
-			},
+		claims := &jwt.StandardClaims{
+			Id:        _user.Base.Id.String(),
+			ExpiresAt: expirationTime.Unix(),
 		}
 
 		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -61,7 +58,14 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 }
 
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+
+	var users []*model.User
+
+	if result := r.DB.Model(&users).Limit(10); result.Error != nil {
+		return nil, result.Error
+	}
+
+	return users, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

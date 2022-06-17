@@ -20,10 +20,8 @@ type contextKey struct {
 	name string
 }
 
-// A stand-in for our database backed user object
 type User struct {
-	Name    string
-	IsAdmin bool
+	Name string
 }
 
 // Middleware decodes the share session cookie and packs the session into context
@@ -45,8 +43,11 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 			}
 
 			// get the user from the database
-			user := getUserByID(db, userId)
-
+			user, err := getUserByID(db, userId)
+			if err != nil {
+				http.Error(w, "Invalid cookie", http.StatusForbidden)
+				return
+			}
 			// put it in context
 			ctx := context.WithValue(r.Context(), userCtxKey, user)
 
@@ -61,4 +62,15 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 func ForContext(ctx context.Context) *User {
 	raw, _ := ctx.Value(userCtxKey).(*User)
 	return raw
+}
+
+func validateAndGetUserID(c *http.Cookie) (string, error) {
+	return "", nil
+}
+
+func getUserByID(db *gorm.DB, userId string) (*User, error) {
+	user := &User{
+		Name: "User",
+	}
+	return user, nil
 }

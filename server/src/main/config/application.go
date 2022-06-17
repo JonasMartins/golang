@@ -10,11 +10,13 @@ import (
 	"src/graph"
 	"src/graph/generated"
 	"src/infra/orm/gorm/config/db"
+	"src/main/auth"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/go-chi/chi"
 	"github.com/joho/godotenv"
+	"gorm.io/gorm"
 )
 
 const defaultPort string = "4000"
@@ -24,6 +26,7 @@ type Application struct {
 	logger *log.Logger
 	port   uint16
 	host   string
+	db     *gorm.DB
 }
 
 func Run() error {
@@ -32,6 +35,8 @@ func Run() error {
 		return err
 	}
 	router := chi.NewRouter()
+
+	router.Use(auth.Middleware(app.db))
 
 	router.Handle("/", playground.Handler("Project", "/query"))
 	router.Handle("/query", app.srv)
@@ -78,6 +83,7 @@ func Build() (*Application, error) {
 		logger: logger,
 		port:   uint16(port),
 		host:   host,
+		db:     db,
 	}
 
 	if err != nil {
