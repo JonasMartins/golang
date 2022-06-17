@@ -5,19 +5,18 @@ package graph
 
 import (
 	"context"
+	"math"
 	"src/graph/generated"
 	"src/graph/model"
 	"src/infra/orm/gorm/models/user"
-	"time"
-
 	jwtLocal "src/main/auth/jwt"
+	"time"
 
 	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func (r *mutationResolver) RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.RegisterUserResponse, error) {
-
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 12)
 	if err != nil {
 		return nil, err
@@ -57,15 +56,23 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 	}
 }
 
-func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-
-	var users []*model.User
-
-	if result := r.DB.Model(&users).Limit(10); result.Error != nil {
+func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) ([]*model.User, error) {
+	var _users []*model.User
+	var users []user.User
+	var userUax model.User
+	if result := r.DB.Find(&users).Offset(int(*offset)).Limit(int(math.Min(10, float64(*limit)))); result.Error != nil {
 		return nil, result.Error
 	}
 
-	return users, nil
+	for i := 0; i < len(users); i++ {
+		userUax.ID = users[i].Base.Id.String()
+		userUax.Email = users[i].Email
+		userUax.Password = users[i].Password
+		userUax.Name = users[i].Name
+		_users = append(_users, &userUax)
+	}
+
+	return _users, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

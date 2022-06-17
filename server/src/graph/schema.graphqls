@@ -16,7 +16,7 @@ type RegisterUserResponse {
 }
 
 type Query {
-  users: [User!]!
+  users(limit: Int, offset: Int): [User!]!
 }
 
 input RegisterUserInput {
