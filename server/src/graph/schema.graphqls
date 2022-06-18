@@ -9,14 +9,30 @@ type User {
   password: String!
 }
 
+type Error {
+  method: String!
+  message: String!
+  field: String!
+  code: Int!
+}
+
 type RegisterUserResponse {
   token: String!
   id: String!
   name: String!
 }
+type UserResponse {
+  user: User
+  errors: [Error!]!
+}
+
+type UsersResponse {
+  users: [User!]!
+  errors: [Error!]!
+}
 
 type Query {
-  users(limit: Int, offset: Int): [User!]!
+  users(limit: Int, offset: Int): UsersResponse!
 }
 
 input RegisterUserInput {

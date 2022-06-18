@@ -38,10 +38,10 @@ func Run() error {
 
 	router.Use(auth.Middleware(app.db))
 
-	router.Handle("/", playground.Handler("Project", "/query"))
+	router.Handle("/graphql", playground.Handler("Project", "/query"))
 	router.Handle("/query", app.srv)
 
-	app.logger.Printf("server running at: http://%s:%d", app.host, app.port)
+	app.logger.Printf("server running at: http://%s:%d/graphql", app.host, app.port)
 	app.logger.Fatal(http.ListenAndServe(fmt.Sprintf("%s%d", ":", app.port), router))
 
 	return nil

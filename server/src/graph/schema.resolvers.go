@@ -56,23 +56,35 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 	}
 }
 
-func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) ([]*model.User, error) {
+func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) (*model.UsersResponse, error) {
 	var _users []*model.User
 	var users []user.User
-	var userUax model.User
+	var response model.UsersResponse
+
 	if result := r.DB.Find(&users).Offset(int(*offset)).Limit(int(math.Min(10, float64(*limit)))); result.Error != nil {
-		return nil, result.Error
+		response.Errors = append(response.Errors, &model.Error{
+			Message: result.Error.Error(),
+			Method:  "Users",
+			Field:   "-",
+			Code:    500,
+		})
+		response.Users = nil
+
+		return &response, nil
 	}
 
 	for i := 0; i < len(users); i++ {
-		userUax.ID = users[i].Base.Id.String()
-		userUax.Email = users[i].Email
-		userUax.Password = users[i].Password
-		userUax.Name = users[i].Name
-		_users = append(_users, &userUax)
+		_users = append(_users, &model.User{
+			ID:       users[i].Base.Id.String(),
+			Email:    users[i].Email,
+			Password: users[i].Password,
+			Name:     users[i].Name,
+		})
 	}
+	response.Errors = nil
+	response.Users = _users
 
-	return _users, nil
+	return &response, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

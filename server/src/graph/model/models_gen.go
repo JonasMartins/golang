@@ -2,6 +2,13 @@
 
 package model
 
+type Error struct {
+	Method  string `json:"method"`
+	Message string `json:"message"`
+	Field   string `json:"field"`
+	Code    int    `json:"code"`
+}
+
 type RegisterUserInput struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
@@ -19,4 +26,14 @@ type User struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type UserResponse struct {
+	User   *User    `json:"user"`
+	Errors []*Error `json:"errors"`
+}
+
+type UsersResponse struct {
+	Users  []*User  `json:"users"`
+	Errors []*Error `json:"errors"`
 }
