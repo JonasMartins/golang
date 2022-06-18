@@ -303,25 +303,21 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../schema.graphqls", Input: `# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
-type User {
-  id: String!
+	{Name: "../schema/inputs/user.input.graphql", Input: `input RegisterUserInput {
   name: String!
   email: String!
   password: String!
 }
-
-type Error {
-  method: String!
-  message: String!
-  field: String!
-  code: Int!
+`, BuiltIn: false},
+	{Name: "../schema/mutation.graphql", Input: `type Mutation {
+  registerUser(input: RegisterUserInput!): RegisterUserResponse!
 }
-
-type RegisterUserResponse {
+`, BuiltIn: false},
+	{Name: "../schema/query.graphql", Input: `type Query {
+  users(limit: Int, offset: Int): UsersResponse!
+}
+`, BuiltIn: false},
+	{Name: "../schema/responses/user.responses.graphql", Input: `type RegisterUserResponse {
   token: String!
   id: String!
   name: String!
@@ -335,19 +331,19 @@ type UsersResponse {
   users: [User!]!
   errors: [Error!]!
 }
-
-type Query {
-  users(limit: Int, offset: Int): UsersResponse!
+`, BuiltIn: false},
+	{Name: "../schema/types/error.graphql", Input: `type Error {
+  method: String!
+  message: String!
+  field: String!
+  code: Int!
 }
-
-input RegisterUserInput {
+`, BuiltIn: false},
+	{Name: "../schema/types/user.graphql", Input: `type User {
+  id: String!
   name: String!
   email: String!
   password: String!
-}
-
-type Mutation {
-  registerUser(input: RegisterUserInput!): RegisterUserResponse!
 }
 `, BuiltIn: false},
 }

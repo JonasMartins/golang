@@ -5,8 +5,6 @@ package graph
 
 import (
 	"context"
-	"math"
-	"src/graph/generated"
 	"src/graph/model"
 	"src/infra/orm/gorm/models/user"
 	jwtLocal "src/main/auth/jwt"
@@ -55,43 +53,3 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 		return &response, nil
 	}
 }
-
-func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) (*model.UsersResponse, error) {
-	var _users []*model.User
-	var users []user.User
-	var response model.UsersResponse
-
-	if result := r.DB.Find(&users).Offset(int(*offset)).Limit(int(math.Min(10, float64(*limit)))); result.Error != nil {
-		response.Errors = append(response.Errors, &model.Error{
-			Message: result.Error.Error(),
-			Method:  "Users",
-			Field:   "-",
-			Code:    500,
-		})
-		response.Users = nil
-
-		return &response, nil
-	}
-
-	for i := 0; i < len(users); i++ {
-		_users = append(_users, &model.User{
-			ID:       users[i].Base.Id.String(),
-			Email:    users[i].Email,
-			Password: users[i].Password,
-			Name:     users[i].Name,
-		})
-	}
-	response.Errors = nil
-	response.Users = _users
-
-	return &response, nil
-}
-
-// Mutation returns generated.MutationResolver implementation.
-func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
-
-// Query returns generated.QueryResolver implementation.
-func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
-
-type mutationResolver struct{ *Resolver }
-type queryResolver struct{ *Resolver }

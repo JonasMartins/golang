@@ -1,0 +1,14 @@
+type RegisterUserResponse {
+  token: String!
+  id: String!
+  name: String!
+}
+type UserResponse {
+  user: User
+  errors: [Error!]!
+}
+
+type UsersResponse {
+  users: [User!]!
+  errors: [Error!]!
+}

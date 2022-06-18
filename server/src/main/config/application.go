@@ -7,7 +7,7 @@ import (
 	"os"
 	"strconv"
 
-	"src/graph"
+	resolver "src/graph"
 	"src/graph/generated"
 	"src/infra/orm/gorm/config/db"
 	"src/main/auth"
@@ -72,7 +72,7 @@ func Build() (*Application, error) {
 
 	db := db.Init()
 
-	schema := generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{
+	schema := generated.NewExecutableSchema(generated.Config{Resolvers: &resolver.Resolver{
 		DB: db,
 	}})
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)

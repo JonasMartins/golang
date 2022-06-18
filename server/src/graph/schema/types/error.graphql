@@ -1,0 +1,6 @@
+type Error {
+  method: String!
+  message: String!
+  field: String!
+  code: Int!
+}
