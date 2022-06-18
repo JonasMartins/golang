@@ -2,6 +2,12 @@
 
 package model
 
+type DeleteAction struct {
+	Message string   `json:"message"`
+	Status  string   `json:"status"`
+	Errors  []*Error `json:"errors"`
+}
+
 type Error struct {
 	Method  string `json:"method"`
 	Message string `json:"message"`

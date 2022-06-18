@@ -1,0 +1,5 @@
+type DeleteAction {
+  message: String!
+  status: String!
+  errors: [Error!]!
+}

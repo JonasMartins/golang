@@ -14,6 +14,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.DeleteAction, error) {
+	panic("Not implemented yet")
+}
+
 func (r *mutationResolver) RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.RegisterUserResponse, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 12)
 	if err != nil {
