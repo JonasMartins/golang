@@ -7,8 +7,8 @@ import (
 	"os"
 	"strconv"
 
-	resolver "src/graph"
 	"src/graph/generated"
+	resolver "src/graph/resolvers"
 	"src/infra/orm/gorm/config/db"
 	"src/main/auth"
 

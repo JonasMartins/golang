@@ -35,6 +35,10 @@ test:
 	@echo "Running all tests"
 	cd ../server/test && go test ./...
 
+schema_generate:
+	@echo "Rebuild graphql's schema changes"
+	cd ../server/src && go generate ./...
+
 # GIT
 status:
 	@echo "Git status"

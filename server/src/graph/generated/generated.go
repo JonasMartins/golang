@@ -309,12 +309,12 @@ var sources = []*ast.Source{
   password: String!
 }
 `, BuiltIn: false},
-	{Name: "../schema/mutation.graphql", Input: `type Mutation {
-  registerUser(input: RegisterUserInput!): RegisterUserResponse!
-}
-`, BuiltIn: false},
-	{Name: "../schema/query.graphql", Input: `type Query {
+	{Name: "../schema/resolvers/user.resolver.graphql", Input: `type Query {
   users(limit: Int, offset: Int): UsersResponse!
+}
+
+type Mutation {
+  registerUser(input: RegisterUserInput!): RegisterUserResponse!
 }
 `, BuiltIn: false},
 	{Name: "../schema/responses/user.responses.graphql", Input: `type RegisterUserResponse {

@@ -1,3 +1,7 @@
+type Query {
+  users(limit: Int, offset: Int): UsersResponse!
+}
+
 type Mutation {
   registerUser(input: RegisterUserInput!): RegisterUserResponse!
 }
