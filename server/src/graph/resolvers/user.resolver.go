@@ -14,8 +14,37 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// try to soft delete a user given an id
 func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.DeleteAction, error) {
-	panic("Not implemented yet")
+	errArr := []*model.Error{}
+	deletedUser := user.User{}
+	result := model.DeleteAction{
+		Message: "Server Error",
+		Status:  "fail",
+		Errors:  errArr,
+	}
+	err := model.Error{
+		Method:  "DeleteUser",
+		Message: "",
+		Field:   "id",
+		Code:    500,
+	}
+	if findUser := r.DB.First(&deletedUser, "id = ?", id); findUser.Error != nil {
+		err.Message = findUser.Error.Error()
+		result.Errors = append(result.Errors, &err)
+		return &result, nil
+	}
+
+	if deletedUserResult := r.DB.Delete(&deletedUser); deletedUserResult.Error != nil {
+		err.Message = deletedUserResult.Error.Error()
+		result.Errors = append(result.Errors, &err)
+		return &result, nil
+	}
+
+	result.Message = "User Successfully deleted"
+	result.Status = "success"
+
+	return &result, nil
 }
 
 // Register a new User and return a token
