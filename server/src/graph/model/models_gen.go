@@ -2,6 +2,10 @@
 
 package model
 
+import (
+	"src/infra/orm/gorm/models/user"
+)
+
 type DeleteAction struct {
 	Message string   `json:"message"`
 	Status  string   `json:"status"`
@@ -27,19 +31,12 @@ type RegisterUserResponse struct {
 	Name  string `json:"name"`
 }
 
-type User struct {
-	ID       string `json:"id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 type UserResponse struct {
-	User   *User    `json:"user"`
-	Errors []*Error `json:"errors"`
+	User   *user.User `json:"user"`
+	Errors []*Error   `json:"errors"`
 }
 
 type UsersResponse struct {
-	Users  []*User  `json:"users"`
-	Errors []*Error `json:"errors"`
+	Users  []*user.User `json:"users"`
+	Errors []*Error     `json:"errors"`
 }

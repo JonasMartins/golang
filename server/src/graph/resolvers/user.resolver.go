@@ -18,26 +18,27 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.De
 	panic("Not implemented yet")
 }
 
+// Register a new User and return a token
 func (r *mutationResolver) RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.RegisterUserResponse, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 12)
 	if err != nil {
 		return nil, err
 	}
 
-	_user := user.User{
+	user := user.User{
 		Email:    input.Email,
 		Name:     input.Name,
 		Password: string(hashedPassword),
 	}
 
-	if result := r.DB.Create(&_user); result.Error != nil {
+	if result := r.DB.Create(&user); result.Error != nil {
 		return nil, result.Error
 	} else {
 
 		expirationTime := time.Now().Add(2 * (time.Hour * 24))
 
 		claims := &jwt.StandardClaims{
-			Id:        _user.Base.Id.String(),
+			Id:        user.Base.Id.String(),
 			ExpiresAt: expirationTime.Unix(),
 		}
 
@@ -50,17 +51,18 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 
 		response := model.RegisterUserResponse{
 			Token: tokenString,
-			ID:    _user.Id.String(),
-			Name:  _user.Name,
+			ID:    user.Id.String(),
+			Name:  user.Name,
 		}
 
 		return &response, nil
 	}
 }
 
+// Get an amount of users limited and offseted by args
 func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) (*model.UsersResponse, error) {
-	var _users []*model.User
-	var users []user.User
+
+	var users []*user.User
 	var response model.UsersResponse
 
 	if result := r.DB.Find(&users).Offset(int(*offset)).Limit(int(math.Min(10, float64(*limit)))); result.Error != nil {
@@ -74,17 +76,8 @@ func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) (*mo
 
 		return &response, nil
 	}
-
-	for i := 0; i < len(users); i++ {
-		_users = append(_users, &model.User{
-			ID:       users[i].Base.Id.String(),
-			Email:    users[i].Email,
-			Password: users[i].Password,
-			Name:     users[i].Name,
-		})
-	}
 	response.Errors = nil
-	response.Users = _users
+	response.Users = users
 
 	return &response, nil
 }
