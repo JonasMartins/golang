@@ -7,6 +7,6 @@ import (
 type User struct {
 	base.Base
 	Name     string `json:"name"`
-	Email    string `json:"email"`
+	Email    string `gorm:"index:unique"`
 	Password string `json:"_"`
 }
