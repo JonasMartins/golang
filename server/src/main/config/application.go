@@ -74,7 +74,9 @@ func Build() (*Application, error) {
 
 	schema := generated.NewExecutableSchema(generated.Config{Resolvers: &resolver.Resolver{
 		DB: db,
-	}})
+	},
+		Directives: generated.DirectiveRoot{},
+	})
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	srv := handler.NewDefaultServer(schema)
 

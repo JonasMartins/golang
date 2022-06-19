@@ -1,0 +1,6 @@
+type Base @goModel(model: "src/infra/orm/gorm/models/base.Base") {
+  id: String!
+  createdAt: Time!
+  updatedAt: Time!
+  deletedAt: Time!
+}
