@@ -159,5 +159,25 @@ func (r *queryResolver) GetUserByEmail(ctx context.Context, email string) (*mode
 	return &result, nil
 }
 func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.UserResponse, error) {
-	panic("not implemented yet")
+	errArr := []*model.Error{}
+	user := user.User{}
+	result := model.UserResponse{
+		User:   nil,
+		Errors: errArr,
+	}
+
+	err := model.Error{
+		Method:  "GetUserById",
+		Message: "",
+		Field:   "id",
+		Code:    500,
+	}
+	if findUser := r.DB.First(&user, "name like ?", "%"+name+"%"); findUser.Error != nil {
+		err.Message = findUser.Error.Error()
+		result.Errors = append(result.Errors, &err)
+	} else {
+		result.User = &user
+	}
+
+	return &result, nil
 }
