@@ -115,9 +115,9 @@ type MutationResolver interface {
 }
 type QueryResolver interface {
 	Users(ctx context.Context, limit *int, offset *int) (*model.UsersResponse, error)
-	GetUserByID(ctx context.Context, id string) (*model.UsersResponse, error)
-	GetUserByEmail(ctx context.Context, email string) (*model.UsersResponse, error)
-	GetUserByName(ctx context.Context, name string) (*model.UsersResponse, error)
+	GetUserByID(ctx context.Context, id string) (*model.UserResponse, error)
+	GetUserByEmail(ctx context.Context, email string) (*model.UserResponse, error)
+	GetUserByName(ctx context.Context, name string) (*model.UserResponse, error)
 }
 
 type executableSchema struct {
@@ -438,9 +438,9 @@ var sources = []*ast.Source{
 `, BuiltIn: false},
 	{Name: "../schema/resolvers/user.resolver.graphql", Input: `type Query {
   users(limit: Int, offset: Int): UsersResponse!
-  getUserById(id: String!): UsersResponse!
-  getUserByEmail(email: String!): UsersResponse!
-  getUserByName(name: String!): UsersResponse!
+  getUserById(id: String!): UserResponse!
+  getUserByEmail(email: String!): UserResponse!
+  getUserByName(name: String!): UserResponse!
 }
 
 type Mutation {
@@ -1377,9 +1377,9 @@ func (ec *executionContext) _Query_getUserById(ctx context.Context, field graphq
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.UsersResponse)
+	res := resTmp.(*model.UserResponse)
 	fc.Result = res
-	return ec.marshalNUsersResponse2ᚖsrcᚋgraphᚋmodelᚐUsersResponse(ctx, field.Selections, res)
+	return ec.marshalNUserResponse2ᚖsrcᚋgraphᚋmodelᚐUserResponse(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_getUserById(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1390,12 +1390,12 @@ func (ec *executionContext) fieldContext_Query_getUserById(ctx context.Context, 
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "users":
-				return ec.fieldContext_UsersResponse_users(ctx, field)
+			case "user":
+				return ec.fieldContext_UserResponse_user(ctx, field)
 			case "errors":
-				return ec.fieldContext_UsersResponse_errors(ctx, field)
+				return ec.fieldContext_UserResponse_errors(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type UsersResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type UserResponse", field.Name)
 		},
 	}
 	defer func() {
@@ -1438,9 +1438,9 @@ func (ec *executionContext) _Query_getUserByEmail(ctx context.Context, field gra
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.UsersResponse)
+	res := resTmp.(*model.UserResponse)
 	fc.Result = res
-	return ec.marshalNUsersResponse2ᚖsrcᚋgraphᚋmodelᚐUsersResponse(ctx, field.Selections, res)
+	return ec.marshalNUserResponse2ᚖsrcᚋgraphᚋmodelᚐUserResponse(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_getUserByEmail(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1451,12 +1451,12 @@ func (ec *executionContext) fieldContext_Query_getUserByEmail(ctx context.Contex
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "users":
-				return ec.fieldContext_UsersResponse_users(ctx, field)
+			case "user":
+				return ec.fieldContext_UserResponse_user(ctx, field)
 			case "errors":
-				return ec.fieldContext_UsersResponse_errors(ctx, field)
+				return ec.fieldContext_UserResponse_errors(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type UsersResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type UserResponse", field.Name)
 		},
 	}
 	defer func() {
@@ -1499,9 +1499,9 @@ func (ec *executionContext) _Query_getUserByName(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.UsersResponse)
+	res := resTmp.(*model.UserResponse)
 	fc.Result = res
-	return ec.marshalNUsersResponse2ᚖsrcᚋgraphᚋmodelᚐUsersResponse(ctx, field.Selections, res)
+	return ec.marshalNUserResponse2ᚖsrcᚋgraphᚋmodelᚐUserResponse(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_getUserByName(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1512,12 +1512,12 @@ func (ec *executionContext) fieldContext_Query_getUserByName(ctx context.Context
 		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
-			case "users":
-				return ec.fieldContext_UsersResponse_users(ctx, field)
+			case "user":
+				return ec.fieldContext_UserResponse_user(ctx, field)
 			case "errors":
-				return ec.fieldContext_UsersResponse_errors(ctx, field)
+				return ec.fieldContext_UserResponse_errors(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type UsersResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type UserResponse", field.Name)
 		},
 	}
 	defer func() {
@@ -5062,6 +5062,20 @@ func (ec *executionContext) marshalNUser2ᚖsrcᚋinfraᚋormᚋgormᚋmodelsᚋ
 		return graphql.Null
 	}
 	return ec._User(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNUserResponse2srcᚋgraphᚋmodelᚐUserResponse(ctx context.Context, sel ast.SelectionSet, v model.UserResponse) graphql.Marshaler {
+	return ec._UserResponse(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNUserResponse2ᚖsrcᚋgraphᚋmodelᚐUserResponse(ctx context.Context, sel ast.SelectionSet, v *model.UserResponse) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._UserResponse(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalNUsersResponse2srcᚋgraphᚋmodelᚐUsersResponse(ctx context.Context, sel ast.SelectionSet, v model.UsersResponse) graphql.Marshaler {

@@ -111,12 +111,33 @@ func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) (*mo
 	return &response, nil
 }
 
-func (r *queryResolver) GetUserByID(ctx context.Context, id string) (*model.UsersResponse, error) {
+func (r *queryResolver) GetUserByID(ctx context.Context, id string) (*model.UserResponse, error) {
+
+	errArr := []*model.Error{}
+	user := user.User{}
+	result := model.UserResponse{
+		User:   nil,
+		Errors: errArr,
+	}
+
+	err := model.Error{
+		Method:  "GetUserById",
+		Message: "",
+		Field:   "id",
+		Code:    500,
+	}
+	if findUser := r.DB.First(&user, "id = ?", id); findUser.Error != nil {
+		err.Message = findUser.Error.Error()
+		result.Errors = append(result.Errors, &err)
+	} else {
+		result.User = &user
+	}
+
+	return &result, nil
+}
+func (r *queryResolver) GetUserByEmail(ctx context.Context, email string) (*model.UserResponse, error) {
 	panic("not implemented yet")
 }
-func (r *queryResolver) GetUserByEmail(ctx context.Context, email string) (*model.UsersResponse, error) {
-	panic("not implemented yet")
-}
-func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.UsersResponse, error) {
+func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.UserResponse, error) {
 	panic("not implemented yet")
 }
