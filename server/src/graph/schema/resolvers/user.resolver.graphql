@@ -1,5 +1,8 @@
 type Query {
   users(limit: Int, offset: Int): UsersResponse!
+  getUserById(id: String!): UsersResponse!
+  getUserByEmail(email: String!): UsersResponse!
+  getUserByName(name: String!): UsersResponse!
 }
 
 type Mutation {

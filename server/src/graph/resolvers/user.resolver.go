@@ -110,3 +110,13 @@ func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) (*mo
 
 	return &response, nil
 }
+
+func (r *queryResolver) GetUserByID(ctx context.Context, id string) (*model.UsersResponse, error) {
+	panic("not implemented yet")
+}
+func (r *queryResolver) GetUserByEmail(ctx context.Context, email string) (*model.UsersResponse, error) {
+	panic("not implemented yet")
+}
+func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.UsersResponse, error) {
+	panic("not implemented yet")
+}
