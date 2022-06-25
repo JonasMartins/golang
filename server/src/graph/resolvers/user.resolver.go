@@ -74,11 +74,17 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 		return nil, err
 	}
 	claims := &jwt.StandardClaims{
-		Id:        getUserResponse.User.Base.Id.String(),
 		ExpiresAt: expirationTime.Unix(),
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	myClais := &jwtLocal.ClaimsType{
+		Id:             getUserResponse.User.Base.Id.String(),
+		Name:           getUserResponse.User.Name,
+		Email:          getUserResponse.User.Email,
+		StandardClaims: *claims,
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, myClais)
 
 	tokenString, err := token.SignedString(jwtLocal.GetJwtSecret())
 	if err != nil {
@@ -110,11 +116,17 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 	} else {
 
 		claims := &jwt.StandardClaims{
-			Id:        user.Base.Id.String(),
 			ExpiresAt: expirationTime.Unix(),
 		}
 
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+		myClais := &jwtLocal.ClaimsType{
+			Id:             user.Base.Id.String(),
+			Name:           user.Name,
+			Email:          user.Email,
+			StandardClaims: *claims,
+		}
+
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, myClais)
 
 		tokenString, err := token.SignedString(jwtLocal.GetJwtSecret())
 		if err != nil {
