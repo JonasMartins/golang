@@ -23,6 +23,11 @@ type Error struct {
 	Code    int    `json:"code"`
 }
 
+type LoginInput struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type RegisterUserInput struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`

@@ -179,3 +179,7 @@ func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.
 
 	return &result, nil
 }
+
+func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*model.AuthResponse, error) {
+	panic("not implemented yet")
+}
