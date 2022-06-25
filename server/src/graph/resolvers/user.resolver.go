@@ -4,6 +4,8 @@ package resolvers
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"math"
 	"src/graph/model"
 	"src/infra/orm/gorm/models/user"
@@ -13,6 +15,8 @@ import (
 	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
 )
+
+var expirationTime = time.Now().Add(2 * (time.Hour * 24))
 
 // try to soft delete a user given an id
 func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.DeleteAction, error) {
@@ -47,6 +51,47 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.De
 	return &result, nil
 }
 
+// test a login mutation, and return a token if valid credentials
+func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*model.AuthResponse, error) {
+
+	getUserResponse, _ := r.Query().GetUserByEmail(ctx, input.Email)
+
+	if len(getUserResponse.Errors) > 0 {
+		return nil, errors.New(getUserResponse.Errors[0].Message)
+	}
+
+	if getUserResponse.User == nil {
+		return nil, fmt.Errorf("could not found user with email %s", input.Email)
+	}
+
+	matches, err := getUserResponse.User.PasswordMatches(input.Password)
+
+	if !matches {
+		return nil, fmt.Errorf("worg password")
+	}
+
+	if err != nil {
+		return nil, err
+	}
+	claims := &jwt.StandardClaims{
+		Id:        getUserResponse.User.Base.Id.String(),
+		ExpiresAt: expirationTime.Unix(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	tokenString, err := token.SignedString(jwtLocal.GetJwtSecret())
+	if err != nil {
+		return nil, err
+	}
+
+	response := model.AuthResponse{
+		Token: tokenString,
+	}
+
+	return &response, nil
+}
+
 // Register a new User and return a token
 func (r *mutationResolver) RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.AuthResponse, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 12)
@@ -63,8 +108,6 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 	if result := r.DB.Create(&user); result.Error != nil {
 		return nil, result.Error
 	} else {
-
-		expirationTime := time.Now().Add(2 * (time.Hour * 24))
 
 		claims := &jwt.StandardClaims{
 			Id:        user.Base.Id.String(),
@@ -178,8 +221,4 @@ func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.
 	}
 
 	return &result, nil
-}
-
-func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*model.AuthResponse, error) {
-	panic("not implemented yet")
 }
