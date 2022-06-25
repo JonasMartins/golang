@@ -4,6 +4,12 @@ import (
 	"context"
 	"net/http"
 
+	jwtLocal "src/main/auth/jwt"
+
+	"github.com/golang-jwt/jwt"
+
+	"src/infra/orm/gorm/models/user"
+
 	"gorm.io/gorm"
 )
 
@@ -15,20 +21,17 @@ import (
 // A private key for context that only this package can access. This is important
 // to prevent collisions between different context uses
 var userCtxKey = &contextKey{"user"}
+var jwtKey = []byte(jwtLocal.GetJwtSecret())
 
 type contextKey struct {
 	name string
-}
-
-type User struct {
-	Name string
 }
 
 // Middleware decodes the share session cookie and packs the session into context
 func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			c, err := r.Cookie("auth-cookie")
+			c, err := r.Cookie("sc_cook")
 
 			// Allow unauthenticated users in
 			if err != nil || c == nil {
@@ -44,7 +47,7 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 
 			// get the user from the database
 			user, err := getUserByID(db, userId)
-			if err != nil {
+			if err != nil || user == nil {
 				http.Error(w, "Invalid cookie", http.StatusForbidden)
 				return
 			}
@@ -59,18 +62,36 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 }
 
 // ForContext finds the user from the context. REQUIRES Middleware to have run.
-func ForContext(ctx context.Context) *User {
-	raw, _ := ctx.Value(userCtxKey).(*User)
+func ForContext(ctx context.Context) *user.User {
+	raw, _ := ctx.Value(userCtxKey).(*user.User)
 	return raw
 }
 
 func validateAndGetUserID(c *http.Cookie) (string, error) {
-	return "", nil
+
+	token := c.Value
+
+	claims := &jwtLocal.ClaimsType{}
+
+	tkn, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	if err != nil {
+		if err == jwt.ErrSignatureInvalid {
+			return "Unauthorized", err
+		}
+	}
+	if !tkn.Valid {
+		return "Unauthorized", err
+	}
+	return claims.Id, nil
 }
 
-func getUserByID(db *gorm.DB, userId string) (*User, error) {
-	user := &User{
-		Name: "User",
+func getUserByID(db *gorm.DB, userId string) (*user.User, error) {
+	user := user.User{}
+	if findUser := db.First(&user, "id = ?", userId); findUser.Error != nil {
+		return nil, findUser.Error
+	} else {
+		return &user, nil
 	}
-	return user, nil
 }

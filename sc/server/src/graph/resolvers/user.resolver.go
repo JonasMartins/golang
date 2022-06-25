@@ -9,6 +9,7 @@ import (
 	"math"
 	"src/graph/model"
 	"src/infra/orm/gorm/models/user"
+	auth "src/main/auth"
 	jwtLocal "src/main/auth/jwt"
 	"time"
 
@@ -171,6 +172,11 @@ func (r *queryResolver) GetUserByID(ctx context.Context, id string) (*model.User
 	result := model.UserResponse{
 		User:   nil,
 		Errors: errArr,
+	}
+	// not allowed here to see the logged user object
+	// if it is need to get it from databse
+	if loggedUser := auth.ForContext(ctx); loggedUser == nil {
+		return &result, fmt.Errorf("access denied")
 	}
 
 	err := model.Error{

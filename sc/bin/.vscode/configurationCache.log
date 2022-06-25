@@ -1,0 +1,1 @@
+{"buildTargets":["build_server","commit","down","lint","local","make","push","reset","schema_generate","status","test","up","up_build"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}
