@@ -6,6 +6,10 @@ import (
 	"src/infra/orm/gorm/models/user"
 )
 
+type AuthResponse struct {
+	Token string `json:"token"`
+}
+
 type DeleteAction struct {
 	Message string   `json:"message"`
 	Status  string   `json:"status"`
@@ -23,12 +27,6 @@ type RegisterUserInput struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
-}
-
-type RegisterUserResponse struct {
-	Token string `json:"token"`
-	ID    string `json:"id"`
-	Name  string `json:"name"`
 }
 
 type UserResponse struct {

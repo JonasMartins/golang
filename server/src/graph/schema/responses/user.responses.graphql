@@ -1,7 +1,5 @@
-type RegisterUserResponse {
+type AuthResponse {
   token: String!
-  id: String!
-  name: String!
 }
 type UserResponse {
   user: User

@@ -6,6 +6,6 @@ type Query {
 }
 
 type Mutation {
-  registerUser(input: RegisterUserInput!): RegisterUserResponse!
+  registerUser(input: RegisterUserInput!): AuthResponse!
   deleteUser(id: String!): DeleteAction!
 }

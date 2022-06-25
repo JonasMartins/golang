@@ -48,7 +48,7 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.De
 }
 
 // Register a new User and return a token
-func (r *mutationResolver) RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.RegisterUserResponse, error) {
+func (r *mutationResolver) RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.AuthResponse, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 12)
 	if err != nil {
 		return nil, err
@@ -78,10 +78,8 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 			return nil, err
 		}
 
-		response := model.RegisterUserResponse{
+		response := model.AuthResponse{
 			Token: tokenString,
-			ID:    user.Id.String(),
-			Name:  user.Name,
 		}
 
 		return &response, nil

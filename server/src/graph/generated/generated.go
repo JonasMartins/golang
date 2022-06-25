@@ -48,6 +48,10 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	AuthResponse struct {
+		Token func(childComplexity int) int
+	}
+
 	Base struct {
 		CreatedAt func(childComplexity int) int
 		DeletedAt func(childComplexity int) int
@@ -80,12 +84,6 @@ type ComplexityRoot struct {
 		Users          func(childComplexity int, limit *int, offset *int) int
 	}
 
-	RegisterUserResponse struct {
-		ID    func(childComplexity int) int
-		Name  func(childComplexity int) int
-		Token func(childComplexity int) int
-	}
-
 	User struct {
 		Base     func(childComplexity int) int
 		Email    func(childComplexity int) int
@@ -110,7 +108,7 @@ type BaseResolver interface {
 	DeletedAt(ctx context.Context, obj *base.Base) (*time.Time, error)
 }
 type MutationResolver interface {
-	RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.RegisterUserResponse, error)
+	RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.AuthResponse, error)
 	DeleteUser(ctx context.Context, id string) (*model.DeleteAction, error)
 }
 type QueryResolver interface {
@@ -134,6 +132,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	ec := executionContext{nil, e}
 	_ = ec
 	switch typeName + "." + field {
+
+	case "AuthResponse.token":
+		if e.complexity.AuthResponse.Token == nil {
+			break
+		}
+
+		return e.complexity.AuthResponse.Token(childComplexity), true
 
 	case "Base.createdAt":
 		if e.complexity.Base.CreatedAt == nil {
@@ -284,27 +289,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Users(childComplexity, args["limit"].(*int), args["offset"].(*int)), true
 
-	case "RegisterUserResponse.id":
-		if e.complexity.RegisterUserResponse.ID == nil {
-			break
-		}
-
-		return e.complexity.RegisterUserResponse.ID(childComplexity), true
-
-	case "RegisterUserResponse.name":
-		if e.complexity.RegisterUserResponse.Name == nil {
-			break
-		}
-
-		return e.complexity.RegisterUserResponse.Name(childComplexity), true
-
-	case "RegisterUserResponse.token":
-		if e.complexity.RegisterUserResponse.Token == nil {
-			break
-		}
-
-		return e.complexity.RegisterUserResponse.Token(childComplexity), true
-
 	case "User.base":
 		if e.complexity.User.Base == nil {
 			break
@@ -444,7 +428,7 @@ var sources = []*ast.Source{
 }
 
 type Mutation {
-  registerUser(input: RegisterUserInput!): RegisterUserResponse!
+  registerUser(input: RegisterUserInput!): AuthResponse!
   deleteUser(id: String!): DeleteAction!
 }
 `, BuiltIn: false},
@@ -454,10 +438,8 @@ type Mutation {
   errors: [Error!]!
 }
 `, BuiltIn: false},
-	{Name: "../schema/responses/user.responses.graphql", Input: `type RegisterUserResponse {
+	{Name: "../schema/responses/user.responses.graphql", Input: `type AuthResponse {
   token: String!
-  id: String!
-  name: String!
 }
 type UserResponse {
   user: User
@@ -669,6 +651,50 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 // endregion ************************** directives.gotpl **************************
 
 // region    **************************** field.gotpl *****************************
+
+func (ec *executionContext) _AuthResponse_token(ctx context.Context, field graphql.CollectedField, obj *model.AuthResponse) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AuthResponse_token(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Token, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AuthResponse_token(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AuthResponse",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
 
 func (ec *executionContext) _Base_id(ctx context.Context, field graphql.CollectedField, obj *base.Base) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Base_id(ctx, field)
@@ -1190,9 +1216,9 @@ func (ec *executionContext) _Mutation_registerUser(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.RegisterUserResponse)
+	res := resTmp.(*model.AuthResponse)
 	fc.Result = res
-	return ec.marshalNRegisterUserResponse2ᚖsrcᚋgraphᚋmodelᚐRegisterUserResponse(ctx, field.Selections, res)
+	return ec.marshalNAuthResponse2ᚖsrcᚋgraphᚋmodelᚐAuthResponse(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_registerUser(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1204,13 +1230,9 @@ func (ec *executionContext) fieldContext_Mutation_registerUser(ctx context.Conte
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "token":
-				return ec.fieldContext_RegisterUserResponse_token(ctx, field)
-			case "id":
-				return ec.fieldContext_RegisterUserResponse_id(ctx, field)
-			case "name":
-				return ec.fieldContext_RegisterUserResponse_name(ctx, field)
+				return ec.fieldContext_AuthResponse_token(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type RegisterUserResponse", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type AuthResponse", field.Name)
 		},
 	}
 	defer func() {
@@ -1658,138 +1680,6 @@ func (ec *executionContext) fieldContext_Query___schema(ctx context.Context, fie
 				return ec.fieldContext___Schema_directives(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type __Schema", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _RegisterUserResponse_token(ctx context.Context, field graphql.CollectedField, obj *model.RegisterUserResponse) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_RegisterUserResponse_token(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Token, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_RegisterUserResponse_token(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "RegisterUserResponse",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _RegisterUserResponse_id(ctx context.Context, field graphql.CollectedField, obj *model.RegisterUserResponse) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_RegisterUserResponse_id(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_RegisterUserResponse_id(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "RegisterUserResponse",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _RegisterUserResponse_name(ctx context.Context, field graphql.CollectedField, obj *model.RegisterUserResponse) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_RegisterUserResponse_name(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_RegisterUserResponse_name(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "RegisterUserResponse",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
 		},
 	}
 	return fc, nil
@@ -4014,6 +3904,34 @@ func (ec *executionContext) unmarshalInputRegisterUserInput(ctx context.Context,
 
 // region    **************************** object.gotpl ****************************
 
+var authResponseImplementors = []string{"AuthResponse"}
+
+func (ec *executionContext) _AuthResponse(ctx context.Context, sel ast.SelectionSet, obj *model.AuthResponse) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, authResponseImplementors)
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("AuthResponse")
+		case "token":
+
+			out.Values[i] = ec._AuthResponse_token(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var baseImplementors = []string{"Base"}
 
 func (ec *executionContext) _Base(ctx context.Context, sel ast.SelectionSet, obj *base.Base) graphql.Marshaler {
@@ -4351,48 +4269,6 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				return ec._Query___schema(ctx, field)
 			})
 
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch()
-	if invalids > 0 {
-		return graphql.Null
-	}
-	return out
-}
-
-var registerUserResponseImplementors = []string{"RegisterUserResponse"}
-
-func (ec *executionContext) _RegisterUserResponse(ctx context.Context, sel ast.SelectionSet, obj *model.RegisterUserResponse) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, registerUserResponseImplementors)
-	out := graphql.NewFieldSet(fields)
-	var invalids uint32
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("RegisterUserResponse")
-		case "token":
-
-			out.Values[i] = ec._RegisterUserResponse_token(ctx, field, obj)
-
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "id":
-
-			out.Values[i] = ec._RegisterUserResponse_id(ctx, field, obj)
-
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "name":
-
-			out.Values[i] = ec._RegisterUserResponse_name(ctx, field, obj)
-
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4838,6 +4714,20 @@ func (ec *executionContext) ___Type(ctx context.Context, sel ast.SelectionSet, o
 
 // region    ***************************** type.gotpl *****************************
 
+func (ec *executionContext) marshalNAuthResponse2srcᚋgraphᚋmodelᚐAuthResponse(ctx context.Context, sel ast.SelectionSet, v model.AuthResponse) graphql.Marshaler {
+	return ec._AuthResponse(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNAuthResponse2ᚖsrcᚋgraphᚋmodelᚐAuthResponse(ctx context.Context, sel ast.SelectionSet, v *model.AuthResponse) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._AuthResponse(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalNBase2srcᚋinfraᚋormᚋgormᚋmodelsᚋbaseᚐBase(ctx context.Context, sel ast.SelectionSet, v base.Base) graphql.Marshaler {
 	return ec._Base(ctx, sel, &v)
 }
@@ -4943,20 +4833,6 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 func (ec *executionContext) unmarshalNRegisterUserInput2srcᚋgraphᚋmodelᚐRegisterUserInput(ctx context.Context, v interface{}) (model.RegisterUserInput, error) {
 	res, err := ec.unmarshalInputRegisterUserInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNRegisterUserResponse2srcᚋgraphᚋmodelᚐRegisterUserResponse(ctx context.Context, sel ast.SelectionSet, v model.RegisterUserResponse) graphql.Marshaler {
-	return ec._RegisterUserResponse(ctx, sel, &v)
-}
-
-func (ec *executionContext) marshalNRegisterUserResponse2ᚖsrcᚋgraphᚋmodelᚐRegisterUserResponse(ctx context.Context, sel ast.SelectionSet, v *model.RegisterUserResponse) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._RegisterUserResponse(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNString2string(ctx context.Context, v interface{}) (string, error) {
