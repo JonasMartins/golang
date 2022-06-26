@@ -4,9 +4,10 @@ package resolvers
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"math"
+	"net/http"
+	"os"
 	"src/graph/model"
 	"src/infra/orm/gorm/models/user"
 	auth "src/main/auth"
@@ -55,17 +56,12 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.De
 // test a login mutation, and return a token if valid credentials
 func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*model.AuthResponse, error) {
 
-	getUserResponse, _ := r.Query().GetUserByEmail(ctx, input.Email)
-
-	if len(getUserResponse.Errors) > 0 {
-		return nil, errors.New(getUserResponse.Errors[0].Message)
-	}
-
-	if getUserResponse.User == nil {
+	user := user.User{}
+	if foundUser := r.DB.First(&user, "email = ?", input.Email); foundUser.Error != nil {
 		return nil, fmt.Errorf("could not found user with email %s", input.Email)
 	}
 
-	matches, err := getUserResponse.User.PasswordMatches(input.Password)
+	matches, err := user.PasswordMatches(input.Password)
 
 	if !matches {
 		return nil, fmt.Errorf("worg password")
@@ -79,9 +75,9 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 	}
 
 	myClais := &jwtLocal.ClaimsType{
-		Id:             getUserResponse.User.Base.Id.String(),
-		Name:           getUserResponse.User.Name,
-		Email:          getUserResponse.User.Email,
+		Id:             user.Base.Id.String(),
+		Name:           user.Name,
+		Email:          user.Email,
 		StandardClaims: *claims,
 	}
 
@@ -92,8 +88,18 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 		return nil, err
 	}
 
+	if w := auth.ForResponseWriterContext(ctx); w != nil {
+		cookieName := os.Getenv("COOKIE_NAME")
+
+		http.SetCookie(w, &http.Cookie{
+			Name:    cookieName,
+			Value:   tokenString,
+			Expires: expirationTime,
+		})
+	}
+
 	response := model.AuthResponse{
-		Token: tokenString,
+		Token: "Successfully logged!",
 	}
 
 	return &response, nil
@@ -134,8 +140,17 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 			return nil, err
 		}
 
+		if w := auth.ForResponseWriterContext(ctx); w != nil {
+			cookieName := os.Getenv("COOKIE_NAME")
+
+			http.SetCookie(w, &http.Cookie{
+				Name:    cookieName,
+				Value:   tokenString,
+				Expires: expirationTime,
+			})
+		}
 		response := model.AuthResponse{
-			Token: tokenString,
+			Token: "Successfully registered",
 		}
 
 		return &response, nil
@@ -145,24 +160,31 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 // Get an amount of users limited and offseted by args
 func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) (*model.UsersResponse, error) {
 
-	var users []*user.User
-	var response model.UsersResponse
-
-	if result := r.DB.Find(&users).Offset(int(*offset)).Limit(int(math.Min(10, float64(*limit)))); result.Error != nil {
-		response.Errors = append(response.Errors, &model.Error{
-			Message: result.Error.Error(),
-			Method:  "Users",
-			Field:   "-",
-			Code:    500,
-		})
-		response.Users = nil
-
-		return &response, nil
+	errArr := []*model.Error{}
+	users := []*user.User{}
+	result := model.UsersResponse{
+		Users:  nil,
+		Errors: errArr,
 	}
-	response.Errors = nil
-	response.Users = users
 
-	return &response, nil
+	if userId := auth.ForUserIdContext(ctx); len(userId) == 0 {
+		return &result, fmt.Errorf("access denied")
+	}
+	err := model.Error{
+		Method:  "GetUserById",
+		Message: "",
+		Field:   "id",
+		Code:    500,
+	}
+
+	if foundUsers := r.DB.Find(&users).Offset(int(*offset)).Limit(int(math.Min(10, float64(*limit)))); foundUsers.Error != nil {
+		err.Message = foundUsers.Error.Error()
+		result.Errors = append(result.Errors, &err)
+	} else {
+		result.Users = users
+	}
+
+	return &result, nil
 }
 
 func (r *queryResolver) GetUserByID(ctx context.Context, id string) (*model.UserResponse, error) {
@@ -173,9 +195,7 @@ func (r *queryResolver) GetUserByID(ctx context.Context, id string) (*model.User
 		User:   nil,
 		Errors: errArr,
 	}
-	// not allowed here to see the logged user object
-	// if it is need to get it from databse
-	if loggedUser := auth.ForContext(ctx); loggedUser == nil {
+	if userId := auth.ForUserIdContext(ctx); len(userId) == 0 {
 		return &result, fmt.Errorf("access denied")
 	}
 
@@ -202,6 +222,10 @@ func (r *queryResolver) GetUserByEmail(ctx context.Context, email string) (*mode
 		Errors: errArr,
 	}
 
+	if userId := auth.ForUserIdContext(ctx); len(userId) == 0 {
+		return &result, fmt.Errorf("access denied")
+	}
+
 	err := model.Error{
 		Method:  "GetUserById",
 		Message: "",
@@ -223,6 +247,10 @@ func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.
 	result := model.UserResponse{
 		User:   nil,
 		Errors: errArr,
+	}
+
+	if userId := auth.ForUserIdContext(ctx); len(userId) == 0 {
+		return &result, fmt.Errorf("access denied")
 	}
 
 	err := model.Error{

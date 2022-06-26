@@ -3,12 +3,11 @@ package auth
 import (
 	"context"
 	"net/http"
+	"os"
 
 	jwtLocal "src/main/auth/jwt"
 
 	"github.com/golang-jwt/jwt"
-
-	"src/infra/orm/gorm/models/user"
 
 	"gorm.io/gorm"
 )
@@ -20,7 +19,8 @@ import (
 
 // A private key for context that only this package can access. This is important
 // to prevent collisions between different context uses
-var userCtxKey = &contextKey{"user"}
+var userCtxKey = &contextKey{"id"}
+var responseWriterCtxKey = &contextKey{"responseWriter"}
 var jwtKey = []byte(jwtLocal.GetJwtSecret())
 
 type contextKey struct {
@@ -31,42 +31,61 @@ type contextKey struct {
 func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			c, err := r.Cookie("sc_cook")
 
-			// Allow unauthenticated users in
-			if err != nil || c == nil {
+			if r.Header["Origin"] != nil && r.Header["Origin"][0] == os.Getenv("ORIGIN_LOGIN") {
+				ctx := context.WithValue(r.Context(), responseWriterCtxKey, w)
+				r = r.WithContext(ctx)
 				next.ServeHTTP(w, r)
 				return
-			}
+			} else {
+				c, err := r.Cookie(os.Getenv("COOKIE_NAME"))
 
-			userId, err := validateAndGetUserID(c)
-			if err != nil {
-				http.Error(w, "Invalid cookie", http.StatusForbidden)
-				return
-			}
+				// Allow unauthenticated users in
+				if err != nil || c == nil {
+					http.Error(w, "Not authorized", http.StatusForbidden)
+					return
+				}
 
-			// get the user from the database
-			user, err := getUserByID(db, userId)
-			if err != nil || user == nil {
-				http.Error(w, "Invalid cookie", http.StatusForbidden)
-				return
-			}
-			// put it in context
-			ctx := context.WithValue(r.Context(), userCtxKey, user)
+				userId, err := validateAndGetUserID(c)
+				if err != nil {
+					http.Error(w, "Not authorized", http.StatusForbidden)
+					return
+				}
 
-			// and call the next with our new context
-			r = r.WithContext(ctx)
-			next.ServeHTTP(w, r)
+				/*
+					// get the user from the database
+					user, err := getUserByID(db, userId)
+					if err != nil || user == nil {
+						http.Error(w, "Invalid cookie", http.StatusForbidden)
+						return
+					}
+				*/
+
+				// put it in context
+				rootCtx := context.WithValue(r.Context(), userCtxKey, userId)
+				ctx := context.WithValue(rootCtx, responseWriterCtxKey, w)
+
+				// and call the next with our new context
+				r = r.WithContext(ctx)
+				next.ServeHTTP(w, r)
+			}
 		})
 	}
 }
 
 // ForContext finds the user from the context. REQUIRES Middleware to have run.
-func ForContext(ctx context.Context) *user.User {
-	raw, _ := ctx.Value(userCtxKey).(*user.User)
+func ForUserIdContext(ctx context.Context) string {
+	raw, _ := ctx.Value(userCtxKey).(string)
 	return raw
 }
 
+// Finding the response writer inside context
+func ForResponseWriterContext(ctx context.Context) http.ResponseWriter {
+	raw, _ := ctx.Value(responseWriterCtxKey).(http.ResponseWriter)
+	return raw
+}
+
+// Decodes cookie to find the token and validates its content
 func validateAndGetUserID(c *http.Cookie) (string, error) {
 
 	token := c.Value
@@ -87,6 +106,7 @@ func validateAndGetUserID(c *http.Cookie) (string, error) {
 	return claims.Id, nil
 }
 
+/*
 func getUserByID(db *gorm.DB, userId string) (*user.User, error) {
 	user := user.User{}
 	if findUser := db.First(&user, "id = ?", userId); findUser.Error != nil {
@@ -95,3 +115,4 @@ func getUserByID(db *gorm.DB, userId string) (*user.User, error) {
 		return &user, nil
 	}
 }
+*/
