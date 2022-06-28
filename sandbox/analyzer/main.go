@@ -29,5 +29,5 @@ func main() {
 		DB:  conn,
 	}
 	fmt.Println("Starting Analyzer...")
-	app.GenerateData(100)
+	app.GenerateData(2)
 }

@@ -1,13 +1,14 @@
 package drawer
 
-import "time"
+import (
+	"time"
+)
 
 type Models struct {
-	User User
+	Contest Contest
 }
 
-// User is the structure which holds one user from the database.
-type User struct {
+type Contest struct {
 	ID          int       `json:"id"`
 	RealeseDate time.Time `json:"realese_date"`
 	Bola_1      int       `json:"bola_1"`

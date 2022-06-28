@@ -1,10 +1,13 @@
 package drawer
 
 import (
+	"context"
 	"fmt"
 	"math/rand"
 	"time"
 )
+
+const dbTimeout = time.Second * 3
 
 func (d *Drawer) GeneratePot() *[]uint8 {
 	d.Pot = nil
@@ -69,6 +72,7 @@ func (d *Drawer) CheckBallBelongs(n uint8, arr *[]uint8) bool {
 	return false
 }
 
+// generates the data and insert its into database
 func (d *Drawer) GenerateData(amount int) {
 
 	min := 1
@@ -77,7 +81,7 @@ func (d *Drawer) GenerateData(amount int) {
 	var ball uint8
 	var x int
 	var alreadyWithdrown bool
-
+	contest := Contest{}
 	d.Pot = d.GeneratePot()
 
 	for i := 0; i < amount; i++ {
@@ -104,9 +108,47 @@ func (d *Drawer) GenerateData(amount int) {
 				fmt.Printf("%02d-", x)
 			}
 		}
+
+		contest.ID = i + 1
+		contest.RealeseDate = time.Now()
+		contest.Bola_1 = int(draws[0])
+		contest.Bola_2 = int(draws[1])
+		contest.Bola_3 = int(draws[2])
+		contest.Bola_4 = int(draws[3])
+		contest.Bola_5 = int(draws[4])
+		contest.Bola_6 = int(draws[5])
+
+		err := d.InsertGame(contest)
+		if err != nil {
+			panic("error inserting contest")
+		}
 		fmt.Print("\n")
 		draws = draws[:0]
 		d.Pot = d.GeneratePot()
 	}
 
+}
+
+func (d *Drawer) InsertGame(contest Contest) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+	var Id int
+	stmt := `insert into contests (realese_date, bola_1, bola_2, bola_3, bola_4, bola_5, bola_6)
+				values ($1, $2, $3, $4, $5, $6, $7) returning id`
+
+	err := d.DB.QueryRowContext(ctx, stmt,
+		contest.RealeseDate,
+		contest.Bola_1,
+		contest.Bola_2,
+		contest.Bola_3,
+		contest.Bola_4,
+		contest.Bola_5,
+		contest.Bola_6,
+	).Scan(&Id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
