@@ -18,7 +18,7 @@ func main() {
 	max := drawer.MAX
 
 	pot := make([]uint8, 60)
-	draws := make([]uint8, 6)
+	draws := []uint8{}
 	var ball uint8
 	var x int
 	var alreadyWithdrown bool
@@ -26,41 +26,33 @@ func main() {
 		Pot: &pot,
 	}
 	app.Pot = app.GeneratePot()
-	fmt.Println("Length ", len(*app.Pot))
-	x = 10
 
-	for i := 0; i < 5; i++ {
-		for j := 0; j < 5; j++ {
+	for i := 0; i < 100; i++ {
+		for j := 0; j < 6; j++ {
+			rand.Seed(time.Now().UnixNano())
 			x = rand.Intn(max-min+1) + min
 			ball = uint8(x)
 			alreadyWithdrown = app.CheckBallBelongs(ball, &draws)
 			if alreadyWithdrown {
-				for !alreadyWithdrown {
+				for {
 					x = rand.Intn(max-min+1) + min
 					ball = uint8(x)
 					alreadyWithdrown = app.CheckBallBelongs(ball, &draws)
+					if !alreadyWithdrown {
+						break
+					}
 				}
 			}
 			draws = append(draws, ball)
 			app.Pot, _ = app.Draw(ball, j)
-			fmt.Printf("%02d-", x)
-		}
-		x = rand.Intn(max-min+1) + min
-		ball = uint8(x)
-		alreadyWithdrown = app.CheckBallBelongs(ball, &draws)
-		if alreadyWithdrown {
-			for !alreadyWithdrown {
-				x = rand.Intn(max-min+1) + min
-				ball = uint8(x)
-				alreadyWithdrown = app.CheckBallBelongs(ball, &draws)
+			if j == 5 {
+				fmt.Printf("%02d", x)
+			} else {
+				fmt.Printf("%02d-", x)
 			}
 		}
-		draws = append(draws, ball)
-		app.Pot, _ = app.Draw(ball, 5)
-		fmt.Printf("%02d", x)
 		fmt.Print("\n")
-		fmt.Println("Length ", len(*app.Pot))
+		draws = draws[:0]
 		app.Pot = app.GeneratePot()
 	}
-
 }

@@ -3,7 +3,7 @@ package drawer
 import "fmt"
 
 func (d *Drawer) GeneratePot() *[]uint8 {
-
+	d.Pot = nil
 	pot := []uint8{}
 	var j uint8
 
@@ -35,7 +35,7 @@ func (d *Drawer) Draw(n uint8, round int) (*[]uint8, error) {
 // Finds a number from pot and return its index
 // If not Found, return MAX + 1
 func (d *Drawer) Find(n uint8) int {
-	fmt.Printf("\npot length %d\n", len(*d.Pot))
+	//fmt.Printf("\npot length %d\n", len(*d.Pot))
 	for i, x := range *d.Pot {
 		if n == x {
 			return i
