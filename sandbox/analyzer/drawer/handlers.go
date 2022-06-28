@@ -3,6 +3,7 @@ package drawer
 import (
 	"context"
 	"fmt"
+	"log"
 	"math/rand"
 	"time"
 )
@@ -102,11 +103,6 @@ func (d *Drawer) GenerateData(amount int) {
 			}
 			draws = append(draws, ball)
 			d.Pot, _ = d.Draw(ball, j)
-			if j == 5 {
-				fmt.Printf("%02d", x)
-			} else {
-				fmt.Printf("%02d-", x)
-			}
 		}
 
 		contest.ID = i + 1
@@ -149,6 +145,42 @@ func (d *Drawer) InsertGame(contest Contest) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
+}
+
+func (d *Drawer) GetAll() ([]*Contest, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `select id, realese_date, bola_1, bola_2, bola_3, bola_4, bola_5, bola_6 from contests`
+
+	rows, err := d.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var contests []*Contest
+	var contest Contest
+	for rows.Next() {
+		err := rows.Scan(
+			&contest.ID,
+			&contest.RealeseDate,
+			&contest.Bola_1,
+			&contest.Bola_2,
+			&contest.Bola_3,
+			&contest.Bola_4,
+			&contest.Bola_5,
+			&contest.Bola_6,
+		)
+		if err != nil {
+			log.Println("Error scanning ", err)
+			return nil, err
+		}
+
+		contests = append(contests, &contest)
+	}
+
+	return contests, nil
+
 }
