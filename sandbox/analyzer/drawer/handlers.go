@@ -1,6 +1,10 @@
 package drawer
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 func (d *Drawer) GeneratePot() *[]uint8 {
 	d.Pot = nil
@@ -63,4 +67,46 @@ func (d *Drawer) CheckBallBelongs(n uint8, arr *[]uint8) bool {
 		}
 	}
 	return false
+}
+
+func (d *Drawer) GenerateData(amount int) {
+
+	min := 1
+	max := MAX
+	draws := []uint8{}
+	var ball uint8
+	var x int
+	var alreadyWithdrown bool
+
+	d.Pot = d.GeneratePot()
+
+	for i := 0; i < amount; i++ {
+		for j := 0; j < 6; j++ {
+			rand.Seed(time.Now().UnixNano())
+			x = rand.Intn(max-min+1) + min
+			ball = uint8(x)
+			alreadyWithdrown = d.CheckBallBelongs(ball, &draws)
+			if alreadyWithdrown {
+				for {
+					x = rand.Intn(max-min+1) + min
+					ball = uint8(x)
+					alreadyWithdrown = d.CheckBallBelongs(ball, &draws)
+					if !alreadyWithdrown {
+						break
+					}
+				}
+			}
+			draws = append(draws, ball)
+			d.Pot, _ = d.Draw(ball, j)
+			if j == 5 {
+				fmt.Printf("%02d", x)
+			} else {
+				fmt.Printf("%02d-", x)
+			}
+		}
+		fmt.Print("\n")
+		draws = draws[:0]
+		d.Pot = d.GeneratePot()
+	}
+
 }
