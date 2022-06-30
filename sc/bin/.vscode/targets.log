@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Sat Jun 25 17:59:26 2022
+# Make data base, printed on Wed Jun 29 22:17:18 2022
 
 # Variables
 
@@ -15,6 +15,8 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 VSCODE_LOG_NATIVE = false
 # environment
@@ -44,9 +46,9 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/1m/pd70dcc51wz92xhb352sknfr0000gn/T/vscode-ipc-afa5917c-abeb-4096-beeb-c0971b165222.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/1m/pd70dcc51wz92xhb352sknfr0000gn/T/vscode-ipc-5ba3ecdd-86d1-4580-81a1-f166bbc27544.sock
 # environment
-VSCODE_CWD = /
+VSCODE_CWD = /Users/jonasmartinssouza/Documents/Dev/golang/golang
 # environment
 GOPROXY = https://proxy.golang.org,direct
 # environment
@@ -64,7 +66,7 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.Mu3BDP430L/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.cnKsDTTxhE/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
@@ -86,11 +88,13 @@ HOME = /Users/jonasmartinssouza
 # default
 MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
 # environment
+VSCODE_CLI = 1
+# environment
 VSCODE_CODE_CACHE_PATH = /Users/jonasmartinssouza/Library/Application Support/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
 # environment
 LOGNAME = jonasmartinssouza
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 NVM_CD_FLAGS = -q
 # environment
@@ -106,7 +110,7 @@ MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
-SHLVL = 1
+SHLVL = 3
 # default
 MAKE_VERSION := 3.81
 # environment
@@ -114,11 +118,15 @@ USER = jonasmartinssouza
 # makefile
 .DEFAULT_GOAL := up
 # environment
+TERM_SESSION_ID = B984441E-D828-4431-AB5C-C6CB2688A388
+# environment
 LESS = -R
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
 MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# environment
+TERM_PROGRAM = Apple_Terminal
 # default
 .VARIABLES := 
 # environment
@@ -134,9 +142,11 @@ MFLAGS = -Rrqp
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
+TERM_PROGRAM_VERSION = 445
+# environment
 NVM_DIR = /Users/jonasmartinssouza/.nvm
 # environment
-XPC_SERVICE_NAME = application.com.microsoft.VSCode.16856373.16856379
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.16856373.16856379.EE0DC1C6-413A-4CA3-896F-4FB8A468E8E5
 # environment
 HOMEBREW_PREFIX = /opt/homebrew
 # automatic
@@ -168,9 +178,11 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 32177
+TERM = xterm-256color
+# environment
+VSCODE_PID = 9732
 # variable set hash-table stats:
-# Load=79/1024=8%, Rehash=0, Collisions=2/102=2%
+# Load=85/1024=8%, Rehash=0, Collisions=2/108=2%
 
 # Pattern-specific Variable Values
 
@@ -178,7 +190,7 @@ VSCODE_PID = 32177
 
 # Directories
 
-# . (device 16777233, inode 16224870): 6 files, no impossibilities.
+# . (device 16777232, inode 16224870): 6 files, no impossibilities.
 
 # 6 files, no impossibilities in 1 directories.
 
@@ -206,15 +218,6 @@ local:
 	cd ../server/src && go run server.go
 	
 
-status:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 44):
-	@echo "Git status"
-	git status -u
-	
-
 up:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -225,35 +228,16 @@ up:
 	@echo "Docker images started"
 	
 
-commit:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 48):
-	@echo "Git add and commit"
-	git add . && git commit
-	@echo ${DONE}
-	
-
 # Not a target:
 .SUFFIXES:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
-push:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 53):
-	@echo "Git push"
-	git push -u origin development
-	
-
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-18 15:26:29
+#  Last modified 2022-06-25 20:06:32
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -281,9 +265,6 @@ test:
 schema_generate:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
- 
-make: *** No rule to make target `all'.  Stop.
-
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 39):
 	@echo "Rebuild graphql's schema changes"
@@ -296,16 +277,10 @@ make: *** No rule to make target `all'.  Stop.
 #  Modification time never checked.
 #  File has not been updated.
 
-reset:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  commands to execute (from `Makefile', line 57):
-	@echo "Git reset"
-	git reset --hard && clean -fd
-	
-
 lint:
+ 
+make: *** No rule to make target `all'.  Stop.
+
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -340,7 +315,7 @@ down:
 	
 
 # files hash-table stats:
-# Load=16/1024=2%, Rehash=0, Collisions=0/29=0%
+# Load=12/1024=1%, Rehash=0, Collisions=0/25=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -352,6 +327,6 @@ down:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Sat Jun 25 17:59:26 2022
+# Finished Make data base on Wed Jun 29 22:17:18 2022
 
  

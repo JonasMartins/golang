@@ -1,255 +1,188 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
 
-# GNU Make 4.3
-# Built for x86_64-pc-linux-gnu
-# Copyright (C) 1988-2020 Free Software Foundation, Inc.
-# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-# This is free software: you are free to change and redistribute it.
-# There is NO WARRANTY, to the extent permitted by law.
+# This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Mon Jun 13 17:33:09 2022
+# Make data base, printed on Wed Jun 29 22:16:48 2022
 
 # Variables
 
-# environment
-GDK_BACKEND = x11
-# environment
-LC_ALL = C
-# environment
-NO_AT_BRIDGE = 1
-# environment
-GNOME_SHELL_SESSION_MODE = ubuntu
-# environment
-SSH_AGENT_LAUNCHER = gnome-keyring
-# environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-746b8d9f-c3af-442f-b06f-0e48abfa0be1.sock
-# environment
-LC_NAME = pt_BR.UTF-8
-# environment
-LC_NUMERIC = pt_BR.UTF-8
-# environment
-VSCODE_CWD = /home/jonas/Documents/dev/golang
-# environment
-NVM_DIR = /home/jonas/.nvm
-# environment
-LC_ADDRESS = pt_BR.UTF-8
-# default
-MAKE_COMMAND := make
-# environment
-QT_ACCESSIBILITY = 1
-# environment
-GOPATH = /home/jonas/go
-# automatic
-@D = $(patsubst %/,%,$(dir $@))
-# environment
-VSCODE_HANDLES_UNCAUGHT_ERRORS = true
-# default
-.VARIABLES := 
-# environment
-PWD = /home/jonas/Documents/dev/golang
-# automatic
-%D = $(patsubst %/,%,$(dir $%))
-# environment
-XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
-# environment
-OLDPWD = /home/jonas/Documents/dev
-# automatic
-^D = $(patsubst %/,%,$(dir $^))
-# environment
-VSCODE_LOG_STACK = false
-# automatic
-%F = $(notdir $%)
-# environment
-NVM_INC = /home/jonas/.nvm/versions/node/v16.15.0/include/node
-# environment
-VSCODE_CODE_CACHE_PATH = /home/jonas/.config/Code/CachedData/4af164ea3a06f701fe3e89a2bcbb421d2026b68f
-# environment
-LANG = C
-# environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.916RN1
-# default
-.LOADED := 
-# default
-.INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
-# environment
-GNOME_TERMINAL_SERVICE = :1.150
-# makefile
-MAKEFLAGS = pqrR
-# makefile
-CURDIR := /home/jonas/Documents/dev/golang
-# environment
-VSCODE_PIPE_LOGGING = true
-# environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
-# environment
-LESSOPEN = | /usr/bin/lesspipe %s
-# automatic
-*D = $(patsubst %/,%,$(dir $*))
-# environment
-MFLAGS = -pqrR
-# environment
-SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
-# default
-.SHELLFLAGS := -c
-# environment
-NVM_BIN = /home/jonas/.nvm/versions/node/v16.15.0/bin
-# environment
-WAYLAND_DISPLAY = wayland-0
-# environment
-XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
-# automatic
-+D = $(patsubst %/,%,$(dir $+))
-# environment
-XDG_SESSION_DESKTOP = ubuntu
-# makefile
-MAKEFILE_LIST := 
-# automatic
-@F = $(notdir $@)
-# environment
-VSCODE_VERBOSE_LOGGING = true
-# environment
-VSCODE_PID = 26426
-# environment
-XDG_SESSION_TYPE = wayland
-# automatic
-?D = $(patsubst %/,%,$(dir $?))
-# environment
-SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/2547,unix/jonas-Lenovo-BS145-15IWL:/tmp/.ICE-unix/2547
-# automatic
-*F = $(notdir $*)
-# environment
-CHROME_DESKTOP = code-url-handler.desktop
-# environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
-# environment
-VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
-# default
-MAKE_HOST := x86_64-pc-linux-gnu
-# environment
-GNOME_DESKTOP_SESSION_ID = this-is-deprecated
-# makefile
-SHELL = /bin/sh
-# default
-MAKECMDGOALS := all
-# environment
-XMODIFIERS = @im=ibus
-# environment
-SHLVL = 1
-# environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/7a6988d2_89aa_4b83_9b72_7359fa39d8af
-# environment
-MAKELEVEL := 0
-# default
-MAKE = $(MAKE_COMMAND)
-# environment
-PATH = /usr/local/go/bin:/home/jonas/.cargo/bin:/home/jonas/.nvm/versions/node/v16.15.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/jonas/go/bin
-# default
-MAKEFILES := 
-# environment
-LC_MONETARY = pt_BR.UTF-8
-# automatic
-^F = $(notdir $^)
-# environment
-LC_TIME = pt_BR.UTF-8
-# environment
-GOROOT = /usr/local/go
-# environment
-VSCODE_LOG_NATIVE = false
-# environment
-USERNAME = jonas
-# environment
-GNOME_SETUP_DISPLAY = :1
-# environment
-LC_TELEPHONE = pt_BR.UTF-8
-# environment
-LESSCLOSE = /usr/bin/lesspipe %s %s
 # automatic
 ?F = $(notdir $?)
 # environment
-XDG_CURRENT_DESKTOP = Unity
+ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
-LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36::di=0;36:
+VSCODE_LOG_NATIVE = false
+# environment
+NVM_INC = /Users/jonasmartinssouza/.nvm/versions/node/v16.15.0/include/node
 # automatic
-+F = $(notdir $+)
-# environment
-DESKTOP_SESSION = ubuntu
-# environment
-ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
-# 'override' directive
-GNUMAKEFLAGS := 
-# environment
-LOGNAME = jonas
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
 # makefile
-.DEFAULT_GOAL := 
+CURDIR := /Users/jonasmartinssouza/Documents/Dev/golang/golang
+# makefile
+SHELL = /bin/sh
 # environment
-SYSTEMD_EXEC_PID = 9056
+VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{"*":"pt-br"},"_languagePackId":"195456cb6bc5e7dd989215cd334fb359.pt-br","_translationsConfigFile":"/Users/jonasmartinssouza/Library/Application Support/Code/clp/195456cb6bc5e7dd989215cd334fb359.pt-br/tcf.json","_cacheRoot":"/Users/jonasmartinssouza/Library/Application Support/Code/clp/195456cb6bc5e7dd989215cd334fb359.pt-br","_resolvedLanguagePackCoreLocation":"/Users/jonasmartinssouza/Library/Application Support/Code/clp/195456cb6bc5e7dd989215cd334fb359.pt-br/30d9c6cd9483b2cc586687151bcbcd635f373630","_corruptedFile":"/Users/jonasmartinssouza/Library/Application Support/Code/clp/195456cb6bc5e7dd989215cd334fb359.pt-br/corrupted.info","_languagePackSupport":true}
 # environment
-DISPLAY = :0
-# environment
-USER = jonas
-# environment
-GTK_MODULES = gail:atk-bridge
-# default
-MAKE_VERSION := 4.3
-# environment
-LC_MEASUREMENT = pt_BR.UTF-8
-# environment
-_ = /usr/bin/code
-# environment
-LC_PAPER = pt_BR.UTF-8
-# environment
-XDG_RUNTIME_DIR = /run/user/1000
-# environment
-COLORTERM = truecolor
-# environment
-LC_CTYPE = pt_BR.UTF-8
-# environment
-NVM_CD_FLAGS = 
-# environment
-GOMODCACHE = /home/jonas/go/pkg/mod
-# environment
-XDG_SESSION_CLASS = user
+_ = /usr/bin/make
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
-HOME = /home/jonas
+VSCODE_VERBOSE_LOGGING = true
 # environment
-QT_IM_MODULE = ibus
+__CFBundleIdentifier = com.microsoft.VSCode
 # environment
-ELECTRON_RUN_AS_NODE = 1
+INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-70be7676-1.68.0-main.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/1m/pd70dcc51wz92xhb352sknfr0000gn/T/vscode-ipc-2f9459e8-e97c-4466-a3e4-2f1ed2677de8.sock
 # environment
-TERM = xterm-256color
-# environment
-IM_CONFIG_PHASE = 1
+VSCODE_CWD = /Users/jonasmartinssouza/Documents/Dev/golang/golang
 # environment
 GOPROXY = https://proxy.golang.org,direct
+# environment
+PATH = /Users/jonasmartinssouza/.nvm/versions/node/v16.15.0/bin:/Users/jonasmartinssouza/.yarn/bin:/Users/jonasmartinssouza/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Library/Apple/usr/bin:/Users/jonasmartinssouza/.cargo/bin:/Users/jonasmartinssouza/.local/bin:/Users/jonasmartinssouza/.local/bin:/Users/jonasmartinssouza/.fzf/bin
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# environment
+GOPATH = /Users/jonasmartinssouza/go
+# environment
+NVM_BIN = /Users/jonasmartinssouza/.nvm/versions/node/v16.15.0/bin
+# environment
+VSCODE_LOG_STACK = false
+# environment
+ELECTRON_RUN_AS_NODE = 1
 # default
-.RECIPEPREFIX := 
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.cnKsDTTxhE/Listeners
 # automatic
-<F = $(notdir $<)
+%F = $(notdir $%)
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+PWD = /Users/jonasmartinssouza/Documents/Dev/golang/golang
+# environment
+HOMEBREW_CELLAR = /opt/homebrew/Cellar
+# makefile (from `Makefile', line 1)
+DONE = "Task Done"
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+MANPATH = /Users/jonasmartinssouza/.nvm/versions/node/v16.15.0/share/man:/opt/homebrew/share/man::
+# environment
+GOMODCACHE = /Users/jonasmartinssouza/go/pkg/mod
+# environment
+PYENV_SHELL = zsh
+# environment
+HOME = /Users/jonasmartinssouza
 # default
-SUFFIXES := 
+MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
 # environment
 VSCODE_CLI = 1
 # environment
-ELECTRON_NO_ATTACH_CONSOLE = 1
+VSCODE_CODE_CACHE_PATH = /Users/jonasmartinssouza/Library/Application Support/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
 # environment
-VTE_VERSION = 6800
+LOGNAME = jonasmartinssouza
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+NVM_CD_FLAGS = -q
+# environment
+ZSH = /Users/jonasmartinssouza/.oh-my-zsh
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+XPC_FLAGS = 0x0
 # default
-.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
 # environment
-XDG_MENU_PREFIX = gnome-
+SHLVL = 3
+# default
+MAKE_VERSION := 3.81
 # environment
-GDMSESSION = ubuntu
+USER = jonasmartinssouza
+# makefile
+.DEFAULT_GOAL := status
 # environment
-LC_IDENTIFICATION = pt_BR.UTF-8
+TERM_SESSION_ID = B984441E-D828-4431-AB5C-C6CB2688A388
+# environment
+LESS = -R
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# environment
+TERM_PROGRAM = Apple_Terminal
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/1m/pd70dcc51wz92xhb352sknfr0000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/jonasmartinssouza/Library/Application Support/Code/1.68.1-main.sock
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+TERM_PROGRAM_VERSION = 445
+# environment
+NVM_DIR = /Users/jonasmartinssouza/.nvm
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.16856373.16856379.EE0DC1C6-413A-4CA3-896F-4FB8A468E8E5
+# environment
+HOMEBREW_PREFIX = /opt/homebrew
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+HOMEBREW_REPOSITORY = /opt/homebrew
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x47
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+PAGER = less
+# environment
+LC_ALL = C
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# environment
+MAKELEVEL := 0
+# environment
+LANG = C
+# environment
+TERM = xterm-256color
+# environment
+VSCODE_PID = 9732
 # variable set hash-table stats:
-# Load=118/1024=12%, Rehash=0, Collisions=11/145=8%
+# Load=85/1024=8%, Rehash=0, Collisions=3/108=3%
 
 # Pattern-specific Variable Values
 
@@ -257,7 +190,7 @@ LC_IDENTIFICATION = pt_BR.UTF-8
 
 # Directories
 
-# . (device 2050, inode 6949895): 10 files, no impossibilities.
+# . (device 16777232, inode 14175918): 10 files, no impossibilities.
 
 # 10 files, no impossibilities in 1 directories.
 
@@ -268,11 +201,56 @@ LC_IDENTIFICATION = pt_BR.UTF-8
 # Files
 
 # Not a target:
-Makefile:
+all:
+#  Command-line target.
 #  Implicit rule search has been done.
 #  File does not exist.
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+status:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 5):
+	@echo "Git status"
+	git status -u
+	
+
+commit:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 9):
+	@echo "Git add and commit"
+	git add . && git commit
+	@echo ${DONE}
+	
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+push:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 14):
+	@echo "Git push"
+	git push -u origin development
+	
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-25 18:02:22
 #  File has been updated.
-#  Failed to be updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 # Not a target:
 .DEFAULT:
@@ -280,42 +258,30 @@ Makefile:
 #  Modification time never checked.
 #  File has not been updated.
 
-# Not a target:
-all:
-#  Command line target.
-#  Implicit rule search has been done.
-#  File does not exist.
+reset:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
 #  File has not been updated.
-
-# Not a target:
-makefile:
-#  Implicit rule search has been done.
-#  File does not exist.
-#  File has been updated.
-#  Failed to be updated.
-
-# Not a target:
-GNUmakefile:
-#  Implicit rule search has been done.
- 
-#  File does not exist.
-#  File has been updated.
-#  Failed to be updated.
+#  commands to execute (from `Makefile', line 18):
+	@echo "Git reset"
+	git reset --hard && clean -fd
+	
 
 # files hash-table stats:
-# Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
+# Load=8/1024=1%, Rehash=0, Collisions=0/20=0%
 # VPATH Search Paths
 
-# No 'vpath' search paths.
+# No `vpath' search paths.
 
-# No general ('VPATH' variable) search path.
+# No general (`VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 18 / storage = 153 B / avg = 8 B
-# current buf: size = 8162 B / used = 153 B / count = 18 / avg = 8 B
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# strcache performance: lookups = 21 / hit rate = 14%
-# hash-table stats:
-# Load=18/8192=0%, Rehash=0, Collisions=0/21=0%
-# Finished Make data base on Mon Jun 13 17:33:09 2022
+# Finished Make data base on Wed Jun 29 22:16:48 2022
 
  
+make: *** No rule to make target `all'.  Stop.
+
