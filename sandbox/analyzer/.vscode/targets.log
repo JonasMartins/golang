@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul  1 14:40:28 2022
+# Make data base, printed on Fri Jul  1 11:00:16 2022
 
 # Variables
 
@@ -21,15 +21,13 @@ GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
 # environment
-GJS_DEBUG_OUTPUT = stderr
-# environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-6fde83a2-92b1-43cd-883b-0be8c8a2e4ed.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-72335281-8def-4f31-929b-f6716836761e.sock
 # environment
 LC_NAME = pt_BR.UTF-8
 # environment
 LC_NUMERIC = pt_BR.UTF-8
 # environment
-VSCODE_CWD = /home/jonas
+VSCODE_CWD = /home/jonas/Documents/dev
 # environment
 NVM_DIR = /home/jonas/.nvm
 # environment
@@ -47,11 +45,13 @@ VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
 .VARIABLES := 
 # environment
-PWD = /home/jonas/Documents/dev/golang/sc/bin
+PWD = /home/jonas/Documents/dev/golang/sandbox/analyzer
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+# environment
+OLDPWD = /home/jonas
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
@@ -70,14 +70,14 @@ XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.TRH5N1
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
+# environment
+GNOME_TERMINAL_SERVICE = :1.180
 # makefile
 MAKEFLAGS = pqrR
 # makefile
-CURDIR := /home/jonas/Documents/dev/golang/sc/bin
+CURDIR := /home/jonas/Documents/dev/golang/sandbox/analyzer
 # environment
 VSCODE_PIPE_LOGGING = true
-# makefile (from 'Makefile', line 1)
-SERVER_BINARY = serverApp
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
@@ -107,7 +107,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 23041
+VSCODE_PID = 21329
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -135,13 +135,11 @@ MAKECMDGOALS := all
 # environment
 XMODIFIERS = @im=ibus
 # environment
-GJS_DEBUG_TOPICS = JS ERROR;JS LOG
+SHLVL = 1
 # environment
-SHLVL = 0
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/77f60368_adde_4542_8296_c41343409bdc
 # environment
 MAKELEVEL := 0
-# environment
-IM_CONFIG_CHECK_ENV = 1
 # default
 MAKE = $(MAKE_COMMAND)
 # environment
@@ -157,8 +155,6 @@ LC_TIME = pt_BR.UTF-8
 # environment
 GOROOT = /usr/local/go
 # environment
-INVOCATION_ID = 5c4f2e9ccba54a56b2a404a932c6e46e
-# environment
 VSCODE_LOG_NATIVE = false
 # environment
 USERNAME = jonas
@@ -173,7 +169,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 XDG_CURRENT_DESKTOP = Unity
 # environment
-LS_COLORS = :di=0;36:
+LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36::di=0;36:
 # automatic
 +F = $(notdir $+)
 # environment
@@ -184,12 +180,10 @@ ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 GNUMAKEFLAGS := 
 # environment
 LOGNAME = jonas
-# environment
-GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # makefile
-.DEFAULT_GOAL := up
+.DEFAULT_GOAL := dev
 # environment
-SYSTEMD_EXEC_PID = 5705
+SYSTEMD_EXEC_PID = 5869
 # environment
 DISPLAY = :0
 # environment
@@ -199,23 +193,19 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-MANAGERPID = 5485
-# environment
 LC_MEASUREMENT = pt_BR.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 23041
-# environment
-_ = /usr/share/code/code
+_ = /usr/bin/code
 # environment
 LC_PAPER = pt_BR.UTF-8
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
+COLORTERM = truecolor
+# environment
 LC_CTYPE = pt_BR.UTF-8
 # environment
 NVM_CD_FLAGS = 
-# environment
-JOURNAL_STREAM = 8:42243
 # environment
 GOMODCACHE = /home/jonas/go/pkg/mod
 # environment
@@ -231,6 +221,8 @@ ELECTRON_RUN_AS_NODE = 1
 # environment
 VSCODE_IPC_HOOK = /run/user/1000/vscode-70be7676-1.68.1-main.sock
 # environment
+TERM = xterm-256color
+# environment
 IM_CONFIG_PHASE = 1
 # environment
 GOPROXY = https://proxy.golang.org,direct
@@ -240,6 +232,12 @@ GOPROXY = https://proxy.golang.org,direct
 <F = $(notdir $<)
 # default
 SUFFIXES := 
+# environment
+VSCODE_CLI = 1
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+VTE_VERSION = 6800
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
 # environment
@@ -249,7 +247,7 @@ GDMSESSION = ubuntu
 # environment
 LC_IDENTIFICATION = pt_BR.UTF-8
 # variable set hash-table stats:
-# Load=118/1024=12%, Rehash=0, Collisions=5/148=3%
+# Load=117/1024=11%, Rehash=0, Collisions=11/147=7%
 
 # Pattern-specific Variable Values
 
@@ -257,9 +255,9 @@ LC_IDENTIFICATION = pt_BR.UTF-8
 
 # Directories
 
-# . (device 2050, inode 8005897): 6 files, no impossibilities.
+# . (device 2050, inode 8282675): 12 files, no impossibilities.
 
-# 6 files, no impossibilities in 1 directories.
+# 12 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -267,53 +265,12 @@ LC_IDENTIFICATION = pt_BR.UTF-8
 
 # Files
 
-up_build: build_server
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 9):
-	@echo "Stopping docker images (if running...)"
-	docker-compose -f docker-compose.staging.yml down
-	@echo "Building and starting docker images..."
-	docker-compose -f docker-compose.staging.yml up --build -d
-	@echo "Docker images built and started."
-
-lint:
-#  Implicit rule search has not been done.
- 
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 26):
-	@echo "Running linter"
-	cd ../server/src && golangci-lint run
-	@echo "Formatting..."
-	cd ../server/src && go fmt ./
-	@echo "Done"
-
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-27 08:15:28.50615349
+#  Last modified 2022-06-28 16:45:35.476689577
 #  File has been updated.
 #  Successfully updated.
-
-up:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 4):
-	@echo "Starting docker images..."
-	docker-compose -f docker-compose.staging.yml up
-	@echo "Docker images started"
-
-build_server:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 21):
-	@echo "Building server binary..."
-	cd ../server/src && env GOOS=linux CGO_ENABLED=0 go build -o ${SERVER_BINARY} ./server.go
-	@echo "Done"
 
 # Not a target:
 .DEFAULT:
@@ -321,60 +278,36 @@ build_server:
 #  Modification time never checked.
 #  File has not been updated.
 
+dev:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 2):
+	@echo "Running program"
+	go run ./
+
 # Not a target:
 all:
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
+ 
 #  File has not been updated.
-
-test:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 35):
-	@echo "Running all tests"
-	cd ../server/test && go test ./...
-
-local:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 32):
-	@echo "Running development local"
-	cd ../server/src && go run server.go
-
-down:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 16):
-	@echo "Stopping docker compose..."
-	docker-compose -f docker-compose.staging.yml down -v
-	@echo "Done"
-
-schema_generate:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 39):
-	@echo "Rebuild graphql's schema changes"
-	cd ../server/src && go generate ./...
 
 # files hash-table stats:
-# Load=12/1024=1%, Rehash=0, Collisions=0/24=0%
+# Load=5/1024=0%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 19 / storage = 171 B / avg = 9 B
-# current buf: size = 8162 B / used = 171 B / count = 19 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 18 / storage = 144 B / avg = 8 B
+# current buf: size = 8162 B / used = 144 B / count = 18 / avg = 8 B
 
-# strcache performance: lookups = 32 / hit rate = 40%
+# strcache performance: lookups = 23 / hit rate = 21%
 # hash-table stats:
-# Load=19/8192=0%, Rehash=0, Collisions=0/32=0%
-# Finished Make data base on Fri Jul  1 14:40:28 2022
+# Load=18/8192=0%, Rehash=0, Collisions=0/23=0%
+# Finished Make data base on Fri Jul  1 11:00:16 2022
 
  
