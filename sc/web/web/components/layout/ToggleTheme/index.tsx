@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { ActionIcon, Group, Switch, useMantineColorScheme } from "@mantine/core";
-import { Sun, MoonStars } from "tabler-icons-react";
+import { Sun, MoonStars, Settings } from "tabler-icons-react";
 import { useState } from "react";
 import React from "react";
 
@@ -18,14 +18,20 @@ const ToggleTheme: NextPage = () => {
 	return (
 		<Group>
 			<ActionIcon
-				variant="transparent"
-				color={dark ? "yellow" : "cyan"}
+				variant="default"
+				color={dark ? "yellow" : "indigo"}
 				onClick={handleToggleTheme}
 				title="Toggle color scheme"
 			>
-				{dark ? <Sun size="lg" /> : <MoonStars size="lg" />}
+				{dark ? <Sun /> : <MoonStars />}
 			</ActionIcon>
-			<Switch size="lg" checked={checked} color={"teal"} onChange={handleToggleTheme} />
+			<Switch
+				size="lg"
+				araia-label="change theme"
+				checked={checked}
+				color={"indigo"}
+				onChange={handleToggleTheme}
+			/>
 		</Group>
 	);
 };

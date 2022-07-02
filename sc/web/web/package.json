@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/comfortaa": "^4.5.8",
     "@mantine/core": "^4.2.11",
     "@mantine/form": "^4.2.11",
     "@mantine/hooks": "^4.2.11",

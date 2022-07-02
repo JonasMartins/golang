@@ -2,6 +2,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { useState } from "react";
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from "@mantine/core";
+import "@fontsource/comfortaa";
 
 export default function App(props: AppProps) {
 	const { Component, pageProps } = props;
@@ -24,6 +25,9 @@ export default function App(props: AppProps) {
 					withNormalizeCSS
 					theme={{
 						/** Put your mantine theme override here */
+						fontFamily: "Verdana, sans-serif",
+						fontFamilyMonospace: "Monaco, Courier, monospace",
+						headings: { fontFamily: "Comfortaa, cursive" },
 						colorScheme,
 					}}
 				>
