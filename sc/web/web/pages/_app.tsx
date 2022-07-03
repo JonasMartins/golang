@@ -29,6 +29,13 @@ export default function App(props: AppProps) {
 						fontFamilyMonospace: "Monaco, Courier, monospace",
 						headings: { fontFamily: "Comfortaa, cursive" },
 						colorScheme,
+						breakpoints: {
+							xs: 500,
+							sm: 800,
+							md: 1000,
+							lg: 1200,
+							xl: 1400,
+						},
 					}}
 				>
 					<Component {...pageProps} />

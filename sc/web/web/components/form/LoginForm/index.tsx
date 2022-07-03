@@ -17,33 +17,27 @@ const LoginForm: NextPage = () => {
 	});
 
 	return (
-		<Box sx={{ maxWidth: 350 }} mx="auto">
-			<form onSubmit={form.onSubmit(values => console.log(values))}>
-				<TextInput
-					required
-					label="Email"
-					placeholder="your@email.com"
-					{...form.getInputProps("email")}
-				/>
+		<form onSubmit={form.onSubmit(values => console.log(values))}>
+			<TextInput
+				required
+				label="Email"
+				placeholder="your@email.com"
+				{...form.getInputProps("email")}
+			/>
 
-				<PasswordInput
-					placeholder="Password"
-					required
-					label="Password"
-					{...form.getInputProps("password")}
-					visibilityToggleIcon={({ reveal }) => (reveal ? <EyeOff /> : <EyeCheck />)}
-				/>
-				<Group grow={true} mt="md">
-					<Button
-						variant="gradient"
-						gradient={{ from: "indigo", to: "cyan" }}
-						type="submit"
-					>
-						Submit
-					</Button>
-				</Group>
-			</form>
-		</Box>
+			<PasswordInput
+				placeholder="Password"
+				required
+				label="Password"
+				{...form.getInputProps("password")}
+				visibilityToggleIcon={({ reveal }) => (reveal ? <EyeOff /> : <EyeCheck />)}
+			/>
+			<Group grow={true} mt="md">
+				<Button variant="gradient" gradient={{ from: "indigo", to: "cyan" }} type="submit">
+					Submit
+				</Button>
+			</Group>
+		</form>
 	);
 };
 

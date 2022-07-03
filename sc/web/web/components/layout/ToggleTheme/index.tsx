@@ -18,7 +18,7 @@ const ToggleTheme: NextPage = () => {
 	return (
 		<Group>
 			<ActionIcon
-				variant="default"
+				variant="transparent"
 				color={dark ? "yellow" : "indigo"}
 				onClick={handleToggleTheme}
 				title="Toggle color scheme"
