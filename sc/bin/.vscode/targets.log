@@ -10,7 +10,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
 
 
-# Make data base, printed on Sat Jul  2 11:00:24 2022
+# Make data base, printed on Sun Jul  3 13:44:04 2022
 
 # Variables
 
@@ -47,7 +47,7 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/1m/pd70dcc51wz92xhb352sknfr0000gn/T/vscode-ipc-e6ae3b53-73dd-4d05-935a-2a573afce799.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/1m/pd70dcc51wz92xhb352sknfr0000gn/T/vscode-ipc-3b617c63-2ffd-47ec-9924-d220d77321ce.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -65,7 +65,6 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # default
- 
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
 SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.cnKsDTTxhE/Listeners
@@ -219,7 +218,6 @@ up:
 	docker-compose -f docker-compose.staging.yml up
 	@echo "Docker images started"
 	
- 
 
 # Not a target:
 .SUFFIXES:
@@ -290,6 +288,7 @@ up_build: build_server
 	@echo "Stopping docker images (if running...)"
 	docker-compose -f docker-compose.staging.yml down
 	@echo "Building and starting docker images..."
+ 
 	docker-compose -f docker-compose.staging.yml up --build -d
 	@echo "Docker images built and started."
 	
@@ -317,6 +316,6 @@ down:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Sat Jul  2 11:00:24 2022
+# Finished Make data base on Sun Jul  3 13:44:04 2022
 
  
