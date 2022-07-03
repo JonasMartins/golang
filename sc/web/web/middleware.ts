@@ -15,6 +15,7 @@ export function middleware(req: NextRequest) {
 
 	if (req.nextUrl.pathname.startsWith("/logout")) {
 		NextResponse.next().cookies.delete(COOKIE_NAME);
+		return NextResponse.redirect(new URL("/login", req.url));
 	}
 
 	return NextResponse.next();
