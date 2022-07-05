@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul  1 11:00:16 2022
+# Make data base, printed on Tue Jul  5 16:30:50 2022
 
 # Variables
 
@@ -21,13 +21,13 @@ GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-72335281-8def-4f31-929b-f6716836761e.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-681eab9c-25d8-4fed-ae55-25c62f61b6c3.sock
 # environment
 LC_NAME = pt_BR.UTF-8
 # environment
 LC_NUMERIC = pt_BR.UTF-8
 # environment
-VSCODE_CWD = /home/jonas/Documents/dev
+VSCODE_CWD = /home/jonas/Documents/dev/api-atrix
 # environment
 NVM_DIR = /home/jonas/.nvm
 # environment
@@ -51,7 +51,7 @@ PWD = /home/jonas/Documents/dev/golang/sandbox/analyzer
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
-OLDPWD = /home/jonas
+OLDPWD = /home/jonas/Documents/dev
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
@@ -65,13 +65,13 @@ VSCODE_CODE_CACHE_PATH = /home/jonas/.config/Code/CachedData/30d9c6cd9483b2cc586
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.TRH5N1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.3ZZUO1
 # default
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
 # environment
-GNOME_TERMINAL_SERVICE = :1.180
+GNOME_TERMINAL_SERVICE = :1.179
 # makefile
 MAKEFLAGS = pqrR
 # makefile
@@ -107,13 +107,13 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 21329
+VSCODE_PID = 12401
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/5682,unix/jonas-Lenovo-BS145-15IWL:/tmp/.ICE-unix/5682
+SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/2541,unix/jonas-Lenovo-BS145-15IWL:/tmp/.ICE-unix/2541
 # automatic
 *F = $(notdir $*)
 # environment
@@ -137,7 +137,7 @@ XMODIFIERS = @im=ibus
 # environment
 SHLVL = 1
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/77f60368_adde_4542_8296_c41343409bdc
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/da22e943_a27b_4251_a67c_e72bcb309196
 # environment
 MAKELEVEL := 0
 # default
@@ -183,7 +183,7 @@ LOGNAME = jonas
 # makefile
 .DEFAULT_GOAL := dev
 # environment
-SYSTEMD_EXEC_PID = 5869
+SYSTEMD_EXEC_PID = 2796
 # environment
 DISPLAY = :0
 # environment
@@ -291,7 +291,6 @@ all:
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
- 
 #  File has not been updated.
 
 # files hash-table stats:
@@ -307,7 +306,8 @@ all:
 
 # strcache performance: lookups = 23 / hit rate = 21%
 # hash-table stats:
+ 
 # Load=18/8192=0%, Rehash=0, Collisions=0/23=0%
-# Finished Make data base on Fri Jul  1 11:00:16 2022
+# Finished Make data base on Tue Jul  5 16:30:50 2022
 
  

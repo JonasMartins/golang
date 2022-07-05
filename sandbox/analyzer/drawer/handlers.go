@@ -148,6 +148,42 @@ func (d *Drawer) InsertGame(contest Contest) error {
 	return nil
 }
 
+func (d *Drawer) GetSome(chunk int, offset int) ([]*Contest, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `select id, realese_date, bola_1, bola_2, bola_3, bola_4, bola_5, bola_6 from contests limit $1 offset $2`
+
+	rows, err := d.DB.QueryContext(ctx, query, chunk, offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var contests []*Contest
+	var contest Contest
+	for rows.Next() {
+		err := rows.Scan(
+			&contest.ID,
+			&contest.RealeseDate,
+			&contest.Bola_1,
+			&contest.Bola_2,
+			&contest.Bola_3,
+			&contest.Bola_4,
+			&contest.Bola_5,
+			&contest.Bola_6,
+		)
+		if err != nil {
+			log.Println("Error scanning ", err)
+			return nil, err
+		}
+
+		contests = append(contests, &contest)
+	}
+
+	return contests, nil
+
+}
 func (d *Drawer) GetAll() ([]*Contest, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
