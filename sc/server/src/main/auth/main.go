@@ -42,7 +42,9 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 
 				// Allow unauthenticated users in
 				if err != nil || c == nil {
-					http.Error(w, "Not authorized", http.StatusForbidden)
+					//http.Error(w, "Not authorized", http.StatusForbidden)
+					//return
+					next.ServeHTTP(w, r)
 					return
 				}
 
