@@ -2,9 +2,11 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { useState } from "react";
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from "@mantine/core";
+import { withUrqlClient } from "next-urql";
+import { SERVER_URL } from "@/utils/consts";
 import "@fontsource/comfortaa";
 
-export default function App(props: AppProps) {
+const App = (props: AppProps) => {
 	const { Component, pageProps } = props;
 	const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
 	const toggleColorScheme = (value?: ColorScheme) =>
@@ -43,4 +45,14 @@ export default function App(props: AppProps) {
 			</ColorSchemeProvider>
 		</>
 	);
-}
+};
+/*
+export default withUrqlClient(
+	() => ({
+		url: SERVER_URL || "",
+	}),
+	{ ssr: false }
+)(App);
+*/
+
+export default App;

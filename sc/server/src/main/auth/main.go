@@ -32,45 +32,46 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-			if r.Header["Origin"] != nil && r.Header["Origin"][0] == os.Getenv("ORIGIN_LOGIN") {
-				ctx := context.WithValue(r.Context(), responseWriterCtxKey, w)
-				r = r.WithContext(ctx)
-				next.ServeHTTP(w, r)
-				return
-			} else {
-				c, err := r.Cookie(os.Getenv("COOKIE_NAME"))
-
-				// Allow unauthenticated users in
-				if err != nil || c == nil {
-					//http.Error(w, "Not authorized", http.StatusForbidden)
-					//return
+			/*
+				if r.Header["Origin"] != nil && r.Header["Origin"][0] == os.Getenv("ORIGIN_LOGIN") {
+					ctx := context.WithValue(r.Context(), responseWriterCtxKey, w)
+					r = r.WithContext(ctx)
 					next.ServeHTTP(w, r)
 					return
-				}
+				} else { */
+			c, err := r.Cookie(os.Getenv("COOKIE_NAME"))
 
-				userId, err := validateAndGetUserID(c)
-				if err != nil {
-					http.Error(w, "Not authorized", http.StatusForbidden)
+			// Allow unauthenticated users in
+			if err != nil || c == nil {
+				//http.Error(w, "Not authorized", http.StatusForbidden)
+				//return
+				next.ServeHTTP(w, r)
+				return
+			}
+
+			userId, err := validateAndGetUserID(c)
+			if err != nil {
+				http.Error(w, "Not authorized", http.StatusForbidden)
+				return
+			}
+
+			/*
+				// get the user from the database
+				user, err := getUserByID(db, userId)
+				if err != nil || user == nil {
+					http.Error(w, "Invalid cookie", http.StatusForbidden)
 					return
 				}
+			*/
 
-				/*
-					// get the user from the database
-					user, err := getUserByID(db, userId)
-					if err != nil || user == nil {
-						http.Error(w, "Invalid cookie", http.StatusForbidden)
-						return
-					}
-				*/
+			// put it in context
+			rootCtx := context.WithValue(r.Context(), userCtxKey, userId)
+			ctx := context.WithValue(rootCtx, responseWriterCtxKey, w)
 
-				// put it in context
-				rootCtx := context.WithValue(r.Context(), userCtxKey, userId)
-				ctx := context.WithValue(rootCtx, responseWriterCtxKey, w)
-
-				// and call the next with our new context
-				r = r.WithContext(ctx)
-				next.ServeHTTP(w, r)
-			}
+			// and call the next with our new context
+			r = r.WithContext(ctx)
+			next.ServeHTTP(w, r)
+			//}
 		})
 	}
 }

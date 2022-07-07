@@ -13,9 +13,12 @@ import (
 	"src/main/auth"
 
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/go-chi/chi"
+	"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 	"gorm.io/gorm"
 )
 
@@ -37,6 +40,16 @@ func Run() error {
 	router := chi.NewRouter()
 
 	router.Use(auth.Middleware(app.db))
+	origin := os.Getenv("ALLOWED_ORIGIN")
+	if origin == "" {
+		log.Fatal("need a origin address")
+		os.Exit(1)
+	}
+
+	router.Use(cors.New(cors.Options{
+		AllowedOrigins:   []string{origin},
+		AllowCredentials: true,
+	}).Handler)
 
 	router.Handle("/graphql", playground.Handler("Project", "/query"))
 	router.Handle("/query", app.srv)
@@ -56,13 +69,10 @@ func Build() (*Application, error) {
 
 	s_port := os.Getenv("PORT")
 	host := os.Getenv("HOST")
-
-	if s_port == "" {
-		s_port = defaultPort
-	}
-
-	if host == "" {
-		host = "localhost"
+	origin := os.Getenv("ALLOWED_ORIGIN")
+	if origin == "" || s_port == "" || host == "" {
+		log.Fatal("please add a valid env")
+		os.Exit(1)
 	}
 
 	port, err := strconv.ParseUint(s_port, 10, 16)
@@ -79,6 +89,15 @@ func Build() (*Application, error) {
 	})
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	srv := handler.NewDefaultServer(schema)
+	srv.AddTransport(&transport.Websocket{
+		Upgrader: websocket.Upgrader{
+			CheckOrigin: func(r *http.Request) bool {
+				return r.Host == origin
+			},
+			ReadBufferSize:  1024,
+			WriteBufferSize: 1024,
+		},
+	})
 
 	app := Application{
 		srv:    srv,

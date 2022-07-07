@@ -13,6 +13,8 @@ require (
 	gorm.io/gorm v1.23.6
 )
 
+require github.com/rs/cors v1.8.2 // indirect
+
 require (
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
