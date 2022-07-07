@@ -46,13 +46,10 @@ const App = (props: AppProps) => {
 		</>
 	);
 };
-/*
+
 export default withUrqlClient(
 	() => ({
 		url: SERVER_URL || "",
 	}),
 	{ ssr: false }
 )(App);
-*/
-
-export default App;

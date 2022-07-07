@@ -1,10 +1,8 @@
-import type { NextPage } from "next";
+import { LoginInput, useLoginMutation } from "@/generated/graphql";
+import { Button, Group, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { TextInput, PasswordInput, Button, Group } from "@mantine/core";
+import type { NextPage } from "next";
 import { EyeCheck, EyeOff } from "tabler-icons-react";
-import { useLoginMutation, LoginInput } from "@/generated/graphql";
-import { withUrqlClient } from "next-urql";
-import { SERVER_URL, FRONT_URL } from "@/utils/consts";
 
 const LoginForm: NextPage = () => {
 	const form = useForm({
@@ -51,12 +49,4 @@ const LoginForm: NextPage = () => {
 	);
 };
 
-export default withUrqlClient(
-	() => ({
-		url: SERVER_URL || "",
-		fetchOptions: () => {
-			return { headers: { Origin: FRONT_URL + "/login" } };
-		},
-	}),
-	{ ssr: false }
-)(LoginForm);
+export default LoginForm;

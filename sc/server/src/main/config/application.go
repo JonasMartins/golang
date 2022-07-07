@@ -65,6 +65,7 @@ func Build() (*Application, error) {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Application need a .env file.")
+		os.Exit(1)
 	}
 
 	s_port := os.Getenv("PORT")

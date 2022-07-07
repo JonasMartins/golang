@@ -96,6 +96,8 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 			Value:   tokenString,
 			Expires: expirationTime,
 		})
+		w.WriteHeader(200)
+		w.Write([]byte("sucess"))
 	}
 
 	response := model.AuthResponse{
