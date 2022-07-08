@@ -3,15 +3,15 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"os"
-	"os/exec"
+
+	//"os"
 	"reflect"
 )
 
 func menu() error {
-	cmd := exec.Command("clear")
-	cmd.Stdout = os.Stdout
-	cmd.Run()
+	//cmd := exec.Command("clear")
+	//cmd.Stdout = os.Stdout
+	//cmd.Run()
 	fmt.Print("\n\noptions:\n")
 	fmt.Print("1.	Generate random data\n")
 	fmt.Print("2.	Labeling existent data\n")
@@ -32,6 +32,7 @@ func menu() error {
 		return GenerateNewData()
 	case 2:
 		fmt.Println("\n\tLabeling existing data ...")
+		return StartAnalysis()
 	case 3:
 		fmt.Println("\n\tExit")
 	default:

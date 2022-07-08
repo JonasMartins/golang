@@ -8,7 +8,7 @@ import (
 	"math"
 )
 
-func startDrwaer() *drawer.Drawer {
+func StartDrawer() *drawer.Drawer {
 
 	pot := make([]uint8, 60)
 	conn := drawer.ConnectToDB()
@@ -23,7 +23,7 @@ func startDrwaer() *drawer.Drawer {
 
 func GenerateNewData() error {
 
-	app := startDrwaer()
+	app := StartDrawer()
 
 	fmt.Println("Enter a number of rows to be inserted into database")
 	var n uint
@@ -31,14 +31,14 @@ func GenerateNewData() error {
 	if err != nil {
 		return err
 	}
-	app.GenerateData(int(math.Min(10, float64(n))))
+	app.GenerateData(int(math.Min(100, float64(n))))
 	fmt.Println("Operation done successfully")
 	return errors.New("continue")
 }
 
 func StartAnalysis() error {
 
-	app := startDrwaer()
+	app := StartDrawer()
 	return labeler.Run(app)
 
 }

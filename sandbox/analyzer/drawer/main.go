@@ -40,7 +40,7 @@ func ConnectToDB() *sql.DB {
 			log.Println("DB not ready yet...")
 			counts++
 		} else {
-			log.Println("DB connected successfully")
+			//log.Println("DB connected successfully")
 			return connection
 		}
 

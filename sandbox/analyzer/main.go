@@ -1,9 +1,8 @@
 package main
 
 import (
-	//drawer "analyzer/drawer"
-	//"fmt"
 	cmd "analyzer/cmd"
+	//labeler "analyzer/labeler"
 	"log"
 	"math/rand"
 	"time"
@@ -21,16 +20,10 @@ func main() {
 	if err != nil {
 		log.Fatal("Application need a .env file.")
 	}
-	/*
-		pot := make([]uint8, 60)
-		conn := drawer.ConnectToDB()
 
-		app := drawer.Drawer{
-			Pot: &pot,
-			DB:  conn,
-		}
-		app.GenerateData(10)
-	*/
+	//d := cmd.StartDrawer()
+
+	//labeler.GatherData(100, d)
 
 	cmd.Run()
 

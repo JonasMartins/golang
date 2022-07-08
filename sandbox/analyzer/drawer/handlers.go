@@ -75,7 +75,6 @@ func (d *Drawer) CheckBallBelongs(n uint8, arr *[]uint8) bool {
 
 // generates the data and insert its into database
 func (d *Drawer) GenerateData(amount int) {
-
 	min := 1
 	max := MAX
 	draws := []uint8{}
@@ -161,8 +160,8 @@ func (d *Drawer) GetSome(chunk int, offset int) ([]*Contest, error) {
 	defer rows.Close()
 
 	var contests []*Contest
-	var contest Contest
 	for rows.Next() {
+		var contest Contest
 		err := rows.Scan(
 			&contest.ID,
 			&contest.RealeseDate,
@@ -180,7 +179,6 @@ func (d *Drawer) GetSome(chunk int, offset int) ([]*Contest, error) {
 
 		contests = append(contests, &contest)
 	}
-
 	return contests, nil
 
 }
