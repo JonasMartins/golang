@@ -4,8 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	//"os"
-	"reflect"
+	"os"
 )
 
 func menu() error {
@@ -24,8 +23,6 @@ func menu() error {
 		return err
 	}
 
-	fmt.Println(reflect.TypeOf(input))
-
 	switch input {
 	case 1:
 		fmt.Println("\n\tGenerating new data ...")
@@ -34,7 +31,8 @@ func menu() error {
 		fmt.Println("\n\tLabeling existing data ...")
 		return StartAnalysis()
 	case 3:
-		fmt.Println("\n\tExit")
+		fmt.Println("\n\tExiting ...")
+		os.Exit(0)
 	default:
 		return errors.New("invalid input")
 	}
