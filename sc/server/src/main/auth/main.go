@@ -56,16 +56,6 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 				http.Error(w, "Not authorized", http.StatusForbidden)
 				return
 			}
-
-			/*
-				// get the user from the database
-				user, err := getUserByID(db, userId)
-				if err != nil || user == nil {
-					http.Error(w, "Invalid cookie", http.StatusForbidden)
-					return
-				}
-			*/
-
 			// put it in context
 			rootCtx := context.WithValue(r.Context(), userCtxKey, userId)
 			ctx := context.WithValue(rootCtx, responseWriterCtxKey, w)
