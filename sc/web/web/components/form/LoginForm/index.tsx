@@ -3,12 +3,12 @@ import { Button, Group, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import type { NextPage } from "next";
 import { EyeCheck, EyeOff } from "tabler-icons-react";
-import { COOKIE_NAME } from "@/utils/consts";
-import { useCookies } from "react-cookie";
+//import { COOKIE_NAME } from "@/utils/consts";
+import { SERVER_URL } from "@/utils/consts";
+import { withUrqlClient } from "next-urql";
+import { dedupExchange, cacheExchange, fetchExchange } from "@urql/core";
 
 const LoginForm: NextPage = () => {
-	const [cookies, setCookie] = useCookies([COOKIE_NAME]);
-
 	const form = useForm({
 		initialValues: {
 			email: "",
@@ -21,22 +21,14 @@ const LoginForm: NextPage = () => {
 		},
 	});
 
-	const handleCookie = (token: string) => {
-		setCookie(COOKIE_NAME, token, {
-			path: "/",
-		});
-	};
-
 	const [loginResult, login] = useLoginMutation();
 
 	const HandleLoginForm = async (values: LoginInput) => {
 		const response = await login({ input: values });
 
 		if (response.data?.login.token) {
-			handleCookie(response.data.login.token);
+			console.log(response);
 		}
-
-		console.log(response);
 	};
 
 	return (
@@ -64,4 +56,7 @@ const LoginForm: NextPage = () => {
 	);
 };
 
-export default LoginForm;
+export default withUrqlClient(ssrExchange => ({
+	url: SERVER_URL,
+	exchanges: [dedupExchange, cacheExchange, ssrExchange, fetchExchange],
+}))(LoginForm);
