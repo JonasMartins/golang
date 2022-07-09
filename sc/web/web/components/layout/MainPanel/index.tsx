@@ -1,6 +1,7 @@
 import { Stack, Group } from "@mantine/core";
 import React from "react";
 import ToggleTheme from "@/components/layout/ToggleTheme";
+import SettingsMenu from "@/components/layout/SettingsMenu";
 
 interface MainPanelProps {}
 
@@ -9,6 +10,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 		<Stack>
 			<Group position="right" m="md">
 				<ToggleTheme />
+				<SettingsMenu />
 			</Group>
 		</Stack>
 	);
