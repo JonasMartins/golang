@@ -1,5 +1,10 @@
 mutation Login($input: LoginInput!) {
 	login(input: $input) {
+		errors {
+			method
+			message
+			field
+		}
 		token
 	}
 }

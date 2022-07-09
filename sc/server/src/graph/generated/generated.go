@@ -49,7 +49,8 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	AuthResponse struct {
-		Token func(childComplexity int) int
+		Errors func(childComplexity int) int
+		Token  func(childComplexity int) int
 	}
 
 	Base struct {
@@ -134,6 +135,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	ec := executionContext{nil, e}
 	_ = ec
 	switch typeName + "." + field {
+
+	case "AuthResponse.errors":
+		if e.complexity.AuthResponse.Errors == nil {
+			break
+		}
+
+		return e.complexity.AuthResponse.Errors(childComplexity), true
 
 	case "AuthResponse.token":
 		if e.complexity.AuthResponse.Token == nil {
@@ -460,6 +468,7 @@ type Mutation {
 `, BuiltIn: false},
 	{Name: "../schema/responses/user.responses.graphql", Input: `type AuthResponse {
   token: String!
+  errors: [Error!]!
 }
 type UserResponse {
   user: User
@@ -726,6 +735,60 @@ func (ec *executionContext) fieldContext_AuthResponse_token(ctx context.Context,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _AuthResponse_errors(ctx context.Context, field graphql.CollectedField, obj *model.AuthResponse) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_AuthResponse_errors(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Errors, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Error)
+	fc.Result = res
+	return ec.marshalNError2ᚕᚖsrcᚋgraphᚋmodelᚐErrorᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_AuthResponse_errors(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "AuthResponse",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "method":
+				return ec.fieldContext_Error_method(ctx, field)
+			case "message":
+				return ec.fieldContext_Error_message(ctx, field)
+			case "field":
+				return ec.fieldContext_Error_field(ctx, field)
+			case "code":
+				return ec.fieldContext_Error_code(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Error", field.Name)
 		},
 	}
 	return fc, nil
@@ -1266,6 +1329,8 @@ func (ec *executionContext) fieldContext_Mutation_registerUser(ctx context.Conte
 			switch field.Name {
 			case "token":
 				return ec.fieldContext_AuthResponse_token(ctx, field)
+			case "errors":
+				return ec.fieldContext_AuthResponse_errors(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type AuthResponse", field.Name)
 		},
@@ -1325,6 +1390,8 @@ func (ec *executionContext) fieldContext_Mutation_login(ctx context.Context, fie
 			switch field.Name {
 			case "token":
 				return ec.fieldContext_AuthResponse_token(ctx, field)
+			case "errors":
+				return ec.fieldContext_AuthResponse_errors(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type AuthResponse", field.Name)
 		},
@@ -4042,6 +4109,13 @@ func (ec *executionContext) _AuthResponse(ctx context.Context, sel ast.Selection
 		case "token":
 
 			out.Values[i] = ec._AuthResponse_token(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "errors":
+
+			out.Values[i] = ec._AuthResponse_errors(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
 				invalids++

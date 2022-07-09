@@ -21,6 +21,7 @@ export type Scalars = {
 
 export type AuthResponse = {
   __typename?: 'AuthResponse';
+  errors: Array<Error>;
   token: Scalars['String'];
 };
 
@@ -133,6 +134,11 @@ export type UsersResponse = {
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   login(input: $input) {
+    errors {
+      method
+      message
+      field
+    }
     token
   }
 }
@@ -146,7 +152,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', token: string } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', token: string, errors: Array<{ __typename?: 'Error', method: string, message: string, field: string }> } };
 
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -163,6 +169,24 @@ export default {
         "kind": "OBJECT",
         "name": "AuthResponse",
         "fields": [
+          {
+            "name": "errors",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Error",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
           {
             "name": "token",
             "type": {

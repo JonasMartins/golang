@@ -45,6 +45,8 @@ func Middleware(db *gorm.DB) func(http.Handler) http.Handler {
 			if err != nil || c == nil {
 				//http.Error(w, "Not authorized", http.StatusForbidden)
 				//return
+				ctx := context.WithValue(r.Context(), responseWriterCtxKey, w)
+				r = r.WithContext(ctx)
 				next.ServeHTTP(w, r)
 				return
 			}

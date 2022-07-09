@@ -56,19 +56,38 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.De
 // test a login mutation, and return a token if valid credentials
 func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*model.AuthResponse, error) {
 
+	errArr := []*model.Error{}
+	result := model.AuthResponse{
+		Token:  "",
+		Errors: errArr,
+	}
+	_err := model.Error{
+		Method:  "Login",
+		Message: "",
+		Field:   "id",
+		Code:    500,
+	}
 	user := user.User{}
 	if foundUser := r.DB.First(&user, "email = ?", input.Email); foundUser.Error != nil {
-		return nil, fmt.Errorf("could not found user with email %s", input.Email)
+		_err.Message = fmt.Sprintf("could not found user with email %s", input.Email)
+		_err.Code = 404
+		_err.Field = "email"
+		result.Errors = append(result.Errors, &_err)
+		return &result, nil
 	}
 
 	matches, err := user.PasswordMatches(input.Password)
 
 	if !matches {
-		return nil, fmt.Errorf("worg password")
+		_err.Message = "wrong password"
+		_err.Code = 200
+		_err.Field = "password"
+		result.Errors = append(result.Errors, &_err)
+		return &result, nil
 	}
 
 	if err != nil {
-		return nil, err
+		return &result, err
 	}
 	claims := &jwt.StandardClaims{
 		ExpiresAt: expirationTime.Unix(),
@@ -85,7 +104,7 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 
 	tokenString, err := token.SignedString(jwtLocal.GetJwtSecret())
 	if err != nil {
-		return nil, err
+		return &result, err
 	}
 
 	if w := auth.ForResponseWriterContext(ctx); w != nil {
@@ -96,15 +115,11 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 			Value:   tokenString,
 			Expires: expirationTime,
 		})
-		w.WriteHeader(200)
-		w.Write([]byte("sucess"))
 	}
 
-	response := model.AuthResponse{
-		Token: "Successfully logged!",
-	}
+	result.Token = tokenString
 
-	return &response, nil
+	return &result, nil
 }
 
 // Register a new User and return a token

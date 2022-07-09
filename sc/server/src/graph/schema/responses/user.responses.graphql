@@ -1,5 +1,6 @@
 type AuthResponse {
   token: String!
+  errors: [Error!]!
 }
 type UserResponse {
   user: User

@@ -3,8 +3,12 @@ import { Button, Group, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import type { NextPage } from "next";
 import { EyeCheck, EyeOff } from "tabler-icons-react";
+import { COOKIE_NAME } from "@/utils/consts";
+import { useCookies } from "react-cookie";
 
 const LoginForm: NextPage = () => {
+	const [cookies, setCookie] = useCookies([COOKIE_NAME]);
+
 	const form = useForm({
 		initialValues: {
 			email: "",
@@ -17,10 +21,21 @@ const LoginForm: NextPage = () => {
 		},
 	});
 
+	const handleCookie = (token: string) => {
+		setCookie(COOKIE_NAME, token, {
+			path: "/",
+		});
+	};
+
 	const [loginResult, login] = useLoginMutation();
 
 	const HandleLoginForm = async (values: LoginInput) => {
 		const response = await login({ input: values });
+
+		if (response.data?.login.token) {
+			handleCookie(response.data.login.token);
+		}
+
 		console.log(response);
 	};
 
