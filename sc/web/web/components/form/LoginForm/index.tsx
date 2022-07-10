@@ -3,7 +3,6 @@ import { Button, Group, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import type { NextPage } from "next";
 import { EyeCheck, EyeOff } from "tabler-icons-react";
-//import { COOKIE_NAME } from "@/utils/consts";
 import { SERVER_URL } from "@/utils/consts";
 import { withUrqlClient } from "next-urql";
 import { dedupExchange, cacheExchange, fetchExchange } from "@urql/core";

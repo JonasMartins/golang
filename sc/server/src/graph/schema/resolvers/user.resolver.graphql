@@ -8,5 +8,6 @@ type Query {
 type Mutation {
   registerUser(input: RegisterUserInput!): AuthResponse!
   login(input: LoginInput!): AuthResponse!
+  logout: Boolean!
   deleteUser(id: String!): DeleteAction!
 }

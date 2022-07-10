@@ -53,6 +53,20 @@ func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.De
 	return &result, nil
 }
 
+func (r *mutationResolver) Logout(ctx context.Context) (bool, error) {
+
+	if w := auth.ForResponseWriterContext(ctx); w != nil {
+		cookieName := os.Getenv("COOKIE_NAME")
+
+		http.SetCookie(w, &http.Cookie{
+			Name:    cookieName,
+			Value:   "",
+			Expires: time.Now(),
+		})
+	}
+	return true, nil
+}
+
 // test a login mutation, and return a token if valid credentials
 func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*model.AuthResponse, error) {
 

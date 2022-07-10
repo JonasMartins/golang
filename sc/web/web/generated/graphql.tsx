@@ -57,6 +57,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   deleteUser: DeleteAction;
   login: AuthResponse;
+  logout: Scalars['Boolean'];
   registerUser: AuthResponse;
 };
 
@@ -147,12 +148,26 @@ export const LoginDocument = gql`
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout
+}
+    `;
+
+export function useLogoutMutation() {
+  return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
+};
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
 }>;
 
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'AuthResponse', token: string, errors: Array<{ __typename?: 'Error', method: string, message: string, field: string }> } };
+
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -399,6 +414,17 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "logout",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
           },
           {
             "name": "registerUser",

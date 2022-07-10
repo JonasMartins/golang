@@ -1,9 +1,21 @@
 import { Menu, Divider, Text } from "@mantine/core";
-import { Settings, Search, Photo, MessageCircle, Trash, ArrowsLeftRight } from "tabler-icons-react";
+import { Settings, Search, Photo, MessageCircle, Trash, Logout } from "tabler-icons-react";
+import { useRouter } from "next/dist/client/router";
+import { useLogoutMutation } from "@/generated/graphql";
+import withUrqlClientDef from "@/components/hoc/HocWithUrqlClient";
 
 interface SettingsMenuProps {}
 
 const SettingsMenu: React.FC<SettingsMenuProps> = () => {
+	const router = useRouter();
+
+	const [{}, logout] = useLogoutMutation();
+
+	const HandleLogout = async () => {
+		await logout();
+		router.push("/login");
+	};
+
 	return (
 		<Menu>
 			<Menu.Label>Application</Menu.Label>
@@ -24,7 +36,9 @@ const SettingsMenu: React.FC<SettingsMenuProps> = () => {
 			<Divider />
 
 			<Menu.Label>Danger zone</Menu.Label>
-			<Menu.Item icon={<ArrowsLeftRight size={14} />}>Transfer my data</Menu.Item>
+			<Menu.Item icon={<Logout size={14} />} onClick={HandleLogout}>
+				Logout
+			</Menu.Item>
 			<Menu.Item color="red" icon={<Trash size={14} />}>
 				Delete my account
 			</Menu.Item>
@@ -32,4 +46,4 @@ const SettingsMenu: React.FC<SettingsMenuProps> = () => {
 	);
 };
 
-export default SettingsMenu;
+export default withUrqlClientDef(SettingsMenu);

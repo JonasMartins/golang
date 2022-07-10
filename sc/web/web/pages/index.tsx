@@ -3,6 +3,7 @@ import SideBar from "@/components/layout/SideBar";
 import { Grid } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import type { NextPage } from "next";
+
 const Home: NextPage = () => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
 
