@@ -17,7 +17,7 @@ const Login: NextPage = () => {
 				<Grid>
 					<Grid.Col span={webScreen ? 4 : 1} />
 					<Grid.Col span={webScreen ? 4 : 10}>
-						<LoginForm pageProps={undefined} />
+						<LoginForm />
 					</Grid.Col>
 					<Grid.Col span={webScreen ? 4 : 1} />
 				</Grid>

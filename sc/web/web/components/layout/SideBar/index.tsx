@@ -24,7 +24,7 @@ const SideBar: React.FC<SideBarProps> = () => {
 				</Grid.Col>
 				{!webScreen && (
 					<Grid.Col span={1}>
-						<SettingsMenu pageProps={undefined} />
+						<SettingsMenu />
 					</Grid.Col>
 				)}
 			</Grid>

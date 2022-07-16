@@ -59,9 +59,11 @@ func (r *mutationResolver) Logout(ctx context.Context) (bool, error) {
 		cookieName := os.Getenv("COOKIE_NAME")
 
 		http.SetCookie(w, &http.Cookie{
-			Name:    cookieName,
-			Value:   "",
-			Expires: time.Now(),
+			Name:     cookieName,
+			Value:    "",
+			Path:     "/",
+			HttpOnly: true,
+			Expires:  time.Now(),
 		})
 	}
 	return true, nil
@@ -125,9 +127,11 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 		cookieName := os.Getenv("COOKIE_NAME")
 
 		http.SetCookie(w, &http.Cookie{
-			Name:    cookieName,
-			Value:   tokenString,
-			Expires: expirationTime,
+			Name:     cookieName,
+			Value:    tokenString,
+			Path:     "/",
+			HttpOnly: true,
+			Expires:  expirationTime,
 		})
 	}
 

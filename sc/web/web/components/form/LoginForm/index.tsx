@@ -3,11 +3,11 @@ import { Button, Group, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import type { NextPage } from "next";
 import { EyeCheck, EyeOff } from "tabler-icons-react";
-import { SERVER_URL } from "@/utils/consts";
-import { withUrqlClient } from "next-urql";
-import { dedupExchange, cacheExchange, fetchExchange } from "@urql/core";
+import { useRouter } from "next/router";
 
 const LoginForm: NextPage = () => {
+	const router = useRouter();
+
 	const form = useForm({
 		initialValues: {
 			email: "",
@@ -27,6 +27,7 @@ const LoginForm: NextPage = () => {
 
 		if (response.data?.login.token) {
 			console.log(response);
+			router.push("/");
 		}
 	};
 
@@ -55,7 +56,4 @@ const LoginForm: NextPage = () => {
 	);
 };
 
-export default withUrqlClient(ssrExchange => ({
-	url: SERVER_URL,
-	exchanges: [dedupExchange, cacheExchange, ssrExchange, fetchExchange],
-}))(LoginForm);
+export default LoginForm;

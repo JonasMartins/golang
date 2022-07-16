@@ -2,7 +2,7 @@ import { Menu, Divider, Text } from "@mantine/core";
 import { Settings, Search, Photo, MessageCircle, Trash, Logout } from "tabler-icons-react";
 import { useRouter } from "next/dist/client/router";
 import { useLogoutMutation } from "@/generated/graphql";
-import withUrqlClientDef from "@/components/hoc/HocWithUrqlClient";
+//import withUrqlClientDef from "@/components/hoc/HocWithUrqlClient";
 
 interface SettingsMenuProps {}
 
@@ -46,4 +46,4 @@ const SettingsMenu: React.FC<SettingsMenuProps> = () => {
 	);
 };
 
-export default withUrqlClientDef(SettingsMenu);
+export default SettingsMenu;
