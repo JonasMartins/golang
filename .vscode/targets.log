@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul  8 08:12:16 2022
+# Make data base, printed on Mon Jul 18 09:04:14 2022
 
 # Variables
 
@@ -17,11 +15,11 @@ GDK_BACKEND = x11
 # environment
 LC_ALL = C
 # environment
+NO_AT_BRIDGE = 1
+# environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
-# environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-c0737d97-050e-44d9-986b-aedea97fa0e8.sock
 # environment
 LC_NAME = pt_BR.UTF-8
 # environment
@@ -51,33 +49,29 @@ PWD = /home/jonas/Documents/dev/golang
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
-OLDPWD = /home/jonas/Documents/dev
+OLDPWD = /home/jonas
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
-# environment
-VSCODE_LOG_STACK = false
 # automatic
 %F = $(notdir $%)
 # environment
 NVM_INC = /home/jonas/.nvm/versions/node/v16.15.0/include/node
 # environment
-VSCODE_CODE_CACHE_PATH = /home/jonas/.config/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
+VSCODE_CODE_CACHE_PATH = /home/jonas/.config/Code/CachedData/b06ae3b2d2dbfe28bca3134cc6be65935cdfea6a
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.7P45O1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.OQEDP1
 # default
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
 # environment
-GNOME_TERMINAL_SERVICE = :1.150
+GNOME_TERMINAL_SERVICE = :1.137
 # makefile
 MAKEFLAGS = pqrR
 # makefile
 CURDIR := /home/jonas/Documents/dev/golang
-# environment
-VSCODE_PIPE_LOGGING = true
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
@@ -107,15 +101,13 @@ MAKEFILE_LIST := Makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_VERBOSE_LOGGING = true
-# environment
-VSCODE_PID = 9321
+VSCODE_PID = 18656
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/2542,unix/jonas-Lenovo-BS145-15IWL:/tmp/.ICE-unix/2542
+SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/5077,unix/jonas-Lenovo-BS145-15IWL:/tmp/.ICE-unix/5077
 # automatic
 *F = $(notdir $*)
 # environment
@@ -139,7 +131,7 @@ XMODIFIERS = @im=ibus
 # environment
 SHLVL = 1
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/bf6f3d68_40cd_43cc_a245_69439ac67cac
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/155482f0_d541_47fb_99af_5b0e50262809
 # environment
 MAKELEVEL := 0
 # default
@@ -156,8 +148,6 @@ LC_MONETARY = pt_BR.UTF-8
 LC_TIME = pt_BR.UTF-8
 # environment
 GOROOT = /usr/local/go
-# environment
-VSCODE_LOG_NATIVE = false
 # environment
 USERNAME = jonas
 # environment
@@ -185,7 +175,7 @@ LOGNAME = jonas
 # makefile
 .DEFAULT_GOAL := status
 # environment
-SYSTEMD_EXEC_PID = 2792
+SYSTEMD_EXEC_PID = 11615
 # environment
 DISPLAY = :0
 # environment
@@ -221,7 +211,7 @@ QT_IM_MODULE = ibus
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-70be7676-1.68.1-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-70be7676-1.69.1-main.sock
 # environment
 TERM = xterm-256color
 # environment
@@ -249,7 +239,7 @@ GDMSESSION = ubuntu
 # environment
 LC_IDENTIFICATION = pt_BR.UTF-8
 # variable set hash-table stats:
-# Load=118/1024=12%, Rehash=0, Collisions=11/148=7%
+# Load=114/1024=11%, Rehash=0, Collisions=10/144=7%
 
 # Pattern-specific Variable Values
 
@@ -298,7 +288,6 @@ push:
 #  recipe to execute (from 'Makefile', line 14):
 	@echo "Git push"
 	git push -u origin development
- 
 
 # Not a target:
 .DEFAULT:
@@ -308,6 +297,9 @@ push:
 
 # Not a target:
 all:
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
@@ -335,6 +327,6 @@ status:
 # strcache performance: lookups = 28 / hit rate = 28%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=0/28=0%
-# Finished Make data base on Fri Jul  8 08:12:16 2022
+# Finished Make data base on Mon Jul 18 09:04:14 2022
 
  
