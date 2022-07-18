@@ -44,7 +44,6 @@ const RegisterForm: NextPage = () => {
 				password: values.password,
 			},
 		});
-		console.log(response);
 		if (response.data?.registerUser.errors.length) {
 			const err = response.data?.registerUser.errors[0];
 			switch (err.field) {
