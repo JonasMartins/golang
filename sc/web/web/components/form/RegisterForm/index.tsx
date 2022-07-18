@@ -1,4 +1,4 @@
-import { LoginInput, useLoginMutation } from "@/generated/graphql";
+import { RegisterUserInput, useRegisterUserMutation } from "@/generated/graphql";
 import { Button, Group, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import type { NextPage } from "next";
@@ -11,32 +11,42 @@ type input = {
 	password: string;
 };
 
-const LoginForm: NextPage = () => {
+const RegisterForm: NextPage = () => {
 	const router = useRouter();
 
 	const form = useForm({
 		initialValues: {
+			name: "",
 			email: "",
 			password: "",
+			confirmPassword: "",
 		},
 		validate: {
 			email: value => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
 			password: value => (value.length >= 6 ? null : "Length Must be greather or equal to 6"),
+			confirmPassword: (value, values) =>
+				value !== values.password ? "Passwords did not match" : null,
 		},
 	});
 
-	const [{}, login] = useLoginMutation();
+	const [{}, register] = useRegisterUserMutation();
 
 	const [input, setInput] = useState<input>({
 		email: "",
 		password: "",
 	});
 
-	const HandleLoginForm = async (values: LoginInput) => {
-		const response = await login({ input: values });
-
-		if (response.data?.login.errors.length) {
-			const err = response.data?.login.errors[0];
+	const HandleRegisterForm = async (values: RegisterUserInput) => {
+		const response = await register({
+			input: {
+				name: values.name,
+				email: values.email,
+				password: values.password,
+			},
+		});
+		console.log(response);
+		if (response.data?.registerUser.errors.length) {
+			const err = response.data?.registerUser.errors[0];
 			switch (err.field) {
 				case "email":
 					setInput(prevInput => ({
@@ -65,7 +75,14 @@ const LoginForm: NextPage = () => {
 	};
 
 	return (
-		<form onSubmit={form.onSubmit(values => HandleLoginForm(values))}>
+		<form onSubmit={form.onSubmit(values => HandleRegisterForm(values))}>
+			<TextInput
+				required
+				label="Name"
+				placeholder="Your Name"
+				{...form.getInputProps("name")}
+			/>
+
 			<TextInput
 				required
 				label="Email"
@@ -82,13 +99,21 @@ const LoginForm: NextPage = () => {
 				{...form.getInputProps("password")}
 				visibilityToggleIcon={({ reveal }) => (reveal ? <EyeOff /> : <EyeCheck />)}
 			/>
+
+			<PasswordInput
+				placeholder="Confirm Password"
+				required
+				label="Confirm Password"
+				{...form.getInputProps("confirmPassword")}
+				visibilityToggleIcon={({ reveal }) => (reveal ? <EyeOff /> : <EyeCheck />)}
+			/>
 			<Group grow={true} mt="md">
 				<Button variant="gradient" gradient={{ from: "indigo", to: "cyan" }} type="submit">
-					Login
+					Register
 				</Button>
 			</Group>
 		</form>
 	);
 };
 
-export default LoginForm;
+export default RegisterForm;

@@ -179,13 +179,15 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 			cookieName := os.Getenv("COOKIE_NAME")
 
 			http.SetCookie(w, &http.Cookie{
-				Name:    cookieName,
-				Value:   tokenString,
-				Expires: expirationTime,
+				Name:     cookieName,
+				Value:    tokenString,
+				HttpOnly: true,
+				Path:     "/",
+				Expires:  expirationTime,
 			})
 		}
 		response := model.AuthResponse{
-			Token: "Successfully registered",
+			Token: tokenString,
 		}
 
 		return &response, nil
