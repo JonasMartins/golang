@@ -3,5 +3,5 @@ type Message @goModel(model: "src/infra/orm/gorm/models.Message") {
   Body: String!
   AuthorId: String!
   ChatId: String!
-  Seen: Boolean!
+  Seen: [String!]
 }

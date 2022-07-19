@@ -27,6 +27,10 @@ func (r *Resolver) Base() generated.BaseResolver {
 	return &baseResolver{r}
 }
 
+func (r *Resolver) Message() generated.MessageResolver {
+	return &messageResolver{}
+}
+
 type mutationResolver struct{ *Resolver }
 
 type queryResolver struct{ *Resolver }

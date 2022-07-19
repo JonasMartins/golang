@@ -11,6 +11,18 @@ type AuthResponse struct {
 	Errors []*Error `json:"errors"`
 }
 
+type CreateChatInput struct {
+	Messages []string `json:"messages"`
+	Members  []string `json:"members"`
+}
+
+type CreateMessageInput struct {
+	Body     string   `json:"body"`
+	AuthorID string   `json:"authorId"`
+	ChatID   string   `json:"chatId"`
+	Seen     []string `json:"seen"`
+}
+
 type DeleteAction struct {
 	Message string   `json:"message"`
 	Status  string   `json:"status"`

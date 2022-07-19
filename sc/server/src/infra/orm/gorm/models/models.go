@@ -4,6 +4,8 @@ import (
 	"errors"
 	"src/infra/orm/gorm/models/base"
 
+	"github.com/lib/pq"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -24,10 +26,10 @@ type User struct {
 
 type Message struct {
 	base.Base
-	Body     string `json:"body"`
-	AuthorId string `json:"authorId"`
-	ChatId   string `json:"chatId"`
-	Seen     bool   `json:"seen"`
+	Body     string         `json:"body"`
+	AuthorId string         `json:"authorId"`
+	ChatId   string         `json:"chatId"`
+	Seen     pq.StringArray `gorm:"type:text[]" json:"seen"`
 }
 
 func (u *User) PasswordMatches(plainText string) (bool, error) {

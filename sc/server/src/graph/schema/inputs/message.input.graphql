@@ -1,0 +1,6 @@
+input CreateMessageInput {
+  body: String!
+  authorId: String!
+  chatId: String!
+  seen: [String!]
+}

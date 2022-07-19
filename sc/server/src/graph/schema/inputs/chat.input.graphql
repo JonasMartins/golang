@@ -1,0 +1,4 @@
+input CreateChatInput {
+  messages: [String!]
+  members: [String!]!
+}
