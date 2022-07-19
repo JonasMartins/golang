@@ -11,6 +11,11 @@ type AuthResponse struct {
 	Errors []*Error `json:"errors"`
 }
 
+type CreateAction struct {
+	Errors  []*Error `json:"errors"`
+	Created bool     `json:"created"`
+}
+
 type CreateChatInput struct {
 	Messages []string `json:"messages"`
 	Members  []string `json:"members"`
@@ -21,6 +26,11 @@ type CreateMessageInput struct {
 	AuthorID string   `json:"authorId"`
 	ChatID   string   `json:"chatId"`
 	Seen     []string `json:"seen"`
+}
+
+type CreteAction struct {
+	Errors  []*Error `json:"errors"`
+	Created bool     `json:"created"`
 }
 
 type DeleteAction struct {
@@ -39,6 +49,11 @@ type Error struct {
 type LoginInput struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type MessagesResponse struct {
+	Errors   []*Error          `json:"errors"`
+	Messages []*models.Message `json:"messages"`
 }
 
 type RegisterUserInput struct {

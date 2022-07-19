@@ -10,7 +10,7 @@ import (
 	"os"
 	"src/graph/model"
 	"src/infra/orm/gorm/models"
-	auth "src/main/auth"
+	"src/main/auth"
 	jwtLocal "src/main/auth/jwt"
 	"time"
 

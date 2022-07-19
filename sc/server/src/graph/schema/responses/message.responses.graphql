@@ -1,0 +1,4 @@
+type MessagesResponse {
+  errors: [Error!]!
+  messages: [Message!]!
+}

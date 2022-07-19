@@ -3,3 +3,13 @@ type DeleteAction {
   status: String!
   errors: [Error!]!
 }
+
+type CreteAction {
+  errors: [Error!]!
+  created: Boolean!
+}
+
+type CreateAction {
+  errors: [Error!]!
+  created: Boolean!
+}
