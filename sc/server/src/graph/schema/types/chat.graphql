@@ -1,0 +1,5 @@
+type Chat @goModel(model: "src/infra/orm/gorm/models.Chat") {
+  base: Base!
+  Members: [User!]!
+  Messages: [Message!]!
+}

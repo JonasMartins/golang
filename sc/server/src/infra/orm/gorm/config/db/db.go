@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"src/infra/orm/gorm/models/user"
+	"src/infra/orm/gorm/models"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -36,7 +36,7 @@ func Init() *gorm.DB {
 		log.Println("Database successfully connected")
 	}
 
-	db.AutoMigrate(&user.User{})
+	db.AutoMigrate(&models.User{}, &models.Chat{}, &models.Message{})
 
 	return db
 }

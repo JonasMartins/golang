@@ -1,0 +1,7 @@
+type Message @goModel(model: "src/infra/orm/gorm/models.Message") {
+  base: Base!
+  Body: String!
+  AuthorId: String!
+  ChatId: String!
+  Seen: Boolean!
+}

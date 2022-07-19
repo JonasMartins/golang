@@ -1,4 +1,4 @@
-type User @goModel(model: "src/infra/orm/gorm/models/user.User") {
+type User @goModel(model: "src/infra/orm/gorm/models.User") {
   base: Base!
   name: String!
   email: String!

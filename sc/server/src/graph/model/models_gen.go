@@ -3,7 +3,7 @@
 package model
 
 import (
-	"src/infra/orm/gorm/models/user"
+	"src/infra/orm/gorm/models"
 )
 
 type AuthResponse struct {
@@ -36,11 +36,11 @@ type RegisterUserInput struct {
 }
 
 type UserResponse struct {
-	User   *user.User `json:"user"`
-	Errors []*Error   `json:"errors"`
+	User   *models.User `json:"user"`
+	Errors []*Error     `json:"errors"`
 }
 
 type UsersResponse struct {
-	Users  []*user.User `json:"users"`
-	Errors []*Error     `json:"errors"`
+	Users  []*models.User `json:"users"`
+	Errors []*Error       `json:"errors"`
 }

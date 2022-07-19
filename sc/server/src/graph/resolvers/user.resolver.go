@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 	"src/graph/model"
-	"src/infra/orm/gorm/models/user"
+	"src/infra/orm/gorm/models"
 	auth "src/main/auth"
 	jwtLocal "src/main/auth/jwt"
 	"time"
@@ -23,7 +23,7 @@ var expirationTime = time.Now().Add(2 * (time.Hour * 24))
 // try to soft delete a user given an id
 func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.DeleteAction, error) {
 	errArr := []*model.Error{}
-	deletedUser := user.User{}
+	deletedUser := models.User{}
 	result := model.DeleteAction{
 		Message: "Server Error",
 		Status:  "fail",
@@ -83,7 +83,7 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 		Field:   "id",
 		Code:    500,
 	}
-	user := user.User{}
+	user := models.User{}
 	if foundUser := r.DB.First(&user, "email = ?", input.Email); foundUser.Error != nil {
 		_err.Message = fmt.Sprintf("could not found user with email %s", input.Email)
 		_err.Code = 404
@@ -147,7 +147,7 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 		return nil, err
 	}
 
-	user := user.User{
+	user := models.User{
 		Email:    input.Email,
 		Name:     input.Name,
 		Password: string(hashedPassword),
@@ -198,7 +198,7 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) (*model.UsersResponse, error) {
 
 	errArr := []*model.Error{}
-	users := []*user.User{}
+	users := []*models.User{}
 	result := model.UsersResponse{
 		Users:  nil,
 		Errors: errArr,
@@ -227,7 +227,7 @@ func (r *queryResolver) Users(ctx context.Context, limit *int, offset *int) (*mo
 func (r *queryResolver) GetUserByID(ctx context.Context, id string) (*model.UserResponse, error) {
 
 	errArr := []*model.Error{}
-	user := user.User{}
+	user := models.User{}
 	result := model.UserResponse{
 		User:   nil,
 		Errors: errArr,
@@ -253,7 +253,7 @@ func (r *queryResolver) GetUserByID(ctx context.Context, id string) (*model.User
 }
 func (r *queryResolver) GetUserByEmail(ctx context.Context, email string) (*model.UserResponse, error) {
 	errArr := []*model.Error{}
-	user := user.User{}
+	user := models.User{}
 	result := model.UserResponse{
 		User:   nil,
 		Errors: errArr,
@@ -280,7 +280,7 @@ func (r *queryResolver) GetUserByEmail(ctx context.Context, email string) (*mode
 }
 func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.UserResponse, error) {
 	errArr := []*model.Error{}
-	user := user.User{}
+	user := models.User{}
 	result := model.UserResponse{
 		User:   nil,
 		Errors: errArr,
