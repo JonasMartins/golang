@@ -16,5 +16,5 @@ func (b *baseResolver) DeletedAt(ctx context.Context, obj *base.Base) (*time.Tim
 }
 
 func (b *baseResolver) ID(ctx context.Context, obj *base.Base) (string, error) {
-	return obj.Id.String(), nil
+	return obj.ID.String(), nil
 }

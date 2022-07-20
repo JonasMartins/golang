@@ -110,7 +110,7 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 	}
 
 	myClais := &jwtLocal.ClaimsType{
-		Id:             user.Base.Id.String(),
+		Id:             user.Base.ID.String(),
 		Name:           user.Name,
 		Email:          user.Email,
 		StandardClaims: *claims,
@@ -142,9 +142,23 @@ func (r *mutationResolver) Login(ctx context.Context, input model.LoginInput) (*
 
 // Register a new User and return a token
 func (r *mutationResolver) RegisterUser(ctx context.Context, input model.RegisterUserInput) (*model.AuthResponse, error) {
+	errArr := []*model.Error{}
+	result := model.AuthResponse{
+		Errors: errArr,
+		Token:  "",
+	}
+	_err := model.Error{
+		Method:  "RegisterUser",
+		Message: "",
+		Field:   "",
+		Code:    500,
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), 12)
 	if err != nil {
-		return nil, err
+		_err.Message = err.Error()
+		result.Errors = append(result.Errors, &_err)
+		return &result, nil
 	}
 
 	user := models.User{
@@ -153,16 +167,17 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 		Password: string(hashedPassword),
 	}
 
-	if result := r.DB.Create(&user); result.Error != nil {
-		return nil, result.Error
+	if resultCreate := r.DB.Debug().Create(&user); resultCreate.Error != nil {
+		_err.Message = resultCreate.Error.Error()
+		result.Errors = append(result.Errors, &_err)
+		return &result, nil
 	} else {
-
 		claims := &jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		}
 
 		myClais := &jwtLocal.ClaimsType{
-			Id:             user.Base.Id.String(),
+			Id:             user.Base.ID.String(),
 			Name:           user.Name,
 			Email:          user.Email,
 			StandardClaims: *claims,
@@ -172,7 +187,9 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 
 		tokenString, err := token.SignedString(jwtLocal.GetJwtSecret())
 		if err != nil {
-			return nil, err
+			_err.Message = err.Error()
+			result.Errors = append(result.Errors, &_err)
+			return &result, nil
 		}
 
 		if w := auth.ForResponseWriterContext(ctx); w != nil {
@@ -186,11 +203,10 @@ func (r *mutationResolver) RegisterUser(ctx context.Context, input model.Registe
 				Expires:  expirationTime,
 			})
 		}
-		response := model.AuthResponse{
-			Token: tokenString,
-		}
 
-		return &response, nil
+		result.Token = tokenString
+
+		return &result, nil
 	}
 }
 
