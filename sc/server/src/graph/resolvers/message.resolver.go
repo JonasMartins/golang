@@ -63,7 +63,30 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input model.Create
 }
 
 func (q *queryResolver) GetMessagesByChat(ctx context.Context, chatId string) (*model.MessagesResponse, error) {
-	panic("not implemented")
+	errArr := []*model.Error{}
+	messages := []*models.Message{}
+	result := model.MessagesResponse{
+		Messages: nil,
+		Errors:   errArr,
+	}
+	if userId := auth.ForUserIdContext(ctx); len(userId) == 0 {
+		return &result, fmt.Errorf("access denied")
+	}
+	_err := model.Error{
+		Method:  "GetMessagesByChat",
+		Message: "",
+		Field:   "id",
+		Code:    500,
+	}
+
+	if foundMessages := q.DB.Where("chat_id = ?", chatId).Find(&messages); foundMessages.Error != nil {
+		_err.Message = foundMessages.Error.Error()
+		result.Errors = append(result.Errors, &_err)
+	} else {
+		result.Messages = messages
+	}
+
+	return &result, nil
 }
 
 func (r *mutationResolver) CreateChat(ctx context.Context, input model.CreateChatInput) (*model.CreateAction, error) {
