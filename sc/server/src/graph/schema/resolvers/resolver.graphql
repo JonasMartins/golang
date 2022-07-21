@@ -3,7 +3,7 @@ type Query {
   getUserById(id: String!): UserResponse!
   getUserByEmail(email: String!): UserResponse!
   getUserByName(name: String!): UserResponse!
-  getMessagesByChat(chatId: String!): MessagesResponse!
+  getMessagesByChat(chatId: String!, limit: Int, offset: Int): MessagesResponse!
 }
 
 type Mutation {

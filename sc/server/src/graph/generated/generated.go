@@ -91,6 +91,7 @@ type ComplexityRoot struct {
 	}
 
 	Message struct {
+		Author   func(childComplexity int) int
 		AuthorId func(childComplexity int) int
 		Base     func(childComplexity int) int
 		Body     func(childComplexity int) int
@@ -113,7 +114,7 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		GetMessagesByChat func(childComplexity int, chatID string) int
+		GetMessagesByChat func(childComplexity int, chatID string, limit *int, offset *int) int
 		GetUserByEmail    func(childComplexity int, email string) int
 		GetUserByID       func(childComplexity int, id string) int
 		GetUserByName     func(childComplexity int, name string) int
@@ -159,7 +160,7 @@ type QueryResolver interface {
 	GetUserByID(ctx context.Context, id string) (*model.UserResponse, error)
 	GetUserByEmail(ctx context.Context, email string) (*model.UserResponse, error)
 	GetUserByName(ctx context.Context, name string) (*model.UserResponse, error)
-	GetMessagesByChat(ctx context.Context, chatID string) (*model.MessagesResponse, error)
+	GetMessagesByChat(ctx context.Context, chatID string, limit *int, offset *int) (*model.MessagesResponse, error)
 }
 
 type executableSchema struct {
@@ -317,6 +318,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Error.Method(childComplexity), true
 
+	case "Message.Author":
+		if e.complexity.Message.Author == nil {
+			break
+		}
+
+		return e.complexity.Message.Author(childComplexity), true
+
 	case "Message.AuthorId":
 		if e.complexity.Message.AuthorId == nil {
 			break
@@ -443,7 +451,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.GetMessagesByChat(childComplexity, args["chatId"].(string)), true
+		return e.complexity.Query.GetMessagesByChat(childComplexity, args["chatId"].(string), args["limit"].(*int), args["offset"].(*int)), true
 
 	case "Query.getUserByEmail":
 		if e.complexity.Query.GetUserByEmail == nil {
@@ -648,7 +656,7 @@ input LoginInput {
   getUserById(id: String!): UserResponse!
   getUserByEmail(email: String!): UserResponse!
   getUserByName(name: String!): UserResponse!
-  getMessagesByChat(chatId: String!): MessagesResponse!
+  getMessagesByChat(chatId: String!, limit: Int, offset: Int): MessagesResponse!
 }
 
 type Mutation {
@@ -731,6 +739,7 @@ directive @goField(
   AuthorId: String!
   ChatId: String!
   Seen: [String!]
+  Author: User!
 }
 `, BuiltIn: false},
 	{Name: "../schema/types/scalars.graphql", Input: `scalar Time
@@ -860,6 +869,24 @@ func (ec *executionContext) field_Query_getMessagesByChat_args(ctx context.Conte
 		}
 	}
 	args["chatId"] = arg0
+	var arg1 *int
+	if tmp, ok := rawArgs["limit"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("limit"))
+		arg1, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["limit"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg2
 	return args, nil
 }
 
@@ -1401,6 +1428,8 @@ func (ec *executionContext) fieldContext_Chat_Messages(ctx context.Context, fiel
 				return ec.fieldContext_Message_ChatId(ctx, field)
 			case "Seen":
 				return ec.fieldContext_Message_Seen(ctx, field)
+			case "Author":
+				return ec.fieldContext_Message_Author(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Message", field.Name)
 		},
@@ -2149,6 +2178,60 @@ func (ec *executionContext) fieldContext_Message_Seen(ctx context.Context, field
 	return fc, nil
 }
 
+func (ec *executionContext) _Message_Author(ctx context.Context, field graphql.CollectedField, obj *models.Message) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Message_Author(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Author, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*models.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖsrcᚋinfraᚋormᚋgormᚋmodelsᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Message_Author(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Message",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "base":
+				return ec.fieldContext_User_base(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "password":
+				return ec.fieldContext_User_password(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _MessagesResponse_errors(ctx context.Context, field graphql.CollectedField, obj *model.MessagesResponse) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_MessagesResponse_errors(ctx, field)
 	if err != nil {
@@ -2252,6 +2335,8 @@ func (ec *executionContext) fieldContext_MessagesResponse_messages(ctx context.C
 				return ec.fieldContext_Message_ChatId(ctx, field)
 			case "Seen":
 				return ec.fieldContext_Message_Seen(ctx, field)
+			case "Author":
+				return ec.fieldContext_Message_Author(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Message", field.Name)
 		},
@@ -2868,7 +2953,7 @@ func (ec *executionContext) _Query_getMessagesByChat(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().GetMessagesByChat(rctx, fc.Args["chatId"].(string))
+		return ec.resolvers.Query().GetMessagesByChat(rctx, fc.Args["chatId"].(string), fc.Args["limit"].(*int), fc.Args["offset"].(*int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5740,6 +5825,13 @@ func (ec *executionContext) _Message(ctx context.Context, sel ast.SelectionSet, 
 				return innerFunc(ctx)
 
 			})
+		case "Author":
+
+			out.Values[i] = ec._Message_Author(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

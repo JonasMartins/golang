@@ -4,4 +4,5 @@ type Message @goModel(model: "src/infra/orm/gorm/models.Message") {
   AuthorId: String!
   ChatId: String!
   Seen: [String!]
+  Author: User!
 }

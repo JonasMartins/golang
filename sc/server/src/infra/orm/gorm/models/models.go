@@ -29,6 +29,7 @@ type Message struct {
 	AuthorId string         `json:"authorId"`
 	ChatId   string         `json:"chatId"`
 	Seen     pq.StringArray `gorm:"type:text[]" json:"seen"`
+	Author   *User          `json:"author"`
 }
 
 func (u *User) PasswordMatches(plainText string) (bool, error) {

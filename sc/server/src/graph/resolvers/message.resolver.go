@@ -62,7 +62,7 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input model.Create
 	return &result, nil
 }
 
-func (q *queryResolver) GetMessagesByChat(ctx context.Context, chatId string) (*model.MessagesResponse, error) {
+func (q *queryResolver) GetMessagesByChat(ctx context.Context, chatId string, limit *int, offset *int) (*model.MessagesResponse, error) {
 	errArr := []*model.Error{}
 	messages := []*models.Message{}
 	result := model.MessagesResponse{
@@ -79,7 +79,7 @@ func (q *queryResolver) GetMessagesByChat(ctx context.Context, chatId string) (*
 		Code:    500,
 	}
 
-	if foundMessages := q.DB.Where("chat_id = ?", chatId).Find(&messages); foundMessages.Error != nil {
+	if foundMessages := q.DB.Where("chat_id = ?", chatId).Preload("Author").Offset(int(*offset)).Limit(int(*limit)).Find(&messages); foundMessages.Error != nil {
 		_err.Message = foundMessages.Error.Error()
 		result.Errors = append(result.Errors, &_err)
 	} else {
