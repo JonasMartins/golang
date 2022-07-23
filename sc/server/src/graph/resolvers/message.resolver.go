@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"src/graph/generated"
+	"time"
 
 	"src/graph/model"
 	"src/infra/orm/gorm/models"
@@ -43,6 +44,8 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input model.Create
 		Code:    500,
 	}
 
+	chat := models.Chat{}
+
 	message := models.Message{
 		Body:     input.Body,
 		AuthorId: input.AuthorID,
@@ -55,8 +58,14 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input model.Create
 		result.Errors = append(result.Errors, &_err)
 		tx.Rollback()
 	} else {
-		tx.Commit()
-		result.Created = true
+		if updateChat := r.DB.Model(&chat).Where("id = ?", input.ChatID).Update("updated_at", time.Now()); updateChat.Error != nil {
+			_err.Message = updateChat.Error.Error()
+			result.Errors = append(result.Errors, &_err)
+			tx.Rollback()
+		} else {
+			tx.Commit()
+			result.Created = true
+		}
 	}
 
 	return &result, nil
@@ -81,6 +90,7 @@ func (q *queryResolver) GetMessagesByChat(ctx context.Context, chatId string, li
 
 	if foundMessages := q.DB.Where("chat_id = ?", chatId).Preload("Author").Offset(int(*offset)).Limit(int(*limit)).Find(&messages); foundMessages.Error != nil {
 		_err.Message = foundMessages.Error.Error()
+		_err.Field = "chatId"
 		result.Errors = append(result.Errors, &_err)
 	} else {
 		result.Messages = messages

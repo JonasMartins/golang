@@ -11,6 +11,11 @@ type AuthResponse struct {
 	Errors []*Error `json:"errors"`
 }
 
+type ChatsResponse struct {
+	Errors []*Error       `json:"errors"`
+	Chats  []*models.Chat `json:"chats"`
+}
+
 type CreateAction struct {
 	Errors  []*Error `json:"errors"`
 	Created bool     `json:"created"`

@@ -1,0 +1,4 @@
+type ChatsResponse {
+  errors: [Error!]!
+  chats: [Chat!]!
+}

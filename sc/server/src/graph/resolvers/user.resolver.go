@@ -321,3 +321,68 @@ func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.
 
 	return &result, nil
 }
+
+func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*model.ChatsResponse, error) {
+
+	errArr := []*model.Error{}
+	chats := []*models.Chat{}
+	result := model.ChatsResponse{
+		Chats:  chats,
+		Errors: errArr,
+	}
+
+	if userId := auth.ForUserIdContext(ctx); len(userId) == 0 {
+		return &result, fmt.Errorf("access denied")
+	}
+	_err := model.Error{
+		Method:  "GetUsersChats",
+		Message: "",
+		Field:   "userId",
+		Code:    500,
+	}
+
+	rows, err := r.DB.Table("chat_members cm").Select("cm.chat_id").Joins("left join users u on u.id = cm.user_id").Where("u.id = ?", userId).Rows()
+	if err != nil {
+		_err.Message = err.Error()
+	}
+	defer rows.Close()
+	type UsersChats struct {
+		Id string
+	}
+
+	var chatsIds []string
+
+	for rows.Next() {
+		var chat UsersChats
+		err := rows.Scan(
+			&chat.Id,
+		)
+		if err != nil {
+			_err.Message = err.Error()
+		}
+		chatsIds = append(chatsIds, chat.Id)
+	}
+
+	rows, err = r.DB.Table("chats c").Order("c.updated_at desc").Select("c.id, c.updated_at").Where("c.id", chatsIds).Rows()
+	if err != nil {
+		_err.Message = err.Error()
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var chatObj models.Chat
+		err := rows.Scan(
+			&chatObj.ID,
+			&chatObj.UpdatedAt,
+		)
+		if err != nil {
+			_err.Message = err.Error()
+		}
+		chats = append(chats, &chatObj)
+	}
+
+	fmt.Println(len(chats))
+
+	return &result, nil
+
+}

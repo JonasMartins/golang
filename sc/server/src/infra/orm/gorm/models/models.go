@@ -21,6 +21,7 @@ type User struct {
 	Email    string     `gorm:"index:unique"`
 	Password string     `json:"_"`
 	Messages []*Message `gorm:"foreignKey:AuthorId"`
+	Chats    []*Chat    `gorm:"many2many:chat_members;"`
 }
 
 type Message struct {
