@@ -323,7 +323,6 @@ func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.
 }
 
 func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*model.ChatsResponse, error) {
-
 	errArr := []*model.Error{}
 	chats := []*models.Chat{}
 	messages := []*models.Message{}
@@ -365,27 +364,13 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 		chatsIds = append(chatsIds, chat.Id)
 	}
 
-	rows, err = r.DB.Table("chats c").Order("c.updated_at desc").Select("c.id, c.updated_at").Where("c.id", chatsIds).Rows()
-	if err != nil {
-		_err.Message = err.Error()
+	if foundChats := r.DB.Order("updated_at desc").Where("id", chatsIds).Preload("Members").Find(&chats); foundChats.Error != nil {
+		_err.Message = foundChats.Error.Error()
+		result.Errors = append(result.Errors, &_err)
 		return &result, nil
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		var chatObj models.Chat
-		err := rows.Scan(
-			&chatObj.ID,
-			&chatObj.UpdatedAt,
-		)
-		if err != nil {
-			_err.Message = err.Error()
-			return &result, nil
-		}
-		chats = append(chats, &chatObj)
-	}
-
-	rows, err = r.DB.Table("messages m").Order("m.created_at desc").Select("m.id, m.updated_at, m.chat_id, m.author_id, m.body, u.id as user_id, u.name").Joins("left join users u on u.id = m.author_id").Where("m.chat_id", chatsIds).Rows()
+	rows, err = r.DB.Table("messages m").Order("m.created_at desc").Select("m.id, m.updated_at, m.chat_id, m.author_id, m.body, u.id as user_id, u.name").Joins("left join users u on u.id = m.author_id").Where("m.chat_id", chatsIds).Limit(100).Rows()
 	if err != nil {
 		_err.Message = err.Error()
 		return &result, nil
@@ -415,6 +400,8 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 		var messages = []*models.Message{}
 		c.Messages = messages
 	}
+
+	//helpers.MapGenericRelation(chats, "ID", "Messages", messages, "ChatId")
 
 	for _, m := range messages {
 		for _, c := range chats {
