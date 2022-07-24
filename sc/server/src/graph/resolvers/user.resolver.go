@@ -326,6 +326,7 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 
 	errArr := []*model.Error{}
 	chats := []*models.Chat{}
+	messages := []*models.Message{}
 	result := model.ChatsResponse{
 		Chats:  chats,
 		Errors: errArr,
@@ -344,6 +345,7 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 	rows, err := r.DB.Table("chat_members cm").Select("cm.chat_id").Joins("left join users u on u.id = cm.user_id").Where("u.id = ?", userId).Rows()
 	if err != nil {
 		_err.Message = err.Error()
+		return &result, nil
 	}
 	defer rows.Close()
 	type UsersChats struct {
@@ -366,6 +368,7 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 	rows, err = r.DB.Table("chats c").Order("c.updated_at desc").Select("c.id, c.updated_at").Where("c.id", chatsIds).Rows()
 	if err != nil {
 		_err.Message = err.Error()
+		return &result, nil
 	}
 	defer rows.Close()
 
@@ -377,11 +380,51 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 		)
 		if err != nil {
 			_err.Message = err.Error()
+			return &result, nil
 		}
 		chats = append(chats, &chatObj)
 	}
 
-	fmt.Println(len(chats))
+	rows, err = r.DB.Table("messages m").Order("m.created_at desc").Select("m.id, m.updated_at, m.chat_id, m.author_id, m.body, u.id as user_id, u.name").Joins("left join users u on u.id = m.author_id").Where("m.chat_id", chatsIds).Rows()
+	if err != nil {
+		_err.Message = err.Error()
+		return &result, nil
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var message models.Message
+		var user models.User
+		err := rows.Scan(
+			&message.ID,
+			&message.CreatedAt,
+			&message.ChatId,
+			&message.AuthorId,
+			&message.Body,
+			&user.ID,
+			&user.Name,
+		)
+		if err != nil {
+			_err.Message = err.Error()
+			return &result, nil
+		}
+		message.Author = &user
+		messages = append(messages, &message)
+	}
+
+	for _, c := range chats {
+		var messages = []*models.Message{}
+		c.Messages = messages
+	}
+
+	for _, m := range messages {
+		for _, c := range chats {
+			if m.ChatId != "" && m.ChatId == c.ID.String() {
+				c.Messages = append(c.Messages, m)
+			}
+		}
+	}
+
+	result.Chats = chats
 
 	return &result, nil
 
