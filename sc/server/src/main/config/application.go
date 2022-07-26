@@ -23,8 +23,6 @@ import (
 	"gorm.io/gorm"
 )
 
-const defaultPort string = "4000"
-
 type Application struct {
 	srv    *handler.Server
 	logger *log.Logger
@@ -91,7 +89,7 @@ func Build() (*Application, error) {
 	})
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	srv := handler.NewDefaultServer(schema)
-	srv.Use(extension.FixedComplexityLimit(5))
+	srv.Use(extension.FixedComplexityLimit(10))
 	srv.AddTransport(&transport.Websocket{
 		Upgrader: websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {

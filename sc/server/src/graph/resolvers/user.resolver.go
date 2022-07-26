@@ -16,6 +16,7 @@ import (
 
 	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 var expirationTime = time.Now().Add(2 * (time.Hour * 24))
@@ -364,29 +365,19 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 		chatsIds = append(chatsIds, chat.Id)
 	}
 
-	if foundChats := r.DB.Order("updated_at desc").Where("id", chatsIds).Preload("Members").Find(&chats); foundChats.Error != nil {
+	if foundChats := r.DB.Model(&models.Chat{}).Where("id", chatsIds).Preload("Messages", func(tx *gorm.DB) *gorm.DB {
+		return tx.Joins(` JOIN LATERAL (
+				select m.chat_id, m.body, m.created_at
+				from messages m
+				where m.chat_id = chats.id
+				order by m.created_at desc limit 1
+			) as m1 on m1.chat_id = chats.id
+		`)
+	}).Find(&chats); foundChats.Error != nil {
 		_err.Message = foundChats.Error.Error()
 		result.Errors = append(result.Errors, &_err)
 		return &result, nil
 	}
-
-	// if anotherChats := r.DB.Order().Where()
-
-	/*
-		if foundChats := r.DB.Order("updated_at desc").Where("id", chatsIds).Preload("Members", func(tx *gorm.DB) *gorm.DB {
-			return tx.Joins(`
-				JOIN LATERAL (
-					SELECT
-					FROM users u
-					WHERE u.id = chats
-				)
-			`)
-		}).Find(&chats); foundChats.Error != nil {
-			_err.Message = foundChats.Error.Error()
-			result.Errors = append(result.Errors, &_err)
-			return &result, nil
-		}
-	*/
 
 	rows, err = r.DB.Table("messages m").Order("m.created_at desc").Select("m.id, m.updated_at, m.chat_id, m.author_id, m.body, u.id as user_id, u.name").Joins("left join users u on u.id = m.author_id").Where("m.chat_id", chatsIds).Limit(100).Rows()
 	if err != nil {
