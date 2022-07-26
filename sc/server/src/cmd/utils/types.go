@@ -3,10 +3,17 @@ package utils
 import "time"
 
 type ResultGetUsersChats struct {
-	chat_id            string
-	message_body       string
-	message_created_at time.Time
-	author_id          string
-	author_name        string
-	seen               []string
+	ChatId           string
+	MessageId        string
+	MessageBody      string
+	MessageCreatedAt time.Time
+	AuthorId         string
+	AuthorName       string
+	Seen             string
+}
+
+type ResultChatMembersByMemberId struct {
+	ChatId     string
+	MemberId   string
+	MemberName string
 }

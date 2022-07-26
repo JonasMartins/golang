@@ -8,6 +8,7 @@ import (
 	"math"
 	"net/http"
 	"os"
+	"src/cmd/utils"
 	"src/graph/model"
 	"src/infra/orm/gorm/models"
 	"src/main/auth"
@@ -16,7 +17,6 @@ import (
 
 	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
-	"gorm.io/gorm"
 )
 
 var expirationTime = time.Now().Add(2 * (time.Hour * 24))
@@ -326,7 +326,6 @@ func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.
 func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*model.ChatsResponse, error) {
 	errArr := []*model.Error{}
 	chats := []*models.Chat{}
-	messages := []*models.Message{}
 	result := model.ChatsResponse{
 		Chats:  chats,
 		Errors: errArr,
@@ -342,85 +341,91 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 		Code:    500,
 	}
 
-	rows, err := r.DB.Table("chat_members cm").Select("cm.chat_id").Joins("left join users u on u.id = cm.user_id").Where("u.id = ?", userId).Rows()
+	var query = `
+		SELECT cm.chat_id,
+		m1.id AS message_id,
+		m1.body AS message_body, 
+		m1.created_at AS message_created_ay, 
+		m1.author_id, 
+		m1.author_name,
+		m1.seen
+		FROM chat_members cm
+		LEFT JOIN users u on cm.user_id = u.id
+		JOIN LATERAL (
+			SELECT m.id, m.chat_id, m.body, m.created_at, u1.id as author_id, 
+			u1.name as author_name, m.seen
+			FROM messages m
+			INNER JOIN users u1 on m.author_id = u1.id
+			WHERE m.chat_id = cm.chat_id
+			ORDER BY m.created_at DESC
+			LIMIT 2
+		) AS m1 ON m1.chat_id = cm.chat_id
+		WHERE u.id = ? 
+	`
+	var queryResults []*utils.ResultGetUsersChats
+	rows, err := r.DB.Raw(query, userId).Rows()
 	if err != nil {
 		_err.Message = err.Error()
-		return &result, nil
-	}
-	defer rows.Close()
-	type UsersChats struct {
-		Id string
-	}
-
-	var chatsIds []string
-
-	for rows.Next() {
-		var chat UsersChats
-		err := rows.Scan(
-			&chat.Id,
-		)
-		if err != nil {
-			_err.Message = err.Error()
-		}
-		chatsIds = append(chatsIds, chat.Id)
-	}
-
-	if foundChats := r.DB.Model(&models.Chat{}).Where("id", chatsIds).Preload("Messages", func(tx *gorm.DB) *gorm.DB {
-		return tx.Joins(` JOIN LATERAL (
-				select m.chat_id, m.body, m.created_at
-				from messages m
-				where m.chat_id = chats.id
-				order by m.created_at desc limit 1
-			) as m1 on m1.chat_id = chats.id
-		`)
-	}).Find(&chats); foundChats.Error != nil {
-		_err.Message = foundChats.Error.Error()
 		result.Errors = append(result.Errors, &_err)
 		return &result, nil
 	}
-
-	rows, err = r.DB.Table("messages m").Order("m.created_at desc").Select("m.id, m.updated_at, m.chat_id, m.author_id, m.body, u.id as user_id, u.name").Joins("left join users u on u.id = m.author_id").Where("m.chat_id", chatsIds).Limit(100).Rows()
-	if err != nil {
-		_err.Message = err.Error()
-		return &result, nil
-	}
 	defer rows.Close()
+
 	for rows.Next() {
-		var message models.Message
-		var user models.User
+		var row utils.ResultGetUsersChats
 		err := rows.Scan(
-			&message.ID,
-			&message.CreatedAt,
-			&message.ChatId,
-			&message.AuthorId,
-			&message.Body,
-			&user.ID,
-			&user.Name,
+			&row.ChatId,
+			&row.MessageId,
+			&row.MessageBody,
+			&row.MessageCreatedAt,
+			&row.AuthorId,
+			&row.AuthorName,
+			&row.Seen,
 		)
 		if err != nil {
 			_err.Message = err.Error()
+			result.Errors = append(result.Errors, &_err)
 			return &result, nil
 		}
-		message.Author = &user
-		messages = append(messages, &message)
+
+		queryResults = append(queryResults, &row)
 	}
 
-	for _, c := range chats {
-		var messages = []*models.Message{}
-		c.Messages = messages
+	fmt.Println(queryResults)
+	query = `
+		SELECT cm1.chat_id, u.id AS member_id, u.name
+		FROM chat_members cm1
+		LEFT JOIN users u ON u.id = cm1.user_id
+		WHERE cm1.chat_id IN (
+			SELECT cm.chat_id
+			FROM chat_members cm
+			WHERE cm.user_id = ?
+		)`
+
+	var chatMembersResult []*utils.ResultChatMembersByMemberId
+	rows, err = r.DB.Raw(query, userId).Rows()
+	if err != nil {
+		_err.Message = err.Error()
+		result.Errors = append(result.Errors, &_err)
+		return &result, nil
 	}
+	defer rows.Close()
 
-	//helpers.MapGenericRelation(chats, "ID", "Messages", messages, "ChatId")
-
-	for _, m := range messages {
-		for _, c := range chats {
-			if m.ChatId != "" && m.ChatId == c.ID.String() {
-				c.Messages = append(c.Messages, m)
-			}
+	for rows.Next() {
+		var row utils.ResultChatMembersByMemberId
+		err := rows.Scan(
+			&row.ChatId,
+			&row.MemberId,
+			&row.MemberName,
+		)
+		if err != nil {
+			_err.Message = err.Error()
+			result.Errors = append(result.Errors, &_err)
+			return &result, nil
 		}
-	}
 
-	result.Chats = chats
+		chatMembersResult = append(chatMembersResult, &row)
+	}
 
 	return &result, nil
 
