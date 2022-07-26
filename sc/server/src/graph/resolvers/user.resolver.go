@@ -8,6 +8,7 @@ import (
 	"math"
 	"net/http"
 	"os"
+	"src/cmd/helpers/data"
 	"src/cmd/utils"
 	"src/graph/model"
 	"src/infra/orm/gorm/models"
@@ -325,9 +326,8 @@ func (r *queryResolver) GetUserByName(ctx context.Context, name string) (*model.
 
 func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*model.ChatsResponse, error) {
 	errArr := []*model.Error{}
-	chats := []*models.Chat{}
 	result := model.ChatsResponse{
-		Chats:  chats,
+		Chats:  nil,
 		Errors: errArr,
 	}
 
@@ -358,7 +358,7 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 			INNER JOIN users u1 on m.author_id = u1.id
 			WHERE m.chat_id = cm.chat_id
 			ORDER BY m.created_at DESC
-			LIMIT 2
+			LIMIT 3
 		) AS m1 ON m1.chat_id = cm.chat_id
 		WHERE u.id = ? 
 	`
@@ -391,7 +391,6 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 		queryResults = append(queryResults, &row)
 	}
 
-	fmt.Println(queryResults)
 	query = `
 		SELECT cm1.chat_id, u.id AS member_id, u.name
 		FROM chat_members cm1
@@ -427,6 +426,13 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 		chatMembersResult = append(chatMembersResult, &row)
 	}
 
-	return &result, nil
+	_chats, err := data.GetUsersChatsFromRaw(queryResults, chatMembersResult)
+	if err != nil {
+		_err.Message = err.Error()
+		result.Errors = append(result.Errors, &_err)
+		return &result, nil
+	}
+	result.Chats = _chats
 
+	return &result, nil
 }

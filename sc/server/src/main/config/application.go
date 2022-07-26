@@ -89,7 +89,7 @@ func Build() (*Application, error) {
 	})
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	srv := handler.NewDefaultServer(schema)
-	srv.Use(extension.FixedComplexityLimit(10))
+	srv.Use(extension.FixedComplexityLimit(12))
 	srv.AddTransport(&transport.Websocket{
 		Upgrader: websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
