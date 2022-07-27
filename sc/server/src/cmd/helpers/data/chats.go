@@ -8,6 +8,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+// gets the raw
 func GetUsersChatsFromRaw(chats []*utils.ResultGetUsersChats, chatMembers []*utils.ResultChatMembersByMemberId) ([]*models.Chat, error) {
 
 	chatsLength := len(chats)
@@ -66,6 +67,19 @@ func GetUsersChatsFromRaw(chats []*utils.ResultGetUsersChats, chatMembers []*uti
 			chatsObj = append(chatsObj, chat)
 		}
 
+	}
+
+	for _, m := range chatMembers {
+		var member models.User
+		id, _ := ConvertUUidStringToUUidType(m.MemberId)
+		member.ID = *id
+		member.Name = m.MemberName
+		for _, c := range chatsObj {
+			if m.ChatId == c.ID.String() {
+				c.Members = append(c.Members, &member)
+				break
+			}
+		}
 	}
 
 	return chatsObj, nil

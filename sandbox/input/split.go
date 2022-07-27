@@ -1,18 +1,17 @@
 package main
 
 import (
-    "fmt"
-    "strings"
+	"fmt"
+	"strings"
 )
 
-func main() {
-    s := "{1}"
+func Split() {
+	s := "{1}"
 
-    re := strings.NewReplacer("{", "", "}", "")
+	re := strings.NewReplacer("{", "", "}", "")
 
-    res := re.Replace(s)
+	res := re.Replace(s)
 
-
-    v := strings.Split(res, ",")
-    fmt.Println(v)
+	v := strings.Split(res, ",")
+	fmt.Println(v)
 }

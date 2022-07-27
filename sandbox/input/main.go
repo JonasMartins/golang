@@ -32,7 +32,7 @@ func MapGenericRelation[T, S any](x []*T, x_field string, xy_relation string, y 
 	}
 }
 
-func main() {
+func generics() {
 	var c1 = Chat{1, []*Message{}}
 	var c2 = Chat{2, []*Message{}}
 	var c3 = Chat{3, []*Message{}}
@@ -47,4 +47,8 @@ func main() {
 	MapGenericRelation(chats, "Id", "Messages", messages, "ChatId")
 	fmt.Println(*chats[0].Messages[1])
 
+}
+
+func main() {
+	Break()
 }
