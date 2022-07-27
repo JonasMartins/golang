@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"src/graph/generated"
 	resolver "src/graph/resolvers"
@@ -70,11 +71,16 @@ func Build() (*Application, error) {
 	s_port := os.Getenv("PORT")
 	host := os.Getenv("HOST")
 	origin := os.Getenv("ALLOWED_ORIGIN")
-	if origin == "" || s_port == "" || host == "" {
+	redisAddr := os.Getenv("REDIS_ADDRESS")
+	if origin == "" || s_port == "" || host == "" || redisAddr == "" {
 		log.Fatal("please add a valid env")
 		os.Exit(1)
 	}
 
+	cache, err := NewCache("localhost:6379", 24*time.Hour)
+	if err != nil {
+		log.Fatalf("cannot create APQ redis cache: %v", err)
+	}
 	port, err := strconv.ParseUint(s_port, 10, 16)
 	if err != nil {
 		log.Fatal("Error defiing the server port.")
@@ -99,6 +105,8 @@ func Build() (*Application, error) {
 			WriteBufferSize: 1024,
 		},
 	})
+	srv.AddTransport(transport.POST{})
+	srv.Use(extension.AutomaticPersistedQuery{Cache: cache})
 
 	app := Application{
 		srv:    srv,
