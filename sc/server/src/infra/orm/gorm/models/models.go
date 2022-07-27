@@ -20,6 +20,7 @@ type User struct {
 	Name     string     `json:"name"`
 	Email    string     `gorm:"index:unique"`
 	Password string     `json:"_"`
+	Profile  string     `json:"profile,omitempty"`
 	Messages []*Message `gorm:"foreignKey:AuthorId"`
 	Chats    []*Chat    `gorm:"many2many:chat_members;"`
 }

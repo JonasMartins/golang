@@ -3,4 +3,5 @@ type User @goModel(model: "src/infra/orm/gorm/models.User") {
   name: String!
   email: String!
   password: String!
+  profile: String!
 }
