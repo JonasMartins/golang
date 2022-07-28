@@ -27,6 +27,10 @@ func (r *Resolver) Base() generated.BaseResolver {
 	return &baseResolver{r}
 }
 
+func (r *Resolver) Subscription() generated.SubscriptionResolver {
+	return &subscriptionResolver{}
+}
+
 func (r *Resolver) Message() generated.MessageResolver {
 	return &messageResolver{}
 }

@@ -15,3 +15,7 @@ type Mutation {
   createMessage(input: CreateMessageInput!): CreateAction!
   createChat(input: CreateChatInput!): CreateAction!
 }
+
+type Subscription {
+  messageSended(chatId: String!): Message!
+}

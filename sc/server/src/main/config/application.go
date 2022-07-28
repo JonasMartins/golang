@@ -77,7 +77,7 @@ func Build() (*Application, error) {
 		os.Exit(1)
 	}
 
-	cache, err := NewCache("localhost:6379", 24*time.Hour)
+	cache, err := NewCache(redisAddr, 24*time.Hour)
 	if err != nil {
 		log.Fatalf("cannot create APQ redis cache: %v", err)
 	}
@@ -95,7 +95,6 @@ func Build() (*Application, error) {
 	})
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	srv := handler.NewDefaultServer(schema)
-	srv.Use(extension.FixedComplexityLimit(15))
 	srv.AddTransport(&transport.Websocket{
 		Upgrader: websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
@@ -105,7 +104,13 @@ func Build() (*Application, error) {
 			WriteBufferSize: 1024,
 		},
 	})
+	srv.AddTransport(transport.Options{})
+	srv.AddTransport(transport.GET{})
 	srv.AddTransport(transport.POST{})
+	srv.AddTransport(transport.MultipartForm{})
+	srv.SetQueryCache(cache)
+	srv.Use(extension.Introspection{})
+	srv.Use(extension.FixedComplexityLimit(15))
 	srv.Use(extension.AutomaticPersistedQuery{Cache: cache})
 
 	app := Application{
