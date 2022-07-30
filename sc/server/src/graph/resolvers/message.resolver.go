@@ -8,12 +8,58 @@ import (
 
 	"src/graph/model"
 	"src/infra/orm/gorm/models"
+	"src/infra/orm/gorm/models/base"
 	"src/main/auth"
+
+	uuid "github.com/satori/go.uuid"
 )
 
+type subscriptionResolver struct{ *Resolver }
 type messageResolver struct{ *Resolver }
 
+var _ generated.SubscriptionResolver = (*subscriptionResolver)(nil)
 var _ generated.MessageResolver = (*messageResolver)(nil)
+
+func (s *subscriptionResolver) MessageSended(ctx context.Context, chatId string) (<-chan *models.Message, error) {
+	chat := models.Chat{}
+
+	if userId := auth.ForUserIdContext(ctx); len(userId) == 0 {
+		return nil, fmt.Errorf("access denied")
+	}
+
+	if foundChats := s.DB.Where("id = ?", chatId).Find(&chat); foundChats.Error != nil {
+		return nil, foundChats.Error
+	}
+
+	id := uuid.NewV4()
+
+	events := make(chan *models.Message, 1)
+
+	go func() {
+		<-ctx.Done()
+		chat.MessageObservers.Delete(id)
+	}()
+
+	chat.MessageObservers.Store(id, &models.MessageObserver{
+		UserId:  "Test",
+		Message: events,
+	})
+
+	base := base.Base{
+		ID:        id,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	events <- &models.Message{
+		Base:     base,
+		Body:     "Test",
+		AuthorId: "f05e5ca4-7300-4c76-af95-f1be0f1aa80c",
+		ChatId:   chatId,
+	}
+
+	return events, nil
+}
 
 func (m *messageResolver) Seen(ctx context.Context, obj *models.Message) ([]string, error) {
 	return obj.Seen, nil
@@ -58,6 +104,19 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input model.Create
 		result.Errors = append(result.Errors, &_err)
 		tx.Rollback()
 	} else {
+
+		if foundChat := r.DB.Where("id = ?", input.ChatID).Find(&chat); foundChat.Error != nil {
+			_err.Message = foundChat.Error.Error()
+			result.Errors = append(result.Errors, &_err)
+			return &result, nil
+		}
+
+		chat.MessageObservers.Range(func(_, v any) bool {
+			observer := v.(*models.MessageObserver)
+			observer.Message <- &message
+			return true
+		})
+
 		if updateChat := r.DB.Model(&chat).Where("id = ?", input.ChatID).Update("updated_at", time.Now()); updateChat.Error != nil {
 			_err.Message = updateChat.Error.Error()
 			result.Errors = append(result.Errors, &_err)
@@ -69,6 +128,30 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input model.Create
 	}
 
 	return &result, nil
+}
+
+func (q *queryResolver) GetChatByID(ctx context.Context, chatId string) (*model.ChatResponse, error) {
+	chat := models.Chat{}
+	errArr := []*model.Error{}
+	_err := model.Error{
+		Method:  "GetChatById",
+		Message: "",
+		Field:   "",
+	}
+	result := model.ChatResponse{
+		Errors: errArr,
+		Chat:   nil,
+	}
+
+	if foundChat := q.DB.Where("id = ?", chatId).Find(&chat); foundChat.Error != nil {
+		_err.Message = foundChat.Error.Error()
+		result.Errors = append(result.Errors, &_err)
+	} else {
+		result.Chat = &chat
+	}
+
+	return &result, nil
+
 }
 
 func (q *queryResolver) GetMessagesByChat(ctx context.Context, chatId string, limit *int, offset *int) (*model.MessagesResponse, error) {

@@ -2,3 +2,8 @@ type ChatsResponse {
   errors: [Error!]!
   chats: [Chat!]!
 }
+
+type ChatResponse {
+  errors: [Error!]!
+  chat: Chat!
+}

@@ -3,16 +3,23 @@ package models
 import (
 	"errors"
 	"src/infra/orm/gorm/models/base"
+	"sync"
 
 	"github.com/lib/pq"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
+type MessageObserver struct {
+	UserId  string
+	Message chan *Message
+}
+
 type Chat struct {
 	base.Base
-	Members  []*User    `gorm:"many2many:chat_members;"`
-	Messages []*Message `gorm:"foreigney:ChatId"`
+	Members          []*User    `gorm:"many2many:chat_members;"`
+	Messages         []*Message `gorm:"foreigney:ChatId"`
+	MessageObservers sync.Map   `gorm:"-:all"`
 }
 
 type User struct {

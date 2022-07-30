@@ -23,16 +23,15 @@ func (r *Resolver) Query() generated.QueryResolver {
 	return &queryResolver{r}
 }
 
+func (r *Resolver) Subscription() generated.SubscriptionResolver {
+	return &subscriptionResolver{r}
+}
 func (r *Resolver) Base() generated.BaseResolver {
 	return &baseResolver{r}
 }
 
-func (r *Resolver) Subscription() generated.SubscriptionResolver {
-	return &subscriptionResolver{}
-}
-
 func (r *Resolver) Message() generated.MessageResolver {
-	return &messageResolver{}
+	return &messageResolver{r}
 }
 
 type mutationResolver struct{ *Resolver }
