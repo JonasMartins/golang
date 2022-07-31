@@ -7,24 +7,29 @@ export type User = {
 	Email: string;
 };
 
+export const getPayloadFromToken = (token: string): User => {
+	const encodedPayload = token.split(".")[1];
+	return JSON.parse(Buffer.from(encodedPayload, "base64").toString());
+};
+
 export const useUser = (): User | null => {
 	const [token] = useToken();
 
-	const getPayloadFromToken = (token: string): User => {
-		const encodedPayload = token.split(".")[1];
-		return JSON.parse(Buffer.from(encodedPayload, "base64").toString());
-	};
-
 	const [user, setUser] = useState<User | null>(() => {
 		if (!token) return null;
-		return getPayloadFromToken(token);
+		if (typeof token == "string") {
+			return getPayloadFromToken(token);
+		}
+		return null;
 	});
 
 	useEffect(() => {
 		if (!token) {
 			setUser(null);
 		} else {
-			setUser(getPayloadFromToken(token));
+			if (typeof token == "string") {
+				setUser(getPayloadFromToken(token));
+			}
 		}
 	}, [token]);
 
