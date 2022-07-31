@@ -1,0 +1,25 @@
+query GetUsersChats($userId: String!) {
+	getUsersChats(userId: $userId) {
+		errors {
+			message
+		}
+		chats {
+			Members {
+				base {
+					id
+				}
+				name
+			}
+			Messages {
+				base {
+					createdAt
+				}
+				Body
+				Author {
+					name
+				}
+				Seen
+			}
+		}
+	}
+}

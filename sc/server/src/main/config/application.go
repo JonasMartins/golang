@@ -111,7 +111,7 @@ func Build() (*Application, error) {
 	srv.AddTransport(transport.MultipartForm{})
 	srv.SetQueryCache(cache)
 	srv.Use(extension.Introspection{})
-	srv.Use(extension.FixedComplexityLimit(15))
+	srv.Use(extension.FixedComplexityLimit(20))
 	srv.Use(extension.AutomaticPersistedQuery{Cache: cache})
 
 	app := Application{

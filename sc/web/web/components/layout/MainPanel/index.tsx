@@ -2,6 +2,7 @@ import { Stack, Group } from "@mantine/core";
 import React from "react";
 import ToggleTheme from "@/components/layout/ToggleTheme";
 import SettingsMenu from "@/components/layout/SettingsMenu";
+// import { useGetUsersChatsQuery } from "@/generated/graphql"
 
 interface MainPanelProps {}
 
