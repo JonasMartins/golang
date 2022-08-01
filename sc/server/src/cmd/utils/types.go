@@ -4,6 +4,7 @@ import "time"
 
 type ResultGetUsersChats struct {
 	ChatId           string
+	ChatUpdatedAt    time.Time
 	MessageId        string
 	MessageBody      string
 	MessageCreatedAt time.Time

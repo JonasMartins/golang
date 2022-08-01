@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from "@mantine/core";
 import { createClient, Provider } from "urql";
 import { SERVER_URL } from "@/utils/consts";
-import { store } from "@/redux";
+import { store } from "@/Redux";
 import { Provider as ReduxProvider } from "react-redux";
 import "@fontsource/comfortaa";
 

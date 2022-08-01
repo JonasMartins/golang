@@ -343,13 +343,15 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 
 	var query = `
 		SELECT cm.chat_id,
+		c.updated_at as chat_updated_at,
 		m1.id AS message_id,
 		m1.body AS message_body, 
-		m1.created_at AS message_created_ay, 
+		m1.created_at AS message_created_at, 
 		m1.author_id, 
 		m1.author_name,
 		m1.seen
 		FROM chat_members cm
+		LEFT JOIN chats c on cm.chat_id = c.id
 		LEFT JOIN users u on cm.user_id = u.id
 		JOIN LATERAL (
 			SELECT m.id, m.chat_id, m.body, m.created_at, u1.id as author_id, 
@@ -375,6 +377,7 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 		var row utils.ResultGetUsersChats
 		err := rows.Scan(
 			&row.ChatId,
+			&row.ChatUpdatedAt,
 			&row.MessageId,
 			&row.MessageBody,
 			&row.MessageCreatedAt,

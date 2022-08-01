@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Aug  1 13:53:30 2022
+# Make data base, printed on Mon Aug  1 17:38:58 2022
 
 # Variables
 
@@ -61,7 +61,7 @@ VSCODE_CODE_CACHE_PATH = /home/jonas/.config/Code/CachedData/3b889b090b5ad5793f5
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.Z82HQ1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.S2Z6P1
 # default
 .LOADED := 
 # default
@@ -99,13 +99,13 @@ MAKEFILE_LIST := Makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 10059
+VSCODE_PID = 4588
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/3809,unix/jonas-Lenovo-BS145-15IWL:/tmp/.ICE-unix/3809
+SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/2756,unix/jonas-Lenovo-BS145-15IWL:/tmp/.ICE-unix/2756
 # automatic
 *F = $(notdir $*)
 # environment
@@ -149,7 +149,7 @@ LC_TIME = pt_BR.UTF-8
 # environment
 GOROOT = /usr/local/go
 # environment
-INVOCATION_ID = d234b2ff10a745828923a457126b40dd
+INVOCATION_ID = 00c80946507c49d8b313e9354920d0c1
 # environment
 USERNAME = jonas
 # environment
@@ -179,7 +179,7 @@ GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # makefile
 .DEFAULT_GOAL := up
 # environment
-SYSTEMD_EXEC_PID = 3840
+SYSTEMD_EXEC_PID = 2778
 # environment
 DISPLAY = :0
 # environment
@@ -189,11 +189,11 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-MANAGERPID = 3522
+MANAGERPID = 2564
 # environment
 LC_MEASUREMENT = pt_BR.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 10059
+GIO_LAUNCHED_DESKTOP_FILE_PID = 4588
 # environment
 _ = /usr/share/code/code
 # environment
@@ -205,7 +205,7 @@ LC_CTYPE = pt_BR.UTF-8
 # environment
 NVM_CD_FLAGS = 
 # environment
-JOURNAL_STREAM = 8:37856
+JOURNAL_STREAM = 8:39234
 # environment
 GOMODCACHE = /home/jonas/go/pkg/mod
 # environment
@@ -280,9 +280,9 @@ lint:
 	@echo "Done"
 
 # Not a target:
- 
 Makefile:
 #  Implicit rule search has been done.
+ 
 #  Last modified 2022-06-27 08:15:28.50615349
 #  File has been updated.
 #  Successfully updated.
@@ -365,6 +365,6 @@ schema_generate:
 # strcache performance: lookups = 32 / hit rate = 40%
 # hash-table stats:
 # Load=19/8192=0%, Rehash=0, Collisions=0/32=0%
-# Finished Make data base on Mon Aug  1 13:53:30 2022
+# Finished Make data base on Mon Aug  1 17:38:58 2022
 
  

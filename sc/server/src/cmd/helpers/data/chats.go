@@ -33,8 +33,9 @@ func GetUsersChatsFromRaw(chats []*utils.ResultGetUsersChats, chatMembers []*uti
 
 		if currChatId.String() != currChatIdString {
 			// create a new chat
-			newChat := models.Chat{}
+			var newChat = models.Chat{}
 			newChat.ID = *currChatId
+			newChat.UpdatedAt = c.ChatUpdatedAt
 			chat = &newChat
 			currChatIdString = currChatId.String()
 		}

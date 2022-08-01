@@ -4,6 +4,10 @@ query GetUsersChats($userId: String!) {
 			message
 		}
 		chats {
+			base {
+				id
+				updatedAt
+			}
 			Members {
 				base {
 					id

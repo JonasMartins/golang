@@ -27,7 +27,7 @@ const Dashboard: NextPage = () => {
 		if (userId.length) {
 			fetch();
 		}
-	}, [userId, fetch]);
+	}, [userId]);
 
 	useEffect(() => {
 		setLoadEffect(true);
@@ -37,19 +37,15 @@ const Dashboard: NextPage = () => {
 			setUserId(user.id);
 		}
 
-		handleGetData();
+		//handleGetData();
 
 		setTimeout(() => {
 			setLoadEffect(false);
 		}, 500);
-
-		return () => {
-			setUserId("");
-		};
-	}, [user, handleGetData, result.fetching]);
+	}, [user, result.fetching]);
 
 	const web =
-		!user || loadEffect || result.fetching ? (
+		!user || loadEffect ? (
 			<Loader />
 		) : (
 			<Grid>
@@ -63,7 +59,7 @@ const Dashboard: NextPage = () => {
 		);
 
 	const mobile =
-		!user || loadEffect || result.fetching ? (
+		!user || loadEffect ? (
 			<Loader />
 		) : (
 			<Grid>
