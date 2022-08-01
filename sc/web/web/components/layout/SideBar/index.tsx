@@ -8,7 +8,6 @@ interface SideBarProps {}
 
 const SideBar: React.FC<SideBarProps> = () => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
-
 	return (
 		<Stack
 			sx={theme => ({
@@ -28,7 +27,6 @@ const SideBar: React.FC<SideBarProps> = () => {
 					</Grid.Col>
 				)}
 			</Grid>
-			<Title order={2}>Welcome</Title>
 		</Stack>
 	);
 };

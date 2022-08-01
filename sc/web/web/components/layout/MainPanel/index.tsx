@@ -11,9 +11,8 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	const user = useUser();
 
 	useEffect(() => {
-		if (user) {
-			console.log("user ", user);
-		}
+		if (!user) return;
+		console.log(user);
 	}, [user]);
 
 	return (

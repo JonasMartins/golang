@@ -5,6 +5,7 @@ export type User = {
 	Id: string;
 	Name: string;
 	Email: string;
+	exp: number;
 };
 
 export const getPayloadFromToken = (token: string): User => {

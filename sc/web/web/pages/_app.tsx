@@ -4,6 +4,8 @@ import { useState } from "react";
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from "@mantine/core";
 import { createClient, Provider } from "urql";
 import { SERVER_URL } from "@/utils/consts";
+import { store } from "@/redux";
+import { Provider as ReduxProvider } from "react-redux";
 import "@fontsource/comfortaa";
 
 const client = createClient({
@@ -29,31 +31,33 @@ const App = (props: AppProps) => {
 				/>
 			</Head>
 			<Provider value={client}>
-				<ColorSchemeProvider
-					colorScheme={colorScheme}
-					toggleColorScheme={toggleColorScheme}
-				>
-					<MantineProvider
-						withGlobalStyles
-						withNormalizeCSS
-						theme={{
-							/** Put your mantine theme override here */
-							fontFamily: "Verdana, sans-serif",
-							fontFamilyMonospace: "Monaco, Courier, monospace",
-							headings: { fontFamily: "Comfortaa, cursive" },
-							colorScheme,
-							breakpoints: {
-								xs: 500,
-								sm: 800,
-								md: 1000,
-								lg: 1200,
-								xl: 1400,
-							},
-						}}
+				<ReduxProvider store={store}>
+					<ColorSchemeProvider
+						colorScheme={colorScheme}
+						toggleColorScheme={toggleColorScheme}
 					>
-						<Component {...pageProps} />
-					</MantineProvider>
-				</ColorSchemeProvider>
+						<MantineProvider
+							withGlobalStyles
+							withNormalizeCSS
+							theme={{
+								/** Put your mantine theme override here */
+								fontFamily: "Verdana, sans-serif",
+								fontFamilyMonospace: "Monaco, Courier, monospace",
+								headings: { fontFamily: "Comfortaa, cursive" },
+								colorScheme,
+								breakpoints: {
+									xs: 500,
+									sm: 800,
+									md: 1000,
+									lg: 1200,
+									xl: 1400,
+								},
+							}}
+						>
+							<Component {...pageProps} />
+						</MantineProvider>
+					</ColorSchemeProvider>
+				</ReduxProvider>
 			</Provider>
 		</>
 	);

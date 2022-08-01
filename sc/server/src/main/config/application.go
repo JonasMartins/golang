@@ -1,6 +1,7 @@
 package config
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -77,7 +78,7 @@ func Build() (*Application, error) {
 		os.Exit(1)
 	}
 
-	cache, err := NewCache(redisAddr, 24*time.Hour)
+	cache, err := NewCache(context.Background(), redisAddr, 24*time.Hour)
 	if err != nil {
 		log.Fatalf("cannot create APQ redis cache: %v", err)
 	}

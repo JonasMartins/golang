@@ -5,6 +5,8 @@ import type { NextPage } from "next";
 import { EyeCheck, EyeOff } from "tabler-icons-react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { setToken } from "@/features/token/tokenSlice";
+import { useDispatch } from "react-redux";
 
 type input = {
 	email: string;
@@ -13,6 +15,7 @@ type input = {
 
 const LoginForm: NextPage = () => {
 	const router = useRouter();
+	const dispatch = useDispatch();
 
 	const form = useForm({
 		initialValues: {
@@ -60,6 +63,7 @@ const LoginForm: NextPage = () => {
 					}));
 			}
 		} else {
+			dispatch(setToken(response.data?.login.token!));
 			router.push("/");
 		}
 	};

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 )
 
 type Cache struct {
@@ -15,7 +15,7 @@ type Cache struct {
 
 const apqPrefix = "apq:"
 
-func NewCache(redisAddress string, ttl time.Duration) (*Cache, error) {
+func NewCache(ctx context.Context, redisAddress string, ttl time.Duration) (*Cache, error) {
 
 	// go redis github:
 	// https://github.com/go-redis/redis
@@ -24,7 +24,7 @@ func NewCache(redisAddress string, ttl time.Duration) (*Cache, error) {
 		Addr: redisAddress,
 	})
 
-	err := client.Ping().Err()
+	err := client.Ping(ctx).Err()
 	if err != nil {
 		return nil, fmt.Errorf("could not create cache: %w", err)
 	}
@@ -33,11 +33,11 @@ func NewCache(redisAddress string, ttl time.Duration) (*Cache, error) {
 }
 
 func (c *Cache) Add(ctx context.Context, key string, value interface{}) {
-	c.client.Set(apqPrefix+key, value, c.ttl)
+	c.client.Set(ctx, apqPrefix+key, value, c.ttl)
 }
 
 func (c *Cache) Get(ctx context.Context, key string) (interface{}, bool) {
-	s, err := c.client.Get(apqPrefix + key).Result()
+	s, err := c.client.Get(ctx, apqPrefix+key).Result()
 	if err != nil {
 		return struct{}{}, false
 	}
