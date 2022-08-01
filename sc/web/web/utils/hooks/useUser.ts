@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useToken } from "./useToken";
 
 export type UserJwt = {
-	Id: string;
-	Name: string;
-	Email: string;
+	id: string;
+	name: string;
+	email: string;
 	exp: number;
 };
 

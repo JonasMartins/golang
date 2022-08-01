@@ -1,12 +1,19 @@
 import { Stack, Title, Input, Group, Grid } from "@mantine/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { Search } from "tabler-icons-react";
 import { useMediaQuery } from "@mantine/hooks";
 import SettingsMenu from "@/components/layout/SettingsMenu";
+import { GetUsersChatsQuery } from "@/generated/graphql";
 
-interface SideBarProps {}
+interface SideBarProps {
+	chats: GetUsersChatsQuery | undefined;
+}
 
-const SideBar: React.FC<SideBarProps> = () => {
+const SideBar: React.FC<SideBarProps> = ({ chats }) => {
+	useEffect(() => {
+		console.log(chats);
+	}, []);
+
 	const webScreen = useMediaQuery("(min-width: 900px)");
 	return (
 		<Stack

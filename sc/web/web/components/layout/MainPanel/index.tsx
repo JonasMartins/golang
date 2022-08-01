@@ -1,8 +1,7 @@
-import { Stack, Group } from "@mantine/core";
-import React, { useEffect, useState } from "react";
-import ToggleTheme from "@/components/layout/ToggleTheme";
 import SettingsMenu from "@/components/layout/SettingsMenu";
-// import { useGetUsersChatsQuery } from "@/generated/graphql"
+import ToggleTheme from "@/components/layout/ToggleTheme";
+import { Group, Stack } from "@mantine/core";
+import React from "react";
 
 interface MainPanelProps {}
 

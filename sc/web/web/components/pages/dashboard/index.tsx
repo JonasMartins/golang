@@ -4,30 +4,57 @@ import { Grid } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import type { NextPage } from "next";
 import { useUser } from "@/utils/hooks";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Loader from "@/components/layout/Loader";
+import { GetUsersChatsDocument, GetUsersChatsQuery } from "@/generated/graphql";
+import { useQuery } from "urql";
 
 const Dashboard: NextPage = () => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
 
 	const user = useUser();
+	const [userId, setUserId] = useState<string>("");
 	const [loadEffect, setLoadEffect] = useState(false);
+	const [result, fetch] = useQuery<GetUsersChatsQuery>({
+		query: GetUsersChatsDocument,
+		pause: true,
+		variables: {
+			userId,
+		},
+	});
+
+	const handleGetData = useCallback(() => {
+		if (userId.length) {
+			fetch();
+		}
+	}, [userId, fetch]);
 
 	useEffect(() => {
 		setLoadEffect(true);
 		if (!user) return;
+
+		if (user.id) {
+			setUserId(user.id);
+		}
+
+		handleGetData();
+
 		setTimeout(() => {
 			setLoadEffect(false);
 		}, 500);
-	}, [user]);
+
+		return () => {
+			setUserId("");
+		};
+	}, [user, handleGetData, result.fetching]);
 
 	const web =
-		!user || loadEffect ? (
+		!user || loadEffect || result.fetching ? (
 			<Loader />
 		) : (
 			<Grid>
 				<Grid.Col span={4}>
-					<SideBar />
+					<SideBar chats={result.data} />
 				</Grid.Col>
 				<Grid.Col span={8}>
 					<MainPanel />
@@ -36,12 +63,12 @@ const Dashboard: NextPage = () => {
 		);
 
 	const mobile =
-		!user || loadEffect ? (
+		!user || loadEffect || result.fetching ? (
 			<Loader />
 		) : (
 			<Grid>
 				<Grid.Col span={12}>
-					<SideBar />
+					<SideBar chats={result.data} />
 				</Grid.Col>
 			</Grid>
 		);

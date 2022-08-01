@@ -14,8 +14,6 @@ func GetUsersChatsFromRaw(chats []*utils.ResultGetUsersChats, chatMembers []*uti
 	chatsLength := len(chats)
 	chatsObj := []*models.Chat{}
 	re := strings.NewReplacer("{", "", "}", "")
-	author := models.User{}
-	message := models.Message{}
 	var chat *models.Chat
 	var currChatId *uuid.UUID
 	var currChatIdString string = ""
@@ -26,6 +24,8 @@ func GetUsersChatsFromRaw(chats []*utils.ResultGetUsersChats, chatMembers []*uti
 
 	for i, c := range chats {
 
+		var author = models.User{}
+		var message = models.Message{}
 		currChatId, err = ConvertUUidStringToUUidType(c.ChatId)
 		if err != nil {
 			return nil, err
