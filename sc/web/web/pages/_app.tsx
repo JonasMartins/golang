@@ -52,6 +52,7 @@ const App = (props: AppProps) => {
 									lg: 1200,
 									xl: 1400,
 								},
+								loader: "dots",
 							}}
 						>
 							<Component {...pageProps} />

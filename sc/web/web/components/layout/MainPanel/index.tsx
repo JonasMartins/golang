@@ -1,21 +1,13 @@
 import { Stack, Group } from "@mantine/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ToggleTheme from "@/components/layout/ToggleTheme";
 import SettingsMenu from "@/components/layout/SettingsMenu";
 // import { useGetUsersChatsQuery } from "@/generated/graphql"
-import { useUser } from "@/utils/hooks";
 
 interface MainPanelProps {}
 
 const MainPanel: React.FC<MainPanelProps> = () => {
-	const user = useUser();
-
-	useEffect(() => {
-		if (!user) return;
-		console.log(user);
-	}, [user]);
-
-	return (
+	const content = (
 		<Stack>
 			<Group position="right" m="md">
 				<ToggleTheme />
@@ -23,6 +15,8 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 			</Group>
 		</Stack>
 	);
+
+	return content;
 };
 
 export default MainPanel;
