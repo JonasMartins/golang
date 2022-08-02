@@ -27,3 +27,17 @@ export type ChatType = {
 		};
 	}>;
 };
+
+export type MessageType = {
+	__typename?: "Message";
+	Body: string;
+	Seen?: Array<string> | null;
+	base: {
+		__typename?: "Base";
+		createdAt: any;
+	};
+	Author: {
+		__typename?: "User";
+		name: string;
+	};
+};

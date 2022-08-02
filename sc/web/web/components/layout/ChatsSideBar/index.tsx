@@ -18,19 +18,21 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, currentUserId }) => {
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === "dark";
 
+	let isChatInfocus = chatFocused?.base.id === chat.base.id;
+
 	const lightSx: Sx = {
 		cursor: "pointer",
-		backgroundColor: chatFocused?.base.id === chat.base.id ? "#6ef0f8" : "#fff",
+		backgroundColor: isChatInfocus ? "#6ef0f8" : "#fff",
 		"&:hover": {
-			backgroundColor: chatFocused?.base.id === chat.base.id ? "#49dde6" : "#dde0e2",
+			backgroundColor: isChatInfocus ? "#49dde6" : "#dde0e2",
 		},
 	};
 
 	const darkSx: Sx = {
 		cursor: "pointer",
-		backgroundColor: chatFocused?.base.id === chat.base.id ? "#07858d" : "#1A1B1E",
+		backgroundColor: isChatInfocus ? "#07858d" : "#1A1B1E",
 		"&:hover": {
-			backgroundColor: chatFocused?.base.id === chat.base.id ? "#07666c" : "#070707",
+			backgroundColor: isChatInfocus ? "#07666c" : "#070707",
 		},
 	};
 
