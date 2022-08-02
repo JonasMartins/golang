@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import MainPanel from "@/components/layout/MainPanel";
 import SideBar from "@/components/layout/SideBar";
 import { Grid } from "@mantine/core";
@@ -8,10 +9,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import Loader from "@/components/layout/Loader";
 import { GetUsersChatsDocument, GetUsersChatsQuery } from "@/generated/graphql";
 import { useQuery } from "urql";
+import { setFocusedChat } from "@/features/chat/chatSlicer";
+import { setLoggedUser } from "@/features/user/userSlice";
+import { useDispatch } from "react-redux";
 
 const Dashboard: NextPage = () => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
 	const user = useUser();
+	const dispatch = useDispatch();
 	const [userId, setUserId] = useState<string>("");
 	const [loadEffect, setLoadEffect] = useState(false);
 	const [result, fetch] = useQuery<GetUsersChatsQuery>({
@@ -20,7 +25,7 @@ const Dashboard: NextPage = () => {
 		variables: {
 			userId,
 		},
-		requestPolicy: "cache-and-network",
+		//requestPolicy: "cache-and-network",
 	});
 
 	const handleGetData = useCallback(() => {
@@ -34,6 +39,7 @@ const Dashboard: NextPage = () => {
 		if (!user) return;
 
 		if (user.id) {
+			dispatch(setLoggedUser(user));
 			setUserId(user.id);
 		}
 
@@ -43,6 +49,12 @@ const Dashboard: NextPage = () => {
 			setLoadEffect(false);
 		}, 500);
 	}, [user, handleGetData]);
+
+	useEffect(() => {
+		if (result.data?.getUsersChats.chats.length) {
+			dispatch(setFocusedChat(result.data.getUsersChats.chats[0]));
+		}
+	}, [result.fetching, result.data?.getUsersChats.chats.length, dispatch]);
 
 	const web =
 		!user || loadEffect ? (

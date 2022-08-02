@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Aug  1 17:38:58 2022
+# Make data base, printed on Tue Aug  2 11:45:57 2022
 
 # Variables
 
@@ -20,8 +20,6 @@ LC_ALL = C
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
-# environment
-GJS_DEBUG_OUTPUT = stderr
 # environment
 LC_NAME = pt_BR.UTF-8
 # environment
@@ -68,6 +66,8 @@ XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.S2Z6P1
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
 # makefile
 MAKEFLAGS = pqrR
+# environment
+DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=2307adee6d8fc1d4313da0f162e839c9
 # makefile
 CURDIR := /home/jonas/Documents/dev/golang/sc/bin
 # makefile (from 'Makefile', line 1)
@@ -99,7 +99,7 @@ MAKEFILE_LIST := Makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 4588
+VSCODE_PID = 43227
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -111,7 +111,7 @@ SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/2756,unix/jonas
 # environment
 CHROME_DESKTOP = code-url-handler.desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=2307adee6d8fc1d4313da0f162e839c9
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # environment
@@ -126,8 +126,6 @@ SHELL = /bin/sh
 MAKECMDGOALS := all
 # environment
 XMODIFIERS = @im=ibus
-# environment
-GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # environment
 SHLVL = 0
 # environment
@@ -149,7 +147,7 @@ LC_TIME = pt_BR.UTF-8
 # environment
 GOROOT = /usr/local/go
 # environment
-INVOCATION_ID = 00c80946507c49d8b313e9354920d0c1
+INVOCATION_ID = dcfcba35975c434098d15465dc344593
 # environment
 USERNAME = jonas
 # environment
@@ -179,7 +177,7 @@ GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # makefile
 .DEFAULT_GOAL := up
 # environment
-SYSTEMD_EXEC_PID = 2778
+SYSTEMD_EXEC_PID = 2756
 # environment
 DISPLAY = :0
 # environment
@@ -191,9 +189,11 @@ MAKE_VERSION := 4.3
 # environment
 MANAGERPID = 2564
 # environment
+DBUS_STARTER_BUS_TYPE = session
+# environment
 LC_MEASUREMENT = pt_BR.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 4588
+GIO_LAUNCHED_DESKTOP_FILE_PID = 43227
 # environment
 _ = /usr/share/code/code
 # environment
@@ -205,7 +205,7 @@ LC_CTYPE = pt_BR.UTF-8
 # environment
 NVM_CD_FLAGS = 
 # environment
-JOURNAL_STREAM = 8:39234
+JOURNAL_STREAM = 8:41586
 # environment
 GOMODCACHE = /home/jonas/go/pkg/mod
 # environment
@@ -239,7 +239,7 @@ GDMSESSION = ubuntu
 # environment
 LC_IDENTIFICATION = pt_BR.UTF-8
 # variable set hash-table stats:
-# Load=113/1024=11%, Rehash=0, Collisions=4/143=3%
+# Load=113/1024=11%, Rehash=0, Collisions=5/143=3%
 
 # Pattern-specific Variable Values
 
@@ -282,7 +282,6 @@ lint:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
- 
 #  Last modified 2022-06-27 08:15:28.50615349
 #  File has been updated.
 #  Successfully updated.
@@ -291,6 +290,7 @@ up:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+ 
 #  recipe to execute (from 'Makefile', line 4):
 	@echo "Starting docker images..."
 	docker-compose -f docker-compose.staging.yml up
@@ -365,6 +365,6 @@ schema_generate:
 # strcache performance: lookups = 32 / hit rate = 40%
 # hash-table stats:
 # Load=19/8192=0%, Rehash=0, Collisions=0/32=0%
-# Finished Make data base on Mon Aug  1 17:38:58 2022
+# Finished Make data base on Tue Aug  2 11:45:57 2022
 
  

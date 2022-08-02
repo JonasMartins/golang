@@ -2,23 +2,12 @@ import { Paper, Stack, Group, Title, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import { ChatType } from "@/features/types/chat";
 import { formatRelative } from "date-fns";
+import { GetChatTitle } from "@/utils/aux/chat.aux";
 
 interface ChatsSideBarProps {
 	chat: ChatType;
 	currentUserId: string;
 }
-
-const GetChatTitle = (chat: ChatType, loggedUserId: string): string => {
-	let title = "Unknown";
-
-	chat.Members.map(x => {
-		if (x.base.id != loggedUserId) {
-			title = x.name;
-		}
-	});
-
-	return title;
-};
 
 const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, currentUserId }) => {
 	return (
