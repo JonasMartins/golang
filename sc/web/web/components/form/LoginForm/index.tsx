@@ -63,7 +63,6 @@ const LoginForm: NextPage = () => {
 					}));
 			}
 		} else {
-			console.log(response.data?.login.token);
 			dispatch(setToken(response.data?.login.token!));
 			router.push("/");
 		}

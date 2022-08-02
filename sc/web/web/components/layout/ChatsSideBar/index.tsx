@@ -1,46 +1,37 @@
-import { Stack, Title } from "@mantine/core";
+import { Paper, Stack, Group, Title, Text } from "@mantine/core";
 import type { NextPage } from "next";
-
-type ChatType = {
-	__typename?: "Chat";
-	base: {
-		__typename?: "Base";
-		id: string;
-		updatedAt: any;
-	};
-	Members: Array<{
-		__typename?: "User";
-		name: string;
-		base: {
-			__typename?: "Base";
-			id: string;
-		};
-	}>;
-	Messages: Array<{
-		__typename?: "Message";
-		Body: string;
-		Seen?: Array<string> | null;
-		base: {
-			__typename?: "Base";
-			createdAt: any;
-		};
-		Author: {
-			__typename?: "User";
-			name: string;
-		};
-	}>;
-};
+import { ChatType } from "@/features/types/chat";
+import { formatRelative } from "date-fns";
 
 interface ChatsSideBarProps {
 	chat: ChatType;
 	currentUserId: string;
 }
 
+const GetChatTitle = (chat: ChatType, loggedUserId: string): string => {
+	let title = "Unknown";
+
+	chat.Members.map(x => {
+		if (x.base.id != loggedUserId) {
+			title = x.name;
+		}
+	});
+
+	return title;
+};
+
 const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, currentUserId }) => {
 	return (
-		<Stack>
-			<Title>{chat.base.id}</Title>
-		</Stack>
+		<Paper shadow="md" p="md" radius="md" withBorder>
+			<Stack>
+				<Group grow align="center" position="apart">
+					<Title order={5}>{GetChatTitle(chat, currentUserId)}</Title>
+					<Text size="xs" align="right" weight={100}>
+						{formatRelative(new Date(chat.base.updatedAt), new Date())}
+					</Text>
+				</Group>
+			</Stack>
+		</Paper>
 	);
 };
 

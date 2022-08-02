@@ -11,7 +11,6 @@ import { useQuery } from "urql";
 
 const Dashboard: NextPage = () => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
-
 	const user = useUser();
 	const [userId, setUserId] = useState<string>("");
 	const [loadEffect, setLoadEffect] = useState(false);
@@ -27,7 +26,7 @@ const Dashboard: NextPage = () => {
 		if (userId.length) {
 			fetch();
 		}
-	}, [userId]);
+	}, [userId, fetch]);
 
 	useEffect(() => {
 		setLoadEffect(true);
@@ -37,12 +36,12 @@ const Dashboard: NextPage = () => {
 			setUserId(user.id);
 		}
 
-		//handleGetData();
+		handleGetData();
 
 		setTimeout(() => {
 			setLoadEffect(false);
 		}, 500);
-	}, [user, result.fetching]);
+	}, [user, handleGetData]);
 
 	const web =
 		!user || loadEffect ? (
@@ -50,7 +49,7 @@ const Dashboard: NextPage = () => {
 		) : (
 			<Grid>
 				<Grid.Col span={4}>
-					<SideBar chats={result.data} />
+					<SideBar chats={result.data} loggedUser={user} />
 				</Grid.Col>
 				<Grid.Col span={8}>
 					<MainPanel />
@@ -64,7 +63,7 @@ const Dashboard: NextPage = () => {
 		) : (
 			<Grid>
 				<Grid.Col span={12}>
-					<SideBar chats={result.data} />
+					<SideBar chats={result.data} loggedUser={user} />
 				</Grid.Col>
 			</Grid>
 		);

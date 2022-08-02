@@ -1,20 +1,37 @@
-import { Stack, Title, Input, Group, Grid } from "@mantine/core";
-import React, { useEffect } from "react";
-import { Search } from "tabler-icons-react";
-import { useMediaQuery } from "@mantine/hooks";
 import SettingsMenu from "@/components/layout/SettingsMenu";
 import { GetUsersChatsQuery } from "@/generated/graphql";
+import { Grid, Input, Stack } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import React from "react";
+import { Search } from "tabler-icons-react";
+import ChatsSideBar from "@/components/layout/ChatsSideBar";
+import { UserJwt } from "@/utils/hooks";
 
 interface SideBarProps {
 	chats: GetUsersChatsQuery | undefined;
+	loggedUser: UserJwt;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ chats }) => {
-	useEffect(() => {
-		console.log(chats);
-	}, []);
-
+const SideBar: React.FC<SideBarProps> = ({ chats, loggedUser }) => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
+
+	const chatsEle = (
+		<Stack
+			sx={() => ({
+				flexDirection: "column",
+				alignItems: "stretch",
+				justifyContent: "center",
+				flexGrow: 1,
+			})}
+			spacing="lg"
+			mt="lg"
+		>
+			{chats?.getUsersChats.chats.map(x => (
+				<ChatsSideBar key={x.base.id} chat={x} currentUserId={loggedUser.id} />
+			))}
+		</Stack>
+	);
+
 	return (
 		<Stack
 			sx={theme => ({
@@ -33,6 +50,7 @@ const SideBar: React.FC<SideBarProps> = ({ chats }) => {
 						<SettingsMenu />
 					</Grid.Col>
 				)}
+				{chatsEle}
 			</Grid>
 		</Stack>
 	);
