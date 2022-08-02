@@ -363,6 +363,7 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 			LIMIT 10
 		) AS m1 ON m1.chat_id = cm.chat_id
 		WHERE u.id = ? 
+		ORDER BY c.updated_at DESC
 	`
 	var queryResults []*utils.ResultGetUsersChats
 	rows, err := r.DB.Raw(query, userId).Rows()

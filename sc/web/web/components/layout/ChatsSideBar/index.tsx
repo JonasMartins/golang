@@ -30,6 +30,7 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, currentUserId }) => {
 						{formatRelative(new Date(chat.base.updatedAt), new Date())}
 					</Text>
 				</Group>
+				<Text size="xs">{chat.Messages[0].Body}</Text>
 			</Stack>
 		</Paper>
 	);

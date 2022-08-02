@@ -20,6 +20,7 @@ const Dashboard: NextPage = () => {
 		variables: {
 			userId,
 		},
+		requestPolicy: "cache-and-network",
 	});
 
 	const handleGetData = useCallback(() => {
