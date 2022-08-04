@@ -39,7 +39,10 @@ const Messages: NextPage<MessagesProps> = ({ message }) => {
 				<Stack spacing="sm">
 					<Text>{message.Body}</Text>
 					<Group position="apart">
-						<Eye size={16} color="#05a3f4" />
+						<Eye
+							size={16}
+							color={message.Seen?.includes(user!.id) ? "#05a3f4" : "#797c7b"}
+						/>
 						<Text size="xs">
 							{formatRelative(new Date(message.base.createdAt), new Date())}
 						</Text>

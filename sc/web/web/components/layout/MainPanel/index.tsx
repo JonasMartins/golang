@@ -1,6 +1,6 @@
 import SettingsMenu from "@/components/layout/SettingsMenu";
 import ToggleTheme from "@/components/layout/ToggleTheme";
-import { Group, Stack, Text, Title, useMantineColorScheme } from "@mantine/core";
+import { Group, Stack, Title, useMantineColorScheme } from "@mantine/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app";
@@ -14,7 +14,6 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	const user = useSelector((state: RootState) => state.user.value);
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === "dark";
-	const gradientLight = ["#c8cbc9", "#ffffff"];
 
 	const handleSetTitle = (): string => {
 		if (user && chatFocused) {
@@ -33,9 +32,11 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 			mt="lg"
 			p={"lg"}
 		>
-			{chatFocused?.Messages.map(x => (
-				<MessageComp key={x.base.createdAt} message={x} />
-			))}
+			{chatFocused?.Messages.slice(0)
+				.reverse()
+				.map(x => (
+					<MessageComp key={x.base.createdAt} message={x} />
+				))}
 		</Stack>
 	);
 
