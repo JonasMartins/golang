@@ -5,7 +5,7 @@ import { formatRelative } from "date-fns";
 import { GetChatTitle } from "@/utils/aux/chat.aux";
 import { setFocusedChat } from "@/features/chat/chatSlicer";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/Redux";
+import { RootState } from "@/app";
 
 interface ChatsSideBarProps {
 	chat: ChatType;
@@ -22,17 +22,17 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, currentUserId }) => {
 
 	const lightSx: Sx = {
 		cursor: "pointer",
-		backgroundColor: isChatInfocus ? "#6ef0f8" : "#fff",
+		backgroundColor: isChatInfocus ? "#b2ffcb" : "#fff",
 		"&:hover": {
-			backgroundColor: isChatInfocus ? "#49dde6" : "#dde0e2",
+			backgroundColor: isChatInfocus ? "#99e1ba" : "#dde0e2",
 		},
 	};
 
 	const darkSx: Sx = {
 		cursor: "pointer",
-		backgroundColor: isChatInfocus ? "#07858d" : "#1A1B1E",
+		backgroundColor: isChatInfocus ? "#07666c" : "#1A1B1E",
 		"&:hover": {
-			backgroundColor: isChatInfocus ? "#07666c" : "#070707",
+			backgroundColor: isChatInfocus ? "#075257" : "#070707",
 		},
 	};
 

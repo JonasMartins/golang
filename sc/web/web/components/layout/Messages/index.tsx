@@ -1,9 +1,10 @@
 import type { NextPage } from "next";
-import { Paper, Stack, Group, Title, Text, Sx, useMantineColorScheme } from "@mantine/core";
+import { Paper, Stack, Group, Text, Sx, useMantineColorScheme } from "@mantine/core";
 import { MessageType } from "@/features/types/chat";
-import { RootState } from "@/Redux";
+import { RootState } from "@/app";
 import { useSelector } from "react-redux";
 import { formatRelative } from "date-fns";
+import { Eye } from "tabler-icons-react";
 
 interface MessagesProps {
 	message: MessageType;
@@ -20,26 +21,29 @@ const Messages: NextPage<MessagesProps> = ({ message }) => {
 		cursor: "pointer",
 		backgroundColor: messageAuthor ? "#b2ffcb" : "#fff",
 		"&:hover": {
-			backgroundColor: messageAuthor ? "#9fe1b4" : "#b2ffcb",
+			backgroundColor: messageAuthor ? "#99e1ba" : "#dde0e2",
 		},
 	};
 
 	const darkSx: Sx = {
 		cursor: "pointer",
-		backgroundColor: messageAuthor ? "#07858d" : "#1A1B1E",
+		backgroundColor: messageAuthor ? "#07666c" : "#1A1B1E",
 		"&:hover": {
-			backgroundColor: messageAuthor ? "#07666c" : "#070707",
+			backgroundColor: messageAuthor ? "#075257" : "#070707",
 		},
 	};
 
 	return (
 		<Group sx={{ justifyContent: messageAuthor ? "flex-end" : "flex-start" }}>
-			<Paper sx={dark ? darkSx : lightSx} shadow="md" p="sm" withBorder radius={"lg"}>
+			<Paper sx={dark ? darkSx : lightSx} shadow="md" p="sm" radius={"lg"}>
 				<Stack spacing="sm">
 					<Text>{message.Body}</Text>
-					<Text size="xs" align="right">
-						{formatRelative(new Date(message.base.createdAt), new Date())}
-					</Text>
+					<Group position="apart">
+						<Eye size={16} color="#05a3f4" />
+						<Text size="xs">
+							{formatRelative(new Date(message.base.createdAt), new Date())}
+						</Text>
+					</Group>
 				</Stack>
 			</Paper>
 		</Group>

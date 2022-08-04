@@ -1,9 +1,9 @@
 import SettingsMenu from "@/components/layout/SettingsMenu";
 import ToggleTheme from "@/components/layout/ToggleTheme";
-import { Group, Stack, Text, useMantineColorScheme } from "@mantine/core";
+import { Group, Stack, Text, Title, useMantineColorScheme } from "@mantine/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "@/Redux";
+import { RootState } from "@/app";
 import { GetChatTitle } from "@/utils/aux/chat.aux";
 import MessageComp from "@/components/layout/Messages";
 
@@ -42,14 +42,12 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	const content = (
 		<Stack
 			sx={theme => ({
-				backgroundImage: dark
-					? theme.fn.linearGradient(133, "#272d28", "#3f4540")
-					: theme.fn.linearGradient(133, "#c8cbc9", "#ffffff"),
+				backgroundColor: dark ? theme.colors.dark[5] : theme.colors.gray[2],
 				height: "100vh",
 			})}
 		>
 			<Group position="apart" m="md">
-				<Text>{handleSetTitle()}</Text>
+				<Title order={4}>{handleSetTitle()}</Title>
 				<Group>
 					<ToggleTheme />
 					<SettingsMenu />

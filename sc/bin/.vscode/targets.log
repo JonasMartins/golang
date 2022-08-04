@@ -1,245 +1,168 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
 
-# GNU Make 4.3
-# Built for x86_64-pc-linux-gnu
-# Copyright (C) 1988-2020 Free Software Foundation, Inc.
-# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-# This is free software: you are free to change and redistribute it.
-# There is NO WARRANTY, to the extent permitted by law.
+# This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Tue Aug  2 11:45:57 2022
+# Make data base, printed on Wed Aug  3 22:03:29 2022
 
 # Variables
 
-# environment
-GDK_BACKEND = x11
-# environment
-LC_ALL = C
-# environment
-GNOME_SHELL_SESSION_MODE = ubuntu
-# environment
-SSH_AGENT_LAUNCHER = gnome-keyring
-# environment
-LC_NAME = pt_BR.UTF-8
-# environment
-LC_NUMERIC = pt_BR.UTF-8
-# environment
-VSCODE_CWD = /home/jonas
-# environment
-NVM_DIR = /home/jonas/.nvm
-# environment
-LC_ADDRESS = pt_BR.UTF-8
-# default
-MAKE_COMMAND := make
-# environment
-QT_ACCESSIBILITY = 1
-# environment
-GOPATH = /home/jonas/go
-# automatic
-@D = $(patsubst %/,%,$(dir $@))
-# environment
-VSCODE_HANDLES_UNCAUGHT_ERRORS = true
-# default
-.VARIABLES := 
-# environment
-PWD = /home/jonas/Documents/dev/golang/sc/bin
-# automatic
-%D = $(patsubst %/,%,$(dir $%))
-# environment
-XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
-# automatic
-^D = $(patsubst %/,%,$(dir $^))
-# automatic
-%F = $(notdir $%)
-# environment
-NVM_INC = /home/jonas/.nvm/versions/node/v16.15.0/include/node
-# environment
-VSCODE_CODE_CACHE_PATH = /home/jonas/.config/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
-# environment
-LANG = C
-# environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.S2Z6P1
-# default
-.LOADED := 
-# default
-.INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
-# makefile
-MAKEFLAGS = pqrR
-# environment
-DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=2307adee6d8fc1d4313da0f162e839c9
-# makefile
-CURDIR := /home/jonas/Documents/dev/golang/sc/bin
-# makefile (from 'Makefile', line 1)
-SERVER_BINARY = serverApp
-# environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
-# environment
-LESSOPEN = | /usr/bin/lesspipe %s
-# automatic
-*D = $(patsubst %/,%,$(dir $*))
-# environment
-MFLAGS = -pqrR
-# environment
-SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
-# default
-.SHELLFLAGS := -c
-# environment
-NVM_BIN = /home/jonas/.nvm/versions/node/v16.15.0/bin
-# environment
-WAYLAND_DISPLAY = wayland-0
-# environment
-XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
-# automatic
-+D = $(patsubst %/,%,$(dir $+))
-# environment
-XDG_SESSION_DESKTOP = ubuntu
-# makefile (from 'Makefile', line 1)
-MAKEFILE_LIST := Makefile
-# automatic
-@F = $(notdir $@)
-# environment
-VSCODE_PID = 43227
-# environment
-XDG_SESSION_TYPE = wayland
-# automatic
-?D = $(patsubst %/,%,$(dir $?))
-# environment
-SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/2756,unix/jonas-Lenovo-BS145-15IWL:/tmp/.ICE-unix/2756
-# automatic
-*F = $(notdir $*)
-# environment
-CHROME_DESKTOP = code-url-handler.desktop
-# environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=2307adee6d8fc1d4313da0f162e839c9
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
-# environment
-VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
-# default
-MAKE_HOST := x86_64-pc-linux-gnu
-# environment
-GNOME_DESKTOP_SESSION_ID = this-is-deprecated
-# makefile
-SHELL = /bin/sh
-# default
-MAKECMDGOALS := all
-# environment
-XMODIFIERS = @im=ibus
-# environment
-SHLVL = 0
-# environment
-MAKELEVEL := 0
-# environment
-IM_CONFIG_CHECK_ENV = 1
-# default
-MAKE = $(MAKE_COMMAND)
-# environment
-PATH = /usr/local/go/bin:/home/jonas/.cargo/bin:/home/jonas/.nvm/versions/node/v16.15.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/jonas/go/bin
-# default
-MAKEFILES := 
-# environment
-LC_MONETARY = pt_BR.UTF-8
-# automatic
-^F = $(notdir $^)
-# environment
-LC_TIME = pt_BR.UTF-8
-# environment
-GOROOT = /usr/local/go
-# environment
-INVOCATION_ID = dcfcba35975c434098d15465dc344593
-# environment
-USERNAME = jonas
-# environment
-GNOME_SETUP_DISPLAY = :1
-# environment
-LC_TELEPHONE = pt_BR.UTF-8
-# environment
-LESSCLOSE = /usr/bin/lesspipe %s %s
 # automatic
 ?F = $(notdir $?)
 # environment
-XDG_CURRENT_DESKTOP = Unity
-# environment
-LS_COLORS = :di=0;36:
+NVM_INC = /Users/jonasmartinssouza/.nvm/versions/node/v16.15.0/include/node
 # automatic
-+F = $(notdir $+)
-# environment
-DESKTOP_SESSION = ubuntu
-# environment
-ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
-# 'override' directive
-GNUMAKEFLAGS := 
-# environment
-LOGNAME = jonas
-# environment
-GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
 # makefile
-.DEFAULT_GOAL := up
+CURDIR := /Users/jonasmartinssouza/Documents/Dev/golang/golang/sc/bin
+# makefile
+SHELL = /bin/sh
 # environment
-SYSTEMD_EXEC_PID = 2756
+VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{"*":"pt-br"},"_languagePackId":"dc7ba51c4efcfec965eaa07de065afd6.pt-br","_translationsConfigFile":"/Users/jonasmartinssouza/Library/Application Support/Code/clp/dc7ba51c4efcfec965eaa07de065afd6.pt-br/tcf.json","_cacheRoot":"/Users/jonasmartinssouza/Library/Application Support/Code/clp/dc7ba51c4efcfec965eaa07de065afd6.pt-br","_resolvedLanguagePackCoreLocation":"/Users/jonasmartinssouza/Library/Application Support/Code/clp/dc7ba51c4efcfec965eaa07de065afd6.pt-br/3b889b090b5ad5793f524b5d1d39fda662b96a2a","_corruptedFile":"/Users/jonasmartinssouza/Library/Application Support/Code/clp/dc7ba51c4efcfec965eaa07de065afd6.pt-br/corrupted.info","_languagePackSupport":true}
 # environment
-DISPLAY = :0
-# environment
-USER = jonas
-# environment
-GTK_MODULES = gail:atk-bridge
-# default
-MAKE_VERSION := 4.3
-# environment
-MANAGERPID = 2564
-# environment
-DBUS_STARTER_BUS_TYPE = session
-# environment
-LC_MEASUREMENT = pt_BR.UTF-8
-# environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 43227
-# environment
-_ = /usr/share/code/code
-# environment
-LC_PAPER = pt_BR.UTF-8
-# environment
-XDG_RUNTIME_DIR = /run/user/1000
-# environment
-LC_CTYPE = pt_BR.UTF-8
-# environment
-NVM_CD_FLAGS = 
-# environment
-JOURNAL_STREAM = 8:41586
-# environment
-GOMODCACHE = /home/jonas/go/pkg/mod
-# environment
-XDG_SESSION_CLASS = user
+_ = /usr/bin/make
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
-HOME = /home/jonas
+__CFBundleIdentifier = com.microsoft.VSCode
 # environment
-QT_IM_MODULE = ibus
+INFOPATH = /opt/homebrew/share/info:
 # environment
-ELECTRON_RUN_AS_NODE = 1
-# environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-70be7676-1.69.2-main.sock
-# environment
-IM_CONFIG_PHASE = 1
+VSCODE_CWD = /
 # environment
 GOPROXY = https://proxy.golang.org,direct
+# environment
+PATH = /Users/jonasmartinssouza/.nvm/versions/node/v16.15.0/bin:/Users/jonasmartinssouza/.yarn/bin:/Users/jonasmartinssouza/.config/yarn/global/node_modules/.bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Library/Apple/usr/bin:/Users/jonasmartinssouza/.cargo/bin:/Users/jonasmartinssouza/.local/bin:/Users/jonasmartinssouza/.local/bin:/Users/jonasmartinssouza/.fzf/bin
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# environment
+GOPATH = /Users/jonasmartinssouza/go
+# environment
+NVM_BIN = /Users/jonasmartinssouza/.nvm/versions/node/v16.15.0/bin
+# environment
+ELECTRON_RUN_AS_NODE = 1
 # default
-.RECIPEPREFIX := 
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.oYtmp5xAQy/Listeners
+# automatic
+%F = $(notdir $%)
+# environment
+PWD = /Users/jonasmartinssouza/Documents/Dev/golang/golang/sc/bin
+# environment
+HOMEBREW_CELLAR = /opt/homebrew/Cellar
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+MANPATH = /Users/jonasmartinssouza/.nvm/versions/node/v16.15.0/share/man:/opt/homebrew/share/man::
+# environment
+GOMODCACHE = /Users/jonasmartinssouza/go/pkg/mod
+# environment
+PYENV_SHELL = zsh
+# environment
+HOME = /Users/jonasmartinssouza
+# default
+MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/jonasmartinssouza/Library/Application Support/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
+# environment
+LOGNAME = jonasmartinssouza
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# environment
+NVM_CD_FLAGS = -q
+# environment
+ZSH = /Users/jonasmartinssouza/.oh-my-zsh
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = jonasmartinssouza
+# makefile
+.DEFAULT_GOAL := up
+# environment
+LESS = -R
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/1m/pd70dcc51wz92xhb352sknfr0000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/jonasmartinssouza/Library/Application Support/Code/1.69.2-main.sock
+# environment
+MallocNanoZone = 0
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+NVM_DIR = /Users/jonasmartinssouza/.nvm
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.18422348.18422354
+# environment
+HOMEBREW_PREFIX = /opt/homebrew
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+HOMEBREW_REPOSITORY = /opt/homebrew
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x47
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# makefile (from `Makefile', line 1)
+SERVER_BINARY = serverApp
 # automatic
 <F = $(notdir $<)
+# environment
+PAGER = less
+# environment
+LC_ALL = C
+# automatic
+^F = $(notdir $^)
 # default
 SUFFIXES := 
-# default
-.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
 # environment
-XDG_MENU_PREFIX = gnome-
+MAKELEVEL := 0
 # environment
-GDMSESSION = ubuntu
+LANG = C
 # environment
-LC_IDENTIFICATION = pt_BR.UTF-8
+VSCODE_PID = 2149
 # variable set hash-table stats:
-# Load=113/1024=11%, Rehash=0, Collisions=5/143=3%
+# Load=75/1024=7%, Rehash=0, Collisions=2/98=2%
 
 # Pattern-specific Variable Values
 
@@ -247,7 +170,7 @@ LC_IDENTIFICATION = pt_BR.UTF-8
 
 # Directories
 
-# . (device 2050, inode 8005897): 6 files, no impossibilities.
+# . (device 16777230, inode 16224870): 6 files, no impossibilities.
 
 # 6 files, no impossibilities in 1 directories.
 
@@ -257,53 +180,76 @@ LC_IDENTIFICATION = pt_BR.UTF-8
 
 # Files
 
-up_build: build_server
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 9):
-	@echo "Stopping docker images (if running...)"
-	docker-compose -f docker-compose.staging.yml down
-	@echo "Building and starting docker images..."
-	docker-compose -f docker-compose.staging.yml up --build -d
-	@echo "Docker images built and started."
-
-lint:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 26):
-	@echo "Running linter"
-	cd ../server/src && golangci-lint run
-	@echo "Formatting..."
-	cd ../server/src && go fmt ./
-	@echo "Done"
-
 # Not a target:
-Makefile:
+all:
+#  Command-line target.
 #  Implicit rule search has been done.
-#  Last modified 2022-06-27 08:15:28.50615349
-#  File has been updated.
-#  Successfully updated.
+#  File does not exist.
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+local:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 32):
+	@echo "Running development local"
+	cd ../server/src && go run server.go
+	
 
 up:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
- 
-#  recipe to execute (from 'Makefile', line 4):
+#  commands to execute (from `Makefile', line 4):
 	@echo "Starting docker images..."
 	docker-compose -f docker-compose.staging.yml up
 	@echo "Docker images started"
+	
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-25 20:06:32
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
 build_server:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 21):
+#  commands to execute (from `Makefile', line 21):
 	@echo "Building server binary..."
 	cd ../server/src && env GOOS=linux CGO_ENABLED=0 go build -o ${SERVER_BINARY} ./server.go
 	@echo "Done"
+	
+
+test:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 35):
+	@echo "Running all tests"
+	cd ../server/test && go test ./...
+	
+
+schema_generate:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 39):
+	@echo "Rebuild graphql's schema changes"
+	cd ../server/src && go generate ./...
+	
 
 # Not a target:
 .DEFAULT:
@@ -311,60 +257,56 @@ build_server:
 #  Modification time never checked.
 #  File has not been updated.
 
-# Not a target:
-all:
-#  Command line target.
-#  Implicit rule search has been done.
-#  File does not exist.
-#  File has not been updated.
-
-test:
+lint:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 35):
-	@echo "Running all tests"
-	cd ../server/test && go test ./...
+#  commands to execute (from `Makefile', line 26):
+	@echo "Running linter"
+	cd ../server/src && golangci-lint run
+	@echo "Formatting..."
+	cd ../server/src && go fmt ./
+	@echo "Done"
+	
 
-local:
+up_build: build_server
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 32):
-	@echo "Running development local"
-	cd ../server/src && go run server.go
+#  commands to execute (from `Makefile', line 9):
+	@echo "Stopping docker images (if running...)"
+	docker-compose -f docker-compose.staging.yml down
+	@echo "Building and starting docker images..."
+ 
+make: *** No rule to make target `all'.  Stop.
+
+	docker-compose -f docker-compose.staging.yml up --build -d
+	@echo "Docker images built and started."
+	
 
 down:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 16):
+#  commands to execute (from `Makefile', line 16):
 	@echo "Stopping docker compose..."
 	docker-compose -f docker-compose.staging.yml down -v
 	@echo "Done"
-
-schema_generate:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 39):
-	@echo "Rebuild graphql's schema changes"
-	cd ../server/src && go generate ./...
+	
 
 # files hash-table stats:
-# Load=12/1024=1%, Rehash=0, Collisions=0/24=0%
+# Load=12/1024=1%, Rehash=0, Collisions=0/25=0%
 # VPATH Search Paths
 
-# No 'vpath' search paths.
+# No `vpath' search paths.
 
-# No general ('VPATH' variable) search path.
+# No general (`VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 19 / storage = 171 B / avg = 9 B
-# current buf: size = 8162 B / used = 171 B / count = 19 / avg = 9 B
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# strcache performance: lookups = 32 / hit rate = 40%
-# hash-table stats:
-# Load=19/8192=0%, Rehash=0, Collisions=0/32=0%
-# Finished Make data base on Tue Aug  2 11:45:57 2022
+# Finished Make data base on Wed Aug  3 22:03:29 2022
 
  

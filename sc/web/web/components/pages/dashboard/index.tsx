@@ -60,8 +60,8 @@ const Dashboard: NextPage = () => {
 		!user || loadEffect ? (
 			<Loader />
 		) : (
-			<Grid>
-				<Grid.Col span={4}>
+			<Grid gutter={0}>
+				<Grid.Col span={4} sx={{ borderRightStyle: "double" }}>
 					<SideBar chats={result.data} loggedUser={user} />
 				</Grid.Col>
 				<Grid.Col span={8}>

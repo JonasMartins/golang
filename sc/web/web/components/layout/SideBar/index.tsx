@@ -39,7 +39,7 @@ const SideBar: React.FC<SideBarProps> = ({ chats, loggedUser }) => {
 					theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2],
 				height: "100vh",
 			})}
-			p="sm"
+			p="md"
 		>
 			<Grid gutter="sm" align={"center"} grow={true}>
 				<Grid.Col span={webScreen ? 12 : 11}>
