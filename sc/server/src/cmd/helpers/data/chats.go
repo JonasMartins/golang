@@ -1,6 +1,7 @@
 package data
 
 import (
+	"sort"
 	"src/cmd/utils"
 	"src/infra/orm/gorm/models"
 	"strings"
@@ -81,6 +82,13 @@ func GetUsersChatsFromRaw(chats []*utils.ResultGetUsersChats, chatMembers []*uti
 				break
 			}
 		}
+	}
+
+	// sorting messages
+	for _, c := range chatsObj {
+		sort.SliceStable(c.Messages, func(x, y int) bool {
+			return c.Messages[x].CreatedAt.UnixMicro() < c.Messages[y].CreatedAt.UnixMicro()
+		})
 	}
 
 	return chatsObj, nil

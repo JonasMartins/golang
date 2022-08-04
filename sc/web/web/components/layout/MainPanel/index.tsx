@@ -1,17 +1,19 @@
 import SettingsMenu from "@/components/layout/SettingsMenu";
 import ToggleTheme from "@/components/layout/ToggleTheme";
 import { Group, Stack, Title, useMantineColorScheme } from "@mantine/core";
-import React from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app";
 import { GetChatTitle } from "@/utils/aux/chat.aux";
 import MessageComp from "@/components/layout/Messages";
+import { MessageType } from "@/features/types/chat";
 
 interface MainPanelProps {}
 
 const MainPanel: React.FC<MainPanelProps> = () => {
 	const chatFocused = useSelector((state: RootState) => state.chat.value);
 	const user = useSelector((state: RootState) => state.user.value);
+	const [messages, setMessages] = useState<MessageType[]>([]);
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === "dark";
 
@@ -22,23 +24,22 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 		return "Unknown";
 	};
 
-	const messagesListed = (
-		<Stack
-			sx={() => ({
-				flexDirection: "column",
-				justifyContent: "center",
-			})}
-			spacing="lg"
-			mt="lg"
-			p={"lg"}
-		>
-			{chatFocused?.Messages.slice(0)
-				.reverse()
-				.map(x => (
-					<MessageComp key={x.base.createdAt} message={x} />
-				))}
-		</Stack>
-	);
+	const handleSettingMessagesToState = useCallback(() => {
+		if (chatFocused) {
+			const length = chatFocused.Messages.length - 1;
+			for (let i = 0; i <= length; i++) {
+				const m: MessageType = chatFocused.Messages[i];
+				setMessages(x => [...x, m]);
+			}
+		}
+	}, [chatFocused]);
+
+	useEffect(() => {
+		handleSettingMessagesToState();
+		return () => {
+			setMessages([]);
+		};
+	}, [chatFocused, handleSettingMessagesToState]);
 
 	const content = (
 		<Stack
@@ -55,7 +56,19 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 				</Group>
 			</Group>
 
-			{messagesListed}
+			<Stack
+				sx={() => ({
+					flexDirection: "column",
+					justifyContent: "center",
+				})}
+				spacing="lg"
+				mt="lg"
+				p={"lg"}
+			>
+				{messages.map(x => (
+					<MessageComp key={x.base.createdAt} message={x} />
+				))}
+			</Stack>
 		</Stack>
 	);
 
