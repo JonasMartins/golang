@@ -1,7 +1,7 @@
 import SettingsMenu from "@/components/layout/SettingsMenu";
 import ToggleTheme from "@/components/layout/ToggleTheme";
 import { Group, Stack, Title, useMantineColorScheme } from "@mantine/core";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app";
 import { GetChatTitle } from "@/utils/aux/chat.aux";
@@ -65,8 +65,18 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 				mt="lg"
 				p={"lg"}
 			>
-				{messages.map(x => (
-					<MessageComp key={x.base.createdAt} message={x} />
+				{messages.map((x, i) => (
+					<>
+						<MessageComp
+							key={i}
+							message={x}
+							nextMessageDate={
+								i + 1 < messages.length
+									? new Date(messages[i + 1].base.createdAt)
+									: new Date(x.base.createdAt)
+							}
+						/>
+					</>
 				))}
 			</Stack>
 		</Stack>
