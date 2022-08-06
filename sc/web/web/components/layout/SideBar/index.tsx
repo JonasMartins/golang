@@ -33,14 +33,7 @@ const SideBar: React.FC<SideBarProps> = ({ chats, loggedUser }) => {
 	);
 
 	return (
-		<Stack
-			sx={theme => ({
-				backgroundColor:
-					theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2],
-				height: "100vh",
-			})}
-			p="md"
-		>
+		<Stack p="md">
 			<Grid gutter="sm" align={"center"} grow={true}>
 				<Grid.Col span={webScreen ? 12 : 11}>
 					<Input icon={<Search />} variant="filled" placeholder="Search" />

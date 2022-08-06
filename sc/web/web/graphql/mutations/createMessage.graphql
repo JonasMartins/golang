@@ -1,0 +1,8 @@
+mutation CreateMessage($input: CreateMessageInput!) {
+	createMessage(input: $input) {
+		errors {
+			message
+		}
+		created
+	}
+}

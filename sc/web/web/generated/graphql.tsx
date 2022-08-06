@@ -234,6 +234,20 @@ export type UsersResponse = {
 };
 
 
+export const CreateMessageDocument = gql`
+    mutation CreateMessage($input: CreateMessageInput!) {
+  createMessage(input: $input) {
+    errors {
+      message
+    }
+    created
+  }
+}
+    `;
+
+export function useCreateMessageMutation() {
+  return Urql.useMutation<CreateMessageMutation, CreateMessageMutationVariables>(CreateMessageDocument);
+};
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   login(input: $input) {
@@ -310,6 +324,13 @@ export const GetUsersChatsDocument = gql`
 export function useGetUsersChatsQuery(options: Omit<Urql.UseQueryArgs<GetUsersChatsQueryVariables>, 'query'>) {
   return Urql.useQuery<GetUsersChatsQuery>({ query: GetUsersChatsDocument, ...options });
 };
+export type CreateMessageMutationVariables = Exact<{
+  input: CreateMessageInput;
+}>;
+
+
+export type CreateMessageMutation = { __typename?: 'Mutation', createMessage: { __typename?: 'CreateAction', created: boolean, errors: Array<{ __typename?: 'Error', message: string }> } };
+
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
 }>;

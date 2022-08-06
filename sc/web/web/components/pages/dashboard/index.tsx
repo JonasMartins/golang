@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import MainPanel from "@/components/layout/MainPanel";
 import SideBar from "@/components/layout/SideBar";
-import { Grid } from "@mantine/core";
+import { Grid, useMantineColorScheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import type { NextPage } from "next";
 import { useUser } from "@/utils/hooks";
@@ -17,6 +17,8 @@ const Dashboard: NextPage = () => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
 	const user = useUser();
 	const dispatch = useDispatch();
+	const { colorScheme } = useMantineColorScheme();
+	const dark = colorScheme === "dark";
 	const [userId, setUserId] = useState<string>("");
 	const [loadEffect, setLoadEffect] = useState(false);
 	const [result, fetch] = useQuery<GetUsersChatsQuery>({
@@ -60,7 +62,13 @@ const Dashboard: NextPage = () => {
 		!user || loadEffect ? (
 			<Loader />
 		) : (
-			<Grid gutter={0}>
+			<Grid
+				gutter={0}
+				sx={theme => ({
+					backgroundColor: dark ? theme.colors.dark[5] : theme.colors.gray[2],
+					height: "100vh",
+				})}
+			>
 				<Grid.Col span={4} sx={{ borderRightStyle: "double" }}>
 					<SideBar chats={result.data} loggedUser={user} />
 				</Grid.Col>
@@ -74,7 +82,13 @@ const Dashboard: NextPage = () => {
 		!user || loadEffect ? (
 			<Loader />
 		) : (
-			<Grid>
+			<Grid
+				gutter={0}
+				sx={theme => ({
+					backgroundColor: dark ? theme.colors.dark[5] : theme.colors.gray[2],
+					height: "100vh",
+				})}
+			>
 				<Grid.Col span={12}>
 					<SideBar chats={result.data} loggedUser={user} />
 				</Grid.Col>
