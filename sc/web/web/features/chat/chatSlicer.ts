@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { ChatType } from "@/features/types/chat";
+import { ChatType, MessageType } from "@/features/types/chat";
 
 export interface ChatState {
 	value: ChatType | null;
@@ -17,10 +17,17 @@ export const chatSlice = createSlice({
 		setFocusedChat: (state, action: PayloadAction<ChatType | null>) => {
 			state.value = action.payload;
 		},
+
+		addMessage: (state, action: PayloadAction<MessageType | null>) => {
+			if (action.payload && state.value) {
+				console.log("Adding new message via redux");
+				state.value.Messages.push(action.payload);
+			}
+		},
 	},
 });
 
-export const { setFocusedChat } = chatSlice.actions;
+export const { setFocusedChat, addMessage } = chatSlice.actions;
 
 const chatReducer = chatSlice.reducer;
 

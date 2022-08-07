@@ -1,6 +1,6 @@
 import SettingsMenu from "@/components/layout/SettingsMenu";
 import ToggleTheme from "@/components/layout/ToggleTheme";
-import { Group, Stack, Title } from "@mantine/core";
+import { Group, Stack, Title, useMantineColorScheme } from "@mantine/core";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app";
@@ -15,7 +15,9 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	const chatFocused = useSelector((state: RootState) => state.chat.value);
 	const user = useSelector((state: RootState) => state.user.value);
 	const [messages, setMessages] = useState<MessageType[]>([]);
+	const { colorScheme } = useMantineColorScheme();
 
+	const dark = colorScheme === "dark";
 	const handleSetTitle = (): string => {
 		if (user && chatFocused) {
 			return GetChatTitle(chatFocused, user.id);
@@ -43,7 +45,13 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	const content = (
 		<Stack mb="sm" justify="space-between" sx={{ height: "100vh" }}>
 			<Stack>
-				<Group position="apart" m="md">
+				<Group
+					sx={theme => ({
+						backgroundColor: dark ? theme.colors.dark[5] : theme.colors.gray[3],
+					})}
+					position="apart"
+					p="sm"
+				>
 					<Title order={4}>{handleSetTitle()}</Title>
 					<Group>
 						<ToggleTheme />
