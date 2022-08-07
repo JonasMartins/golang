@@ -14,7 +14,7 @@ interface ChatsSideBarProps {
 
 const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, currentUserId }) => {
 	const dispatch = useDispatch();
-	const chatFocused = useSelector((state: RootState) => state.chat.value);
+	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === "dark";
 

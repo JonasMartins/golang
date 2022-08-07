@@ -16,7 +16,7 @@ const DAY_IN_MILI = 86400000;
 const Messages: NextPage<MessagesProps> = ({ message, nextMessageDate }) => {
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === "dark";
-	const user = useSelector((state: RootState) => state.user.value);
+	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
 
 	let messageAuthor = message.Author.name === user?.name;
 

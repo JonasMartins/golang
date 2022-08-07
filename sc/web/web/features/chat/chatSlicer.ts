@@ -20,7 +20,6 @@ export const chatSlice = createSlice({
 
 		addMessage: (state, action: PayloadAction<MessageType | null>) => {
 			if (action.payload && state.value) {
-				console.log("Adding new message via redux");
 				state.value.Messages.push(action.payload);
 			}
 		},

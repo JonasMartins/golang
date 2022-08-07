@@ -12,8 +12,8 @@ import CreateMessageForm from "@/components/form/CreateMessage";
 interface MainPanelProps {}
 
 const MainPanel: React.FC<MainPanelProps> = () => {
-	const chatFocused = useSelector((state: RootState) => state.chat.value);
-	const user = useSelector((state: RootState) => state.user.value);
+	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
+	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const [messages, setMessages] = useState<MessageType[]>([]);
 	const { colorScheme } = useMantineColorScheme();
 

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app";
 
 export const useToken = () => {
-	const tokenFromStore = useSelector((state: RootState) => state.token.value);
+	const tokenFromStore = useSelector((state: RootState) => state.persistedReducer.token.value);
 
 	const [token, setTokenInternal] = useState(() => {
 		return tokenFromStore;

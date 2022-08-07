@@ -4,8 +4,10 @@ import { useState } from "react";
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from "@mantine/core";
 import { createClient, Provider } from "urql";
 import { SERVER_URL } from "@/utils/consts";
-import { store } from "@/app";
+import { store, persistor } from "@/app";
 import { Provider as ReduxProvider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import Loader from "@/components/layout/Loader";
 import "@fontsource/comfortaa";
 
 const client = createClient({
@@ -32,32 +34,34 @@ const App = (props: AppProps) => {
 			</Head>
 			<Provider value={client}>
 				<ReduxProvider store={store}>
-					<ColorSchemeProvider
-						colorScheme={colorScheme}
-						toggleColorScheme={toggleColorScheme}
-					>
-						<MantineProvider
-							withGlobalStyles
-							withNormalizeCSS
-							theme={{
-								/** Put your mantine theme override here */
-								fontFamily: "Verdana, sans-serif",
-								fontFamilyMonospace: "Monaco, Courier, monospace",
-								headings: { fontFamily: "Comfortaa, cursive" },
-								colorScheme,
-								breakpoints: {
-									xs: 500,
-									sm: 800,
-									md: 1000,
-									lg: 1200,
-									xl: 1400,
-								},
-								loader: "dots",
-							}}
+					<PersistGate loading={<Loader />} persistor={persistor}>
+						<ColorSchemeProvider
+							colorScheme={colorScheme}
+							toggleColorScheme={toggleColorScheme}
 						>
-							<Component {...pageProps} />
-						</MantineProvider>
-					</ColorSchemeProvider>
+							<MantineProvider
+								withGlobalStyles
+								withNormalizeCSS
+								theme={{
+									/** Put your mantine theme override here */
+									fontFamily: "Verdana, sans-serif",
+									fontFamilyMonospace: "Monaco, Courier, monospace",
+									headings: { fontFamily: "Comfortaa, cursive" },
+									colorScheme,
+									breakpoints: {
+										xs: 500,
+										sm: 800,
+										md: 1000,
+										lg: 1200,
+										xl: 1400,
+									},
+									loader: "dots",
+								}}
+							>
+								<Component {...pageProps} />
+							</MantineProvider>
+						</ColorSchemeProvider>
+					</PersistGate>
 				</ReduxProvider>
 			</Provider>
 		</>

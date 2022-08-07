@@ -18,7 +18,7 @@ type input = {
 };
 
 const CreateMessageForm: NextPage<CreateMessageFormProps> = () => {
-	const user = useSelector((state: RootState) => state.user.value);
+	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const dispatch = useDispatch();
 
 	const form = useForm({
