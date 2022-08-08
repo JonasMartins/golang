@@ -37,7 +37,7 @@ const Messages: NextPage<MessagesProps> = ({ message, nextMessageDate }) => {
 	};
 
 	return (
-		<>
+		<Stack p="sm" mt="xs">
 			<Group sx={{ justifyContent: messageAuthor ? "flex-end" : "flex-start" }}>
 				<Paper sx={dark ? darkSx : lightSx} shadow="md" p="sm" radius={"lg"}>
 					<Stack spacing="sm">
@@ -69,7 +69,7 @@ const Messages: NextPage<MessagesProps> = ({ message, nextMessageDate }) => {
 					}
 				/>
 			)}
-		</>
+		</Stack>
 	);
 };
 

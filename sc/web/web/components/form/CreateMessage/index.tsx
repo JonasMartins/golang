@@ -2,8 +2,7 @@ import type { NextPage } from "next";
 import { RootState } from "@/app";
 import { useSelector } from "react-redux";
 import { useForm } from "@mantine/form";
-import { Textarea, ActionIcon, Button } from "@mantine/core";
-import { MoodSmile } from "tabler-icons-react";
+import { Textarea, ActionIcon, Button, Stack } from "@mantine/core";
 import { CreateMessageInput } from "@/generated/graphql";
 import { useDispatch } from "react-redux";
 import { MessageType } from "@/features/types/chat";
@@ -43,28 +42,18 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = () => {
 	};
 
 	return (
-		<>
+		<Stack mb="sm" mr="xs" ml="xs">
 			<form onSubmit={form.onSubmit(values => HandleCreateMessage(values))}>
 				<Textarea
 					p="sm"
 					radius="lg"
 					size="sm"
+					{...form.getInputProps("body")}
 					required
-					rightSection={
-						<ActionIcon>
-							{/* <MoodSmile /> */}
-							<Button
-								variant="gradient"
-								gradient={{ from: "indigo", to: "cyan" }}
-								type="submit"
-							>
-								Send
-							</Button>
-						</ActionIcon>
-					}
+					rightSection={<Button type="submit">Send</Button>}
 				/>
 			</form>
-		</>
+		</Stack>
 	);
 };
 
