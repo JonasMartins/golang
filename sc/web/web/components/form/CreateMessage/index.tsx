@@ -18,6 +18,7 @@ type input = {
 
 const CreateMessageForm: NextPage<CreateMessageFormProps> = () => {
 	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
+	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
 	const dispatch = useDispatch();
 
 	const form = useForm({
@@ -33,7 +34,9 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = () => {
 			Author: {
 				name: user?.name!,
 			},
+			ChatId: chatFocused?.base.id || "",
 			base: {
+				id: "",
 				createdAt: new Date(),
 			},
 			Body: values.body,

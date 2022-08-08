@@ -16,9 +16,11 @@ query GetUsersChats($userId: String!) {
 			}
 			Messages {
 				base {
+					id
 					createdAt
 				}
 				Body
+				ChatId
 				Author {
 					name
 				}

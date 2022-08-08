@@ -39,6 +39,8 @@ export const store = configureStore({
 			serializableCheck: {
 				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
 			},
+			ignoredActionPaths: ["meta.arg", "payload.timestamp"],
+			ignoredPaths: ["items.dates"],
 		}),
 });
 

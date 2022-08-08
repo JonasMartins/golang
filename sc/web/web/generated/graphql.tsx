@@ -308,9 +308,11 @@ export const GetUsersChatsDocument = gql`
       }
       Messages {
         base {
+          id
           createdAt
         }
         Body
+        ChatId
         Author {
           name
         }
@@ -355,7 +357,7 @@ export type GetUsersChatsQueryVariables = Exact<{
 }>;
 
 
-export type GetUsersChatsQuery = { __typename?: 'Query', getUsersChats: { __typename?: 'ChatsResponse', errors: Array<{ __typename?: 'Error', message: string }>, chats: Array<{ __typename?: 'Chat', base: { __typename?: 'Base', id: string, updatedAt: any }, Members: Array<{ __typename?: 'User', name: string, base: { __typename?: 'Base', id: string } }>, Messages: Array<{ __typename?: 'Message', Body: string, Seen?: Array<string> | null, base: { __typename?: 'Base', createdAt: any }, Author: { __typename?: 'User', name: string } }> }> } };
+export type GetUsersChatsQuery = { __typename?: 'Query', getUsersChats: { __typename?: 'ChatsResponse', errors: Array<{ __typename?: 'Error', message: string }>, chats: Array<{ __typename?: 'Chat', base: { __typename?: 'Base', id: string, updatedAt: any }, Members: Array<{ __typename?: 'User', name: string, base: { __typename?: 'Base', id: string } }>, Messages: Array<{ __typename?: 'Message', Body: string, ChatId: string, Seen?: Array<string> | null, base: { __typename?: 'Base', id: string, createdAt: any }, Author: { __typename?: 'User', name: string } }> }> } };
 
 import { IntrospectionQuery } from 'graphql';
 export default {

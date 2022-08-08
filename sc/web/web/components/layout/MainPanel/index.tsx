@@ -8,6 +8,7 @@ import {
 	ScrollArea,
 	ActionIcon,
 	Grid,
+	Tooltip,
 } from "@mantine/core";
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -16,7 +17,7 @@ import { GetChatTitle } from "@/utils/aux/chat.aux";
 import MessageComp from "@/components/layout/Messages";
 import { MessageType } from "@/features/types/chat";
 import CreateMessageForm from "@/components/form/CreateMessage";
-import { ChevronsDown } from "tabler-icons-react";
+import { ChevronsDown, ChevronsUp } from "tabler-icons-react";
 
 interface MainPanelProps {}
 
@@ -40,9 +41,19 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 
 	const scrollToBottom = () => {
 		if (viewport !== undefined) {
-			viewport.current?.scrollTo({ top: viewport.current.scrollHeight, behavior: "smooth" });
-		} else {
-			console.log("undefined ? ");
+			viewport.current?.scrollTo({
+				top: viewport.current.scrollHeight,
+				behavior: "smooth",
+			});
+		}
+	};
+
+	const scrollToTop = () => {
+		if (viewport !== undefined) {
+			viewport.current?.scrollTo({
+				top: 0,
+				behavior: "smooth",
+			});
 		}
 	};
 
@@ -64,18 +75,16 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	}, [chatFocused, handleSettingMessagesToState]);
 
 	useEffect(() => {
-		if (!chatFocused || !messageHasBeenAdded.messageCount) return;
+		if (!chatFocused || !messageHasBeenAdded) return;
 
-		if (chatFocused?.base.id === messageHasBeenAdded.chatId) {
-			console.log("has added");
-			if (viewport !== undefined) {
-				viewport.current?.scrollTo({
-					top: viewport.current.scrollHeight,
-					behavior: "smooth",
-				});
-			}
+		if (chatFocused?.base.id === messageHasBeenAdded.ChatId) {
+			setMessages(x => [...x, messageHasBeenAdded]);
 		}
-	}, [messageHasBeenAdded.messageCount]);
+	}, [messageHasBeenAdded, chatFocused]);
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages]);
 
 	const content = (
 		<Stack mb="sm" justify="space-between" sx={{ height: "100vh" }}>
@@ -99,14 +108,12 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 						flexDirection: "column",
 						justifyContent: "center",
 					})}
-					p={"lg"}
-					m="lg"
 				>
-					<ScrollArea style={{ height: "68vh" }} viewportRef={viewport}>
+					<ScrollArea style={{ height: "57vh" }} viewportRef={viewport}>
 						{messages.map((x, i) => (
 							<>
 								<MessageComp
-									key={i}
+									key={x.base.id}
 									message={x}
 									nextMessageDate={
 										i + 1 < messages.length
@@ -120,9 +127,31 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 				</Stack>
 			</Stack>
 			<Stack>
-				<ActionIcon onClick={scrollToBottom}>
-					<ChevronsDown />
-				</ActionIcon>
+				<Group align="flex-start" sx={{ paddingLeft: "10px" }}>
+					<Tooltip withArrow label="Scroll to bottom">
+						<ActionIcon
+							ml={"sm"}
+							onClick={scrollToBottom}
+							radius="lg"
+							size="lg"
+							variant="outline"
+						>
+							<ChevronsDown />
+						</ActionIcon>
+					</Tooltip>
+
+					<Tooltip withArrow label="Scroll to top">
+						<ActionIcon
+							ml={"sm"}
+							onClick={scrollToTop}
+							radius="lg"
+							size="lg"
+							variant="outline"
+						>
+							<ChevronsUp />
+						</ActionIcon>
+					</Tooltip>
+				</Group>
 				<Grid align="center" gutter="xs" grow>
 					{/* <Grid.Col offset={1} span={1}>
 					<Group>

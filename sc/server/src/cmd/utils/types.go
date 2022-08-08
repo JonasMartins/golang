@@ -6,6 +6,7 @@ type ResultGetUsersChats struct {
 	ChatId           string
 	ChatUpdatedAt    time.Time
 	MessageId        string
+	MessageChatId    string
 	MessageBody      string
 	MessageCreatedAt time.Time
 	AuthorId         string

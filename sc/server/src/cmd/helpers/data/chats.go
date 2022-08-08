@@ -59,6 +59,7 @@ func GetUsersChatsFromRaw(chats []*utils.ResultGetUsersChats, chatMembers []*uti
 		}
 		message.ID = *messageId
 		message.CreatedAt = c.MessageCreatedAt
+		message.ChatId = c.MessageChatId
 		message.Body = c.MessageBody
 		message.Author = &author
 		res = re.Replace(c.Seen)

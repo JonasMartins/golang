@@ -16,9 +16,11 @@ export type ChatType = {
 	Messages: Array<{
 		__typename?: "Message";
 		Body: string;
+		ChatId: string;
 		Seen?: Array<string> | null;
 		base: {
 			__typename?: "Base";
+			id: string;
 			createdAt: any;
 		};
 		Author: {
@@ -31,9 +33,11 @@ export type ChatType = {
 export type MessageType = {
 	__typename?: "Message";
 	Body: string;
+	ChatId: string;
 	Seen?: Array<string> | null;
 	base: {
 		__typename?: "Base";
+		id: string;
 		createdAt: any;
 	};
 	Author: {
