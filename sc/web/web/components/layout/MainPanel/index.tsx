@@ -168,13 +168,6 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 					</Tooltip>
 				</Group>
 				<Grid align="center" gutter="xs" grow>
-					{/* <Grid.Col offset={1} span={1}>
-					<Group>
-						<ActionIcon>
-							<MoodSmile />
-						</ActionIcon>
-					</Group>
-				</Grid.Col> */}
 					<Grid.Col span={12}>
 						<CreateMessageForm showSubmitButton={newLinesMessage} />
 					</Grid.Col>

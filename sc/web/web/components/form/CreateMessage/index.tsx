@@ -23,7 +23,7 @@ type input = {
 const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton }) => {
 	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
-	const [showSubmit, setShowSubmit] = useState(false);
+	const [chosenEmoji, setChosenEmoji] = useState(null);
 	const dispatch = useDispatch();
 
 	const form = useForm({
@@ -59,7 +59,7 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 	 * @returns boolean
 	 */
 	const handleIfInputCanSubmitOnEnter = (key: string): boolean => {
-		if (key === "Enter" && !showSubmitButton) {
+		if (key === "Enter" && form.values.body.indexOf("\n") !== -1) {
 			return true;
 		}
 		return false;
@@ -81,14 +81,13 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 					if (handleIfInputCanSubmitOnEnter(e.key)) {
 						if (handleIfMessageBodyHasValidCharacters()) {
 							HandleCreateMessage(form.values);
-							form.reset();
 						}
 					}
 				}}
 				onSubmit={form.onSubmit(values => HandleCreateMessage(values))}
 			>
 				<Group spacing={0}>
-					<Group grow>
+					<Group sx={{ flexGrow: 1 }}>
 						<Textarea
 							sx={{ flexGrow: 1 }}
 							p="sm"

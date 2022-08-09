@@ -5,11 +5,13 @@ import { ChatType, MessageType } from "@/features/types/chat";
 export interface ChatState {
 	value: ChatType | null;
 	hasAddedMessage: MessageType | null;
+	searchTerm: string;
 }
 
 const initialState: ChatState = {
 	value: null,
 	hasAddedMessage: null,
+	searchTerm: "",
 };
 
 export const chatSlice = createSlice({
@@ -23,10 +25,14 @@ export const chatSlice = createSlice({
 		addMessage: (state, action: PayloadAction<MessageType | null>) => {
 			state.hasAddedMessage = action.payload;
 		},
+
+		setSearchTerm: (state, action: PayloadAction<string>) => {
+			state.searchTerm = action.payload;
+		},
 	},
 });
 
-export const { setFocusedChat, addMessage } = chatSlice.actions;
+export const { setFocusedChat, addMessage, setSearchTerm } = chatSlice.actions;
 
 const chatReducer = chatSlice.reducer;
 

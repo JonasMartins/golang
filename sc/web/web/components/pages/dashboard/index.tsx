@@ -70,7 +70,7 @@ const Dashboard: NextPage = () => {
 				})}
 			>
 				<Grid.Col span={4} sx={{ borderRightStyle: "double" }}>
-					<SideBar chats={result.data} loggedUser={user} />
+					<SideBar chats={result.data?.getUsersChats.chats} loggedUser={user} />
 				</Grid.Col>
 				<Grid.Col span={8}>
 					<MainPanel />
@@ -90,7 +90,7 @@ const Dashboard: NextPage = () => {
 				})}
 			>
 				<Grid.Col span={12}>
-					<SideBar chats={result.data} loggedUser={user} />
+					<SideBar chats={result.data?.getUsersChats.chats} loggedUser={user} />
 				</Grid.Col>
 			</Grid>
 		);

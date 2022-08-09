@@ -9,10 +9,10 @@ import { RootState } from "@/app";
 
 interface ChatsSideBarProps {
 	chat: ChatType;
-	currentUserId: string;
+	title: string;
 }
 
-const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, currentUserId }) => {
+const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 	const dispatch = useDispatch();
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
 	const { colorScheme } = useMantineColorScheme();
@@ -49,7 +49,7 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, currentUserId }) => {
 		>
 			<Stack>
 				<Group grow align="center" position="apart">
-					<Title order={5}>{GetChatTitle(chat, currentUserId)}</Title>
+					<Title order={5}>{title}</Title>
 					<Text size="xs" align="right" weight={100}>
 						{formatRelative(new Date(chat.base.updatedAt), new Date())}
 					</Text>
