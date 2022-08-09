@@ -17,7 +17,7 @@ import { GetChatTitle } from "@/utils/aux/chat.aux";
 import MessageComp from "@/components/layout/Messages";
 import { MessageType } from "@/features/types/chat";
 import CreateMessageForm from "@/components/form/CreateMessage";
-import { ChevronsDown, ChevronsUp } from "tabler-icons-react";
+import { ChevronsDown, ChevronsUp, Typography, TypographyOff } from "tabler-icons-react";
 
 interface MainPanelProps {}
 
@@ -29,6 +29,8 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const [messages, setMessages] = useState<MessageType[]>([]);
 	const { colorScheme } = useMantineColorScheme();
+	const [newLinesMessage, setNewLinesMessage] = useState(false);
+
 	const viewport = useRef<HTMLDivElement>(null);
 
 	const dark = colorScheme === "dark";
@@ -151,6 +153,19 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 							<ChevronsUp />
 						</ActionIcon>
 					</Tooltip>
+					<Tooltip withArrow label="Enter new lines messages">
+						<ActionIcon
+							ml={"sm"}
+							onClick={() => {
+								setNewLinesMessage(!newLinesMessage);
+							}}
+							radius="lg"
+							size="lg"
+							variant="outline"
+						>
+							{newLinesMessage ? <Typography /> : <TypographyOff />}
+						</ActionIcon>
+					</Tooltip>
 				</Group>
 				<Grid align="center" gutter="xs" grow>
 					{/* <Grid.Col offset={1} span={1}>
@@ -161,7 +176,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 					</Group>
 				</Grid.Col> */}
 					<Grid.Col span={12}>
-						<CreateMessageForm />
+						<CreateMessageForm showSubmitButton={newLinesMessage} />
 					</Grid.Col>
 				</Grid>
 			</Stack>

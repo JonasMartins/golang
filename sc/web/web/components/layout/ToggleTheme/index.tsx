@@ -19,7 +19,6 @@ const ToggleTheme: NextPage = () => {
 		<Group>
 			<ActionIcon
 				variant="transparent"
-				color={dark ? "yellow" : "indigo"}
 				onClick={handleToggleTheme}
 				title="Toggle color scheme"
 			>
@@ -29,7 +28,7 @@ const ToggleTheme: NextPage = () => {
 				size="lg"
 				araia-label="change theme"
 				checked={checked}
-				color={"indigo"}
+				color={"cyan"}
 				onChange={handleToggleTheme}
 			/>
 		</Group>
