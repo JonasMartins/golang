@@ -30,6 +30,12 @@ export type ChatType = {
 	}>;
 };
 
+export type Title = {
+	title: string;
+};
+
+export type ChatTypeTitled = ChatType | Title;
+
 export type MessageType = {
 	__typename?: "Message";
 	Body: string;

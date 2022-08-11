@@ -2,7 +2,6 @@ import { Paper, Stack, Group, Title, Text, Sx, useMantineColorScheme } from "@ma
 import type { NextPage } from "next";
 import { ChatType } from "@/features/types/chat";
 import { formatRelative } from "date-fns";
-import { GetChatTitle } from "@/utils/aux/chat.aux";
 import { setFocusedChat } from "@/features/chat/chatSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app";

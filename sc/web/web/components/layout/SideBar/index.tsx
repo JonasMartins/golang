@@ -1,12 +1,12 @@
+import ChatsSideBar from "@/components/layout/ChatsSideBar";
 import SettingsMenu from "@/components/layout/SettingsMenu";
+import { ChatType } from "@/features/types/chat";
+import { GetChatTitle } from "@/utils/aux/chat.aux";
+import { UserJwt } from "@/utils/hooks";
 import { Grid, Input, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { useState } from "react";
 import { Search } from "tabler-icons-react";
-import ChatsSideBar from "@/components/layout/ChatsSideBar";
-import { UserJwt } from "@/utils/hooks";
-import { ChatType } from "@/features/types/chat";
-import { GetChatTitle } from "@/utils/aux/chat.aux";
 
 interface SideBarProps {
 	chats: ChatType[] | undefined;
@@ -16,6 +16,7 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ chats, loggedUser }) => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
 	const [searchTerm, setSearchTerm] = useState("");
+	const [chatsState, setChatsState] = useState<ChatType[] | undefined>(chats);
 
 	const chatsEle = (
 		<Stack
@@ -28,8 +29,8 @@ const SideBar: React.FC<SideBarProps> = ({ chats, loggedUser }) => {
 			spacing="lg"
 			mt="lg"
 		>
-			{chats &&
-				chats.map(x => (
+			{chatsState &&
+				chatsState.map(x => (
 					<ChatsSideBar key={x.base.id} chat={x} title={GetChatTitle(x, loggedUser.id)} />
 				))}
 		</Stack>
@@ -44,9 +45,23 @@ const SideBar: React.FC<SideBarProps> = ({ chats, loggedUser }) => {
 						value={searchTerm}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 							setSearchTerm(e.target.value);
+
+							if (e.target.value.length >= 2) {
+								let regexTerm = "[ˆ,]*" + e.target.value.toLowerCase() + "[,$]*";
+
+								setChatsState(prevChats => {
+									return prevChats?.filter(x =>
+										GetChatTitle(x, loggedUser.id)
+											.toLowerCase()
+											.match(regexTerm)
+									);
+								});
+							} else if (e.target.value.length === 0) {
+								setChatsState(chats);
+							}
 						}}
 						variant="filled"
-						placeholder="Search"
+						placeholder="Search a chat"
 					/>
 				</Grid.Col>
 				{!webScreen && (
