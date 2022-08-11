@@ -7,7 +7,6 @@ import { CreateMessageInput } from "@/generated/graphql";
 import { useDispatch } from "react-redux";
 import { MessageType } from "@/features/types/chat";
 import { addMessage } from "@/features/chat/chatSlicer";
-import { useState } from "react";
 import { MoodSmile, Send } from "tabler-icons-react";
 
 interface CreateMessageFormProps {
@@ -23,7 +22,6 @@ type input = {
 const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton }) => {
 	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
-	const [chosenEmoji, setChosenEmoji] = useState(null);
 	const dispatch = useDispatch();
 
 	const form = useForm({
@@ -42,10 +40,15 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 			ChatId: chatFocused?.base.id || "",
 			base: {
 				id: "",
-				createdAt: new Date(),
+				createdAt: new Date().toDateString(),
 			},
 			Body: values.body,
 		};
+		form.setValues({
+			body: "",
+			authorId: user?.id || "",
+			chatId: chatFocused?.base.id || "",
+		});
 		dispatch(addMessage(newMessage));
 	};
 	/**
@@ -59,7 +62,7 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 	 * @returns boolean
 	 */
 	const handleIfInputCanSubmitOnEnter = (key: string): boolean => {
-		if (key === "Enter" && form.values.body.indexOf("\n") !== -1) {
+		if (key === "Enter") {
 			return true;
 		}
 		return false;
@@ -78,10 +81,14 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 		<Stack mb="sm" mr="xs" ml="xs">
 			<form
 				onKeyDown={e => {
-					if (handleIfInputCanSubmitOnEnter(e.key)) {
+					if (handleIfInputCanSubmitOnEnter(e.key) && !showSubmitButton) {
 						if (handleIfMessageBodyHasValidCharacters()) {
 							HandleCreateMessage(form.values);
+						} else {
+							console.log("2");
 						}
+					} else {
+						console.log("1");
 					}
 				}}
 				onSubmit={form.onSubmit(values => HandleCreateMessage(values))}
