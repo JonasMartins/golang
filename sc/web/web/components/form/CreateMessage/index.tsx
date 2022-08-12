@@ -84,11 +84,7 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 					if (handleIfInputCanSubmitOnEnter(e.key) && !showSubmitButton) {
 						if (handleIfMessageBodyHasValidCharacters()) {
 							HandleCreateMessage(form.values);
-						} else {
-							console.log("2");
 						}
-					} else {
-						console.log("1");
 					}
 				}}
 				onSubmit={form.onSubmit(values => HandleCreateMessage(values))}

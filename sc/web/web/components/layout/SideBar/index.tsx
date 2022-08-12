@@ -7,16 +7,18 @@ import { Grid, Input, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { useState } from "react";
 import { Search } from "tabler-icons-react";
+import { RootState } from "@/app";
+import { useSelector } from "react-redux";
 
 interface SideBarProps {
-	chats: ChatType[] | undefined;
 	loggedUser: UserJwt;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ chats, loggedUser }) => {
+const SideBar: React.FC<SideBarProps> = ({ loggedUser }) => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
 	const [searchTerm, setSearchTerm] = useState("");
-	const [chatsState, setChatsState] = useState<ChatType[] | undefined>(chats);
+	const chatsFromReducer = useSelector((state: RootState) => state.persistedReducer.chat.chats);
+	const [chatsState, setChatsState] = useState<ChatType[] | undefined>(chatsFromReducer);
 
 	const chatsEle = (
 		<Stack
@@ -57,7 +59,7 @@ const SideBar: React.FC<SideBarProps> = ({ chats, loggedUser }) => {
 									);
 								});
 							} else if (e.target.value.length === 0) {
-								setChatsState(chats);
+								setChatsState(chatsFromReducer);
 							}
 						}}
 						variant="filled"

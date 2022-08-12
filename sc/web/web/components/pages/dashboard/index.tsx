@@ -9,7 +9,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Loader from "@/components/layout/Loader";
 import { GetUsersChatsDocument, GetUsersChatsQuery } from "@/generated/graphql";
 import { useQuery } from "urql";
-import { setFocusedChat } from "@/features/chat/chatSlicer";
+import { setFocusedChat, setChats as setChatsFromRedux } from "@/features/chat/chatSlicer";
 import { setLoggedUser } from "@/features/user/userSlice";
 import { useDispatch } from "react-redux";
 
@@ -54,6 +54,7 @@ const Dashboard: NextPage = () => {
 
 	useEffect(() => {
 		if (result.data?.getUsersChats.chats.length) {
+			dispatch(setChatsFromRedux(result.data.getUsersChats.chats));
 			dispatch(setFocusedChat(result.data.getUsersChats.chats[0]));
 		}
 	}, [result.fetching, result.data?.getUsersChats.chats.length, dispatch]);
@@ -70,7 +71,7 @@ const Dashboard: NextPage = () => {
 				})}
 			>
 				<Grid.Col span={4} sx={{ borderRightStyle: "double" }}>
-					<SideBar chats={result.data?.getUsersChats.chats} loggedUser={user} />
+					<SideBar loggedUser={user} />
 				</Grid.Col>
 				<Grid.Col span={8}>
 					<MainPanel />
@@ -90,7 +91,7 @@ const Dashboard: NextPage = () => {
 				})}
 			>
 				<Grid.Col span={12}>
-					<SideBar chats={result.data?.getUsersChats.chats} loggedUser={user} />
+					<SideBar loggedUser={user} />
 				</Grid.Col>
 			</Grid>
 		);
