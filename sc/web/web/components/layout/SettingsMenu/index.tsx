@@ -3,16 +3,21 @@ import { Settings, Search, Photo, MessageCircle, Trash, Logout } from "tabler-ic
 import { useRouter } from "next/dist/client/router";
 import { useLogoutMutation } from "@/generated/graphql";
 //import withUrqlClientDef from "@/components/hoc/HocWithUrqlClient";
+import { persistor } from "@/app";
+import { clearState } from "@/features/chat/chatSlicer";
+import { useDispatch } from "react-redux";
 
 interface SettingsMenuProps {}
 
 const SettingsMenu: React.FC<SettingsMenuProps> = () => {
 	const router = useRouter();
-
+	const dispatch = useDispatch();
 	const [{}, logout] = useLogoutMutation();
 
 	const HandleLogout = async () => {
 		await logout();
+		await persistor.purge();
+		dispatch(clearState());
 		router.push("/login");
 	};
 

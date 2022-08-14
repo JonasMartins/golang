@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { MessageType } from "@/features/types/chat";
 import { addMessage } from "@/features/chat/chatSlicer";
 import { MoodSmile, Send } from "tabler-icons-react";
+import { uuidv4Like } from "@/utils/aux/chat.aux";
 
 interface CreateMessageFormProps {
 	showSubmitButton: boolean;
@@ -39,8 +40,8 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 			},
 			ChatId: chatFocused?.base.id || "",
 			base: {
-				id: "",
-				createdAt: new Date().toDateString(),
+				id: uuidv4Like(),
+				createdAt: new Date().getTime(),
 			},
 			Body: values.body,
 		};

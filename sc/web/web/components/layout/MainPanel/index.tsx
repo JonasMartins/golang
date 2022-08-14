@@ -113,17 +113,15 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 				>
 					<ScrollArea style={{ height: "57vh" }} viewportRef={viewport}>
 						{messages.map((x, i) => (
-							<>
-								<MessageComp
-									key={x.base.id}
-									message={x}
-									nextMessageDate={
-										i + 1 < messages.length
-											? new Date(messages[i + 1].base.createdAt)
-											: new Date(x.base.createdAt)
-									}
-								/>
-							</>
+							<MessageComp
+								key={x.base.id}
+								message={x}
+								nextMessageDate={
+									i + 1 < messages.length
+										? new Date(messages[i + 1].base.createdAt)
+										: new Date(x.base.createdAt)
+								}
+							/>
 						))}
 					</ScrollArea>
 				</Stack>

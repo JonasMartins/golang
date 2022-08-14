@@ -48,7 +48,8 @@ const Messages: NextPage<MessagesProps> = ({ message, nextMessageDate }) => {
 								color={message.Seen?.includes(user!.id) ? "#05a3f4" : "#797c7b"}
 							/>
 							<Text size="xs">
-								{formatRelative(new Date(message.base.createdAt), new Date())}
+								{/* {formatRelative(new Date(message.base.createdAt), new Date())} */}
+								{message.base.createdAt}
 							</Text>
 						</Group>
 					</Stack>

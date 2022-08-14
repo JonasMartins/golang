@@ -5,7 +5,7 @@ import { GetChatTitle } from "@/utils/aux/chat.aux";
 import { UserJwt } from "@/utils/hooks";
 import { Grid, Input, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search } from "tabler-icons-react";
 import { RootState } from "@/app";
 import { useSelector } from "react-redux";
@@ -37,6 +37,13 @@ const SideBar: React.FC<SideBarProps> = ({ loggedUser }) => {
 				))}
 		</Stack>
 	);
+
+	useEffect(() => {
+		console.log("changed");
+		chatsFromReducer.map(x => {
+			console.log(x.Messages.length);
+		});
+	}, [chatsFromReducer]);
 
 	return (
 		<Stack p="md">

@@ -14,6 +14,7 @@ interface ChatsSideBarProps {
 const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 	const dispatch = useDispatch();
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
+	const chatsFromReducer = useSelector((state: RootState) => state.persistedReducer.chat.chats);
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === "dark";
 
@@ -44,13 +45,17 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 			withBorder
 			onClick={() => {
 				dispatch(setFocusedChat(chat));
+				chatsFromReducer.map(x => {
+					console.log(x.Messages.length);
+				});
 			}}
 		>
 			<Stack>
 				<Group grow align="center" position="apart">
-					<Title order={5}>{title}</Title>
+					<Title order={5}>{`${title} (${chat.Messages.length})`}</Title>
 					<Text size="xs" align="right" weight={100}>
-						{formatRelative(new Date(chat.base.updatedAt), new Date())}
+						{/* {formatRelative(new Date(chat.base.updatedAt), new Date())} */}
+						{chat.base.updatedAt}
 					</Text>
 				</Group>
 				<Text size="xs">{chat.Messages[0].Body}</Text>

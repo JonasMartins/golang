@@ -44,10 +44,18 @@ export const chatSlice = createSlice({
 		setChats: (state, action: PayloadAction<ChatType[]>) => {
 			state.chats = action.payload;
 		},
+
+		clearState: state => {
+			state.chats = [];
+			state.searchTerm = "";
+			state.hasAddedMessage = null;
+			state.value = null;
+		},
 	},
 });
 
-export const { setFocusedChat, addMessage, setSearchTerm, setChats } = chatSlice.actions;
+export const { setFocusedChat, addMessage, setSearchTerm, setChats, clearState } =
+	chatSlice.actions;
 
 const chatReducer = chatSlice.reducer;
 
