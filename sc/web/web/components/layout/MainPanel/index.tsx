@@ -38,7 +38,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 		if (user && chatFocused) {
 			return GetChatTitle(chatFocused, user.id);
 		}
-		return "Unknown";
+		return "";
 	};
 
 	const scrollToBottom = () => {
@@ -61,8 +61,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 
 	const handleSettingMessagesToState = useCallback(() => {
 		if (chatFocused) {
-			const length = chatFocused.Messages.length - 1;
-			for (let i = 0; i <= length; i++) {
+			for (let i = 0; i < chatFocused.Messages.length; i++) {
 				const m: MessageType = chatFocused.Messages[i];
 				setMessages(x => [...x, m]);
 			}
@@ -87,6 +86,12 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	useEffect(() => {
 		scrollToBottom();
 	}, [messages]);
+
+	useEffect(() => {
+		return () => {
+			setMessages([]);
+		};
+	}, []);
 
 	const content = (
 		<Stack mb="sm" justify="space-between" sx={{ height: "100vh" }}>
@@ -133,8 +138,9 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 							ml={"sm"}
 							onClick={scrollToBottom}
 							radius="lg"
-							size="lg"
+							size="sm"
 							variant="outline"
+							disabled={chatFocused ? false : true}
 						>
 							<ChevronsDown />
 						</ActionIcon>
@@ -145,8 +151,9 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 							ml={"sm"}
 							onClick={scrollToTop}
 							radius="lg"
-							size="lg"
+							size="sm"
 							variant="outline"
+							disabled={chatFocused ? false : true}
 						>
 							<ChevronsUp />
 						</ActionIcon>
@@ -158,8 +165,9 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 								setNewLinesMessage(!newLinesMessage);
 							}}
 							radius="lg"
-							size="lg"
+							size="sm"
 							variant="outline"
+							disabled={chatFocused ? false : true}
 						>
 							{newLinesMessage ? <Typography /> : <TypographyOff />}
 						</ActionIcon>

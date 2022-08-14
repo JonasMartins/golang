@@ -2,9 +2,10 @@ import { Paper, Stack, Group, Title, Text, Sx, useMantineColorScheme } from "@ma
 import type { NextPage } from "next";
 import { ChatType } from "@/features/types/chat";
 import { formatRelative } from "date-fns";
-import { setFocusedChat } from "@/features/chat/chatSlicer";
+import { setFocusedChat, clearMessageAddedOnChangeChat } from "@/features/chat/chatSlicer";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app";
+import { useEffect } from "react";
 
 interface ChatsSideBarProps {
 	chat: ChatType;
@@ -14,6 +15,9 @@ interface ChatsSideBarProps {
 const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 	const dispatch = useDispatch();
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
+	const hasAddedMessage = useSelector(
+		(state: RootState) => state.persistedReducer.chat.hasAddedMessage
+	);
 	const chatsFromReducer = useSelector((state: RootState) => state.persistedReducer.chat.chats);
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === "dark";
@@ -44,18 +48,15 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 			radius="md"
 			withBorder
 			onClick={() => {
-				dispatch(setFocusedChat(chat));
-				chatsFromReducer.map(x => {
-					console.log(x.Messages.length);
-				});
+				dispatch(clearMessageAddedOnChangeChat());
+				dispatch(setFocusedChat(chat.base.id));
 			}}
 		>
 			<Stack>
 				<Group grow align="center" position="apart">
-					<Title order={5}>{`${title} (${chat.Messages.length})`}</Title>
+					<Title order={6}>{`${title} (${chat.Messages.length})`}</Title>
 					<Text size="xs" align="right" weight={100}>
-						{/* {formatRelative(new Date(chat.base.updatedAt), new Date())} */}
-						{chat.base.updatedAt}
+						{formatRelative(new Date(chat.base.updatedAt), new Date())}
 					</Text>
 				</Group>
 				<Text size="xs">{chat.Messages[0].Body}</Text>

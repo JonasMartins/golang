@@ -1,6 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { ChatType, MessageType } from "@/features/types/chat";
+import { PURGE } from "redux-persist";
 
 export interface ChatState {
 	value: ChatType | null;
@@ -8,6 +9,11 @@ export interface ChatState {
 	searchTerm: string;
 	chats: ChatType[];
 }
+
+export const chatAdapter = createEntityAdapter<ChatType>({
+	selectId: chat => chat.base.id,
+	sortComparer: (x, y) => (x.base.updatedAt > y.base.updatedAt ? 1 : -1),
+});
 
 const initialState: ChatState = {
 	value: null,
@@ -20,8 +26,15 @@ export const chatSlice = createSlice({
 	name: "chat",
 	initialState,
 	reducers: {
-		setFocusedChat: (state, action: PayloadAction<ChatType | null>) => {
-			state.value = action.payload;
+		setFocusedChat: (state, action: PayloadAction<string>) => {
+			if (state.value && state.value.base.id === action.payload) return;
+
+			let index = state.chats.findIndex(x => {
+				return x.base.id === action.payload;
+			});
+			if (index !== -1) {
+				state.value = state.chats[index];
+			}
 		},
 
 		addMessage: (state, action: PayloadAction<MessageType | null>) => {
@@ -35,6 +48,16 @@ export const chatSlice = createSlice({
 					state.chats[index].Messages.push(action.payload);
 				}
 			}
+		},
+		/**
+		 * Every time a chat change its focus, then
+		 * the most recent added message must be seted to null
+		 * or will trigger the useeffect on ChatsSideBar and
+		 * added a repeated message on the most recent added
+		 * message's chat
+		 */
+		clearMessageAddedOnChangeChat: state => {
+			state.hasAddedMessage = null;
 		},
 
 		setSearchTerm: (state, action: PayloadAction<string>) => {
@@ -52,10 +75,21 @@ export const chatSlice = createSlice({
 			state.value = null;
 		},
 	},
+	// extraReducers: buider => {
+	// 	buider.addCase(PURGE, state => {
+	// 		chatAdapter.removeAll()
+	// 	});
+	// },
 });
 
-export const { setFocusedChat, addMessage, setSearchTerm, setChats, clearState } =
-	chatSlice.actions;
+export const {
+	setFocusedChat,
+	addMessage,
+	setSearchTerm,
+	setChats,
+	clearState,
+	clearMessageAddedOnChangeChat,
+} = chatSlice.actions;
 
 const chatReducer = chatSlice.reducer;
 

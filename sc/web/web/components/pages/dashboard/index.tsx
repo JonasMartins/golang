@@ -9,7 +9,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Loader from "@/components/layout/Loader";
 import { GetUsersChatsDocument, GetUsersChatsQuery } from "@/generated/graphql";
 import { useQuery } from "urql";
-import { setFocusedChat, setChats as setChatsFromRedux } from "@/features/chat/chatSlicer";
+import { setChats as setChatsFromRedux } from "@/features/chat/chatSlicer";
 import { setLoggedUser } from "@/features/user/userSlice";
 import { useDispatch } from "react-redux";
 
@@ -55,12 +55,11 @@ const Dashboard: NextPage = () => {
 	useEffect(() => {
 		if (result.data?.getUsersChats.chats.length) {
 			dispatch(setChatsFromRedux(result.data.getUsersChats.chats));
-			dispatch(setFocusedChat(result.data.getUsersChats.chats[0]));
 		}
 	}, [result.fetching, result.data?.getUsersChats.chats.length, dispatch]);
 
 	const web =
-		!user || loadEffect ? (
+		!user || loadEffect || result.fetching ? (
 			<Loader />
 		) : (
 			<Grid
@@ -80,7 +79,7 @@ const Dashboard: NextPage = () => {
 		);
 
 	const mobile =
-		!user || loadEffect ? (
+		!user || loadEffect || result.fetching ? (
 			<Loader />
 		) : (
 			<Grid

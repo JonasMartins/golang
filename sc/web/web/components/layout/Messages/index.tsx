@@ -37,19 +37,19 @@ const Messages: NextPage<MessagesProps> = ({ message, nextMessageDate }) => {
 	};
 
 	return (
-		<Stack p="sm" mt="xs">
+		<Stack p="xs" mt="xs">
 			<Group sx={{ justifyContent: messageAuthor ? "flex-end" : "flex-start" }}>
-				<Paper sx={dark ? darkSx : lightSx} shadow="md" p="sm" radius={"lg"}>
+				<Paper sx={dark ? darkSx : lightSx} shadow="md" p="xs" radius={"lg"}>
 					<Stack spacing="sm">
-						<Text size="sm">{message.Body}</Text>
+						<Text size="xs">{message.Body}</Text>
 						<Group position="apart">
 							<Eye
-								size={16}
+								size={14}
 								color={message.Seen?.includes(user!.id) ? "#05a3f4" : "#797c7b"}
 							/>
 							<Text size="xs">
-								{/* {formatRelative(new Date(message.base.createdAt), new Date())} */}
-								{message.base.createdAt}
+								{formatRelative(new Date(message.base.createdAt), new Date())}
+								{/* {message.base.createdAt} */}
 							</Text>
 						</Group>
 					</Stack>

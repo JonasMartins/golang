@@ -93,6 +93,7 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 				<Group spacing={0}>
 					<Group sx={{ flexGrow: 1 }}>
 						<Textarea
+							disabled={chatFocused ? false : true}
 							sx={{ flexGrow: 1 }}
 							p="sm"
 							radius="lg"
@@ -100,7 +101,12 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 							{...form.getInputProps("body")}
 							required
 							rightSection={
-								<ActionIcon size="xl" radius="xl" mr="lg">
+								<ActionIcon
+									size="xl"
+									radius="xl"
+									mr="lg"
+									disabled={chatFocused ? false : true}
+								>
 									<MoodSmile />
 								</ActionIcon>
 							}
