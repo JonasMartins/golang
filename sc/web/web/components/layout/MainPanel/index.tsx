@@ -18,6 +18,7 @@ import MessageComp from "@/components/layout/Messages";
 import { MessageType } from "@/features/types/chat";
 import CreateMessageForm from "@/components/form/CreateMessage";
 import { ChevronsDown, ChevronsUp, Typography, TypographyOff } from "tabler-icons-react";
+import SettingsModal from "@/components/modal/Settings";
 
 interface MainPanelProps {}
 
@@ -26,6 +27,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	const messageHasBeenAdded = useSelector(
 		(state: RootState) => state.persistedReducer.chat.hasAddedMessage
 	);
+
 	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const [messages, setMessages] = useState<MessageType[]>([]);
 	const { colorScheme } = useMantineColorScheme();
@@ -179,6 +181,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 					</Grid.Col>
 				</Grid>
 			</Stack>
+			<SettingsModal />
 		</Stack>
 	);
 

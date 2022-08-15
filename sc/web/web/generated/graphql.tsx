@@ -114,12 +114,18 @@ export type MessagesResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changeProfilePicture: CreateAction;
   createChat: CreateAction;
   createMessage: CreateAction;
   deleteUser: DeleteAction;
   login: AuthResponse;
   logout: Scalars['Boolean'];
   registerUser: AuthResponse;
+};
+
+
+export type MutationChangeProfilePictureArgs = {
+  input: UploadProfilePicture;
 };
 
 
@@ -212,6 +218,11 @@ export type SubscriptionMessageSendedArgs = {
   chatId: Scalars['String'];
 };
 
+export type UploadProfilePicture = {
+  file: Scalars['Upload'];
+  userId: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   base: Base;
@@ -289,6 +300,20 @@ export const RegisterUserDocument = gql`
 export function useRegisterUserMutation() {
   return Urql.useMutation<RegisterUserMutation, RegisterUserMutationVariables>(RegisterUserDocument);
 };
+export const ChangeProfilePictureDocument = gql`
+    mutation ChangeProfilePicture($input: UploadProfilePicture!) {
+  changeProfilePicture(input: $input) {
+    errors {
+      message
+    }
+    created
+  }
+}
+    `;
+
+export function useChangeProfilePictureMutation() {
+  return Urql.useMutation<ChangeProfilePictureMutation, ChangeProfilePictureMutationVariables>(ChangeProfilePictureDocument);
+};
 export const GetUsersChatsDocument = gql`
     query GetUsersChats($userId: String!) {
   getUsersChats(userId: $userId) {
@@ -351,6 +376,13 @@ export type RegisterUserMutationVariables = Exact<{
 
 
 export type RegisterUserMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'AuthResponse', token: string, errors: Array<{ __typename?: 'Error', method: string, message: string, field: string }> } };
+
+export type ChangeProfilePictureMutationVariables = Exact<{
+  input: UploadProfilePicture;
+}>;
+
+
+export type ChangeProfilePictureMutation = { __typename?: 'Mutation', changeProfilePicture: { __typename?: 'CreateAction', created: boolean, errors: Array<{ __typename?: 'Error', message: string }> } };
 
 export type GetUsersChatsQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -889,6 +921,29 @@ export default {
         "kind": "OBJECT",
         "name": "Mutation",
         "fields": [
+          {
+            "name": "changeProfilePicture",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CreateAction",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
           {
             "name": "createChat",
             "type": {

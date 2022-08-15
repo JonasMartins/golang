@@ -2,10 +2,10 @@ import { Menu, Divider, Text } from "@mantine/core";
 import { Settings, Search, Photo, MessageCircle, Trash, Logout } from "tabler-icons-react";
 import { useRouter } from "next/dist/client/router";
 import { useLogoutMutation } from "@/generated/graphql";
-//import withUrqlClientDef from "@/components/hoc/HocWithUrqlClient";
 import { persistor } from "@/app";
 import { clearState } from "@/features/chat/chatSlicer";
 import { useDispatch } from "react-redux";
+import { setOpenSettingsModal } from "@/features/layout/modalSlicer";
 
 interface SettingsMenuProps {}
 
@@ -24,7 +24,12 @@ const SettingsMenu: React.FC<SettingsMenuProps> = () => {
 	return (
 		<Menu>
 			<Menu.Label>Application</Menu.Label>
-			<Menu.Item icon={<Settings size={14} />}>Settings</Menu.Item>
+			<Menu.Item
+				icon={<Settings size={14} />}
+				onClick={() => dispatch(setOpenSettingsModal(true))}
+			>
+				Settings
+			</Menu.Item>
 			<Menu.Item icon={<MessageCircle size={14} />}>Messages</Menu.Item>
 			<Menu.Item icon={<Photo size={14} />}>Gallery</Menu.Item>
 			<Menu.Item

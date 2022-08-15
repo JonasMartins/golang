@@ -1,7 +1,6 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { ChatType, MessageType } from "@/features/types/chat";
-import { PURGE } from "redux-persist";
 
 export interface ChatState {
 	value: ChatType | null;

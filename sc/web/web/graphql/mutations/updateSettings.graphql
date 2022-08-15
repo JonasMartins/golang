@@ -1,0 +1,8 @@
+mutation ChangeProfilePicture($input: UploadProfilePicture!) {
+	changeProfilePicture(input: $input) {
+		errors {
+			message
+		}
+		created
+	}
+}

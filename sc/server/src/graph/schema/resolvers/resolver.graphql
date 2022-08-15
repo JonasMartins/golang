@@ -15,6 +15,7 @@ type Mutation {
   deleteUser(id: String!): DeleteAction!
   createMessage(input: CreateMessageInput!): CreateAction!
   createChat(input: CreateChatInput!): CreateAction!
+  changeProfilePicture(input: UploadProfilePicture!): CreateAction!
 }
 
 type Subscription {

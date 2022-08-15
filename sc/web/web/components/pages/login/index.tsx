@@ -8,24 +8,32 @@ import { useState } from "react";
 
 const Login: NextPage = () => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
-	const [activeTab, setActiveTab] = useState(0);
+	const [activeTab, setActiveTab] = useState<string | null>("Login");
 	return (
 		<Stack justify="flex-start">
 			<Group position="right" m="md">
 				<ToggleTheme />
 			</Group>
 			<Stack spacing="md" justify="center" align="stretch">
-				<Title align="center">{activeTab === 0 ? "Login" : "Register"}</Title>
+				<Title align="center">{activeTab}</Title>
 				<Grid>
 					<Grid.Col span={webScreen ? 4 : 1} />
 					<Grid.Col span={webScreen ? 4 : 10}>
-						<Tabs grow active={activeTab} onTabChange={setActiveTab}>
-							<Tabs.Tab label="Login" aria-label="login">
+						<Tabs defaultValue={"Login"} onTabChange={setActiveTab}>
+							<Tabs.List grow>
+								<Tabs.Tab value="Login" aria-label="login">
+									Login
+								</Tabs.Tab>
+								<Tabs.Tab value="Register" aria-label="register">
+									Register
+								</Tabs.Tab>
+							</Tabs.List>
+							<Tabs.Panel value="Login">
 								<LoginForm />
-							</Tabs.Tab>
-							<Tabs.Tab label="Register" aria-label="register">
+							</Tabs.Panel>
+							<Tabs.Panel value="Register">
 								<RegisterForm />
-							</Tabs.Tab>
+							</Tabs.Panel>
 						</Tabs>
 					</Grid.Col>
 					<Grid.Col span={webScreen ? 4 : 1} />

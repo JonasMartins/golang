@@ -117,12 +117,13 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateChat    func(childComplexity int, input model.CreateChatInput) int
-		CreateMessage func(childComplexity int, input model.CreateMessageInput) int
-		DeleteUser    func(childComplexity int, id string) int
-		Login         func(childComplexity int, input model.LoginInput) int
-		Logout        func(childComplexity int) int
-		RegisterUser  func(childComplexity int, input model.RegisterUserInput) int
+		ChangeProfilePicture func(childComplexity int, input model.UploadProfilePicture) int
+		CreateChat           func(childComplexity int, input model.CreateChatInput) int
+		CreateMessage        func(childComplexity int, input model.CreateMessageInput) int
+		DeleteUser           func(childComplexity int, id string) int
+		Login                func(childComplexity int, input model.LoginInput) int
+		Logout               func(childComplexity int) int
+		RegisterUser         func(childComplexity int, input model.RegisterUserInput) int
 	}
 
 	Query struct {
@@ -173,6 +174,7 @@ type MutationResolver interface {
 	DeleteUser(ctx context.Context, id string) (*model.DeleteAction, error)
 	CreateMessage(ctx context.Context, input model.CreateMessageInput) (*model.CreateAction, error)
 	CreateChat(ctx context.Context, input model.CreateChatInput) (*model.CreateAction, error)
+	ChangeProfilePicture(ctx context.Context, input model.UploadProfilePicture) (*model.CreateAction, error)
 }
 type QueryResolver interface {
 	Users(ctx context.Context, limit *int, offset *int) (*model.UsersResponse, error)
@@ -426,6 +428,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.MessagesResponse.Messages(childComplexity), true
 
+	case "Mutation.changeProfilePicture":
+		if e.complexity.Mutation.ChangeProfilePicture == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_changeProfilePicture_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.ChangeProfilePicture(childComplexity, args["input"].(model.UploadProfilePicture)), true
+
 	case "Mutation.createChat":
 		if e.complexity.Mutation.CreateChat == nil {
 			break
@@ -664,6 +678,7 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 		ec.unmarshalInputCreateMessageInput,
 		ec.unmarshalInputLoginInput,
 		ec.unmarshalInputRegisterUserInput,
+		ec.unmarshalInputUploadProfilePicture,
 	)
 	first := true
 
@@ -762,6 +777,10 @@ input LoginInput {
   email: String!
   password: String!
 }
+input UploadProfilePicture {
+  userId: String!
+  file: Upload!
+}
 `, BuiltIn: false},
 	{Name: "../schema/resolvers/resolver.graphql", Input: `type Query {
   users(limit: Int, offset: Int): UsersResponse!
@@ -780,6 +799,7 @@ type Mutation {
   deleteUser(id: String!): DeleteAction!
   createMessage(input: CreateMessageInput!): CreateAction!
   createChat(input: CreateChatInput!): CreateAction!
+  changeProfilePicture(input: UploadProfilePicture!): CreateAction!
 }
 
 type Subscription {
@@ -895,6 +915,21 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
+
+func (ec *executionContext) field_Mutation_changeProfilePicture_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.UploadProfilePicture
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNUploadProfilePicture2srcᚋgraphᚋmodelᚐUploadProfilePicture(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
 
 func (ec *executionContext) field_Mutation_createChat_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
@@ -3079,6 +3114,67 @@ func (ec *executionContext) fieldContext_Mutation_createChat(ctx context.Context
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
 	if fc.Args, err = ec.field_Mutation_createChat_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_changeProfilePicture(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_changeProfilePicture(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().ChangeProfilePicture(rctx, fc.Args["input"].(model.UploadProfilePicture))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.CreateAction)
+	fc.Result = res
+	return ec.marshalNCreateAction2ᚖsrcᚋgraphᚋmodelᚐCreateAction(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_changeProfilePicture(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "errors":
+				return ec.fieldContext_CreateAction_errors(ctx, field)
+			case "created":
+				return ec.fieldContext_CreateAction_created(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type CreateAction", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_changeProfilePicture_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return
 	}
@@ -6092,6 +6188,37 @@ func (ec *executionContext) unmarshalInputRegisterUserInput(ctx context.Context,
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputUploadProfilePicture(ctx context.Context, obj interface{}) (model.UploadProfilePicture, error) {
+	var it model.UploadProfilePicture
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	for k, v := range asMap {
+		switch k {
+		case "userId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
+			it.UserID, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "file":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("file"))
+			it.File, err = ec.unmarshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 // endregion **************************** input.gotpl *****************************
 
 // region    ************************** interface.gotpl ***************************
@@ -6659,6 +6786,15 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
 				return ec._Mutation_createChat(ctx, field)
+			})
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "changeProfilePicture":
+
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_changeProfilePicture(ctx, field)
 			})
 
 			if out.Values[i] == graphql.Null {
@@ -7724,6 +7860,26 @@ func (ec *executionContext) marshalNTime2ᚖtimeᚐTime(ctx context.Context, sel
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) unmarshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx context.Context, v interface{}) (graphql.Upload, error) {
+	res, err := graphql.UnmarshalUpload(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNUpload2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx context.Context, sel ast.SelectionSet, v graphql.Upload) graphql.Marshaler {
+	res := graphql.MarshalUpload(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return res
+}
+
+func (ec *executionContext) unmarshalNUploadProfilePicture2srcᚋgraphᚋmodelᚐUploadProfilePicture(ctx context.Context, v interface{}) (model.UploadProfilePicture, error) {
+	res, err := ec.unmarshalInputUploadProfilePicture(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNUser2ᚕᚖsrcᚋinfraᚋormᚋgormᚋmodelsᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.User) graphql.Marshaler {

@@ -28,8 +28,8 @@ const SideBar: React.FC<SideBarProps> = ({ loggedUser }) => {
 				justifyContent: "center",
 				flexGrow: 1,
 			})}
-			spacing="lg"
-			mt="lg"
+			spacing="xs"
+			mt="xs"
 		>
 			{chatsState &&
 				chatsState.map(x => (

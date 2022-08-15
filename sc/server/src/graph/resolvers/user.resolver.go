@@ -442,3 +442,15 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 
 	return &result, nil
 }
+
+func (r *mutationResolver) ChangeProfilePicture(ctx context.Context, input model.UploadProfilePicture) (*model.CreateAction, error) {
+	errArr := []*model.Error{}
+	result := model.CreateAction{
+		Created: true,
+		Errors:  errArr,
+	}
+
+	fmt.Println("testing")
+
+	return &result, nil
+}

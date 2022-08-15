@@ -7,3 +7,7 @@ input LoginInput {
   email: String!
   password: String!
 }
+input UploadProfilePicture {
+  userId: String!
+  file: Upload!
+}

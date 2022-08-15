@@ -10,13 +10,15 @@
     "gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/server": "^11.10.0",
     "@fontsource/comfortaa": "^4.5.8",
     "@graphql-codegen/cli": "^2.6.4",
     "@graphql-codegen/typescript-urql": "^3.5.12",
-    "@mantine/core": "^4.2.11",
+    "@mantine/core": "^5.1.6",
     "@mantine/form": "^4.2.11",
-    "@mantine/hooks": "^4.2.11",
-    "@mantine/next": "^4.2.11",
+    "@mantine/hooks": "^5.1.6",
+    "@mantine/next": "^5.1.6",
     "@reduxjs/toolkit": "^1.8.3",
     "cookies-next": "^2.1.1",
     "date-fns": "^2.29.1",

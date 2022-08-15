@@ -3,6 +3,7 @@ import counterReducer from "@/features/counter/counterSlice";
 import tokenReducer from "@/features/token/tokenSlice";
 import chatReducer from "@/features/chat/chatSlicer";
 import userReducer from "@/features/user/userSlice";
+import modalReducer from "@/features/layout/modalSlicer";
 import storage from "redux-persist/lib/storage";
 import {
 	persistStore,
@@ -20,13 +21,14 @@ const rootReducer = combineReducers({
 	token: tokenReducer,
 	chat: chatReducer,
 	user: userReducer,
+	modal: modalReducer,
 });
 
 const persistConfig = {
 	key: "root",
 	version: 1,
 	storage,
-	blacklist: ["navigation", "counter"],
+	blacklist: ["navigation", "counter", "layout"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

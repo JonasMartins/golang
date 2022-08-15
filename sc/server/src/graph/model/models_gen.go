@@ -4,6 +4,8 @@ package model
 
 import (
 	"src/infra/orm/gorm/models"
+
+	"github.com/99designs/gqlgen/graphql"
 )
 
 type AuthResponse struct {
@@ -70,6 +72,11 @@ type RegisterUserInput struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type UploadProfilePicture struct {
+	UserID string         `json:"userId"`
+	File   graphql.Upload `json:"file"`
 }
 
 type UserResponse struct {
