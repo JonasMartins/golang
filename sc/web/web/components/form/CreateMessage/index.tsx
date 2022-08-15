@@ -1,14 +1,14 @@
-import type { NextPage } from "next";
 import { RootState } from "@/app";
-import { useSelector } from "react-redux";
-import { useForm } from "@mantine/form";
-import { Textarea, ActionIcon, Button, Stack, Grid, Group } from "@mantine/core";
-import { CreateMessageInput } from "@/generated/graphql";
-import { useDispatch } from "react-redux";
-import { MessageType } from "@/features/types/chat";
 import { addMessage } from "@/features/chat/chatSlicer";
-import { MoodSmile, Send } from "tabler-icons-react";
+import { MessageType } from "@/features/types/chat";
+import { CreateMessageInput, useCreateMessageMutation } from "@/generated/graphql";
 import { uuidv4Like } from "@/utils/aux/chat.aux";
+import { ActionIcon, Group, Stack, Textarea } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import type { NextPage } from "next";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { MoodSmile, Send } from "tabler-icons-react";
 
 interface CreateMessageFormProps {
 	showSubmitButton: boolean;
@@ -16,14 +16,16 @@ interface CreateMessageFormProps {
 
 type input = {
 	body: string;
-	authorId: string;
-	chatId: string;
 };
 
 const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton }) => {
 	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
+	const [errorInput, setErrorInput] = useState<input>({
+		body: "",
+	});
 	const dispatch = useDispatch();
+	const [{}, createMessage] = useCreateMessageMutation();
 
 	const form = useForm({
 		initialValues: {
@@ -33,24 +35,46 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 		},
 	});
 
-	const HandleCreateMessage = (values: CreateMessageInput) => {
-		const newMessage: MessageType = {
-			Author: {
-				name: user?.name!,
-			},
-			ChatId: chatFocused?.base.id || "",
-			base: {
-				id: uuidv4Like(),
-				createdAt: new Date().getTime(),
-			},
-			Body: values.body,
-		};
-		form.setValues({
-			body: "",
-			authorId: user?.id || "",
-			chatId: chatFocused?.base.id || "",
+	const HandleCreateMessage = async (values: CreateMessageInput) => {
+		if (!user || !chatFocused) {
+			setErrorInput(prevState => ({
+				...prevState,
+				body: "Server error",
+			}));
+			return;
+		}
+
+		values.authorId = user.id;
+		values.chatId = chatFocused.base.id;
+
+		const response = await createMessage({
+			input: values,
 		});
-		dispatch(addMessage(newMessage));
+
+		if (response.data?.createMessage.errors.length) {
+			setErrorInput(prevState => ({
+				...prevState,
+				body: response.data?.createMessage.errors[0].message || "Server Error",
+			}));
+		} else {
+			const newMessage: MessageType = {
+				Author: {
+					name: user.name,
+				},
+				ChatId: chatFocused.base.id,
+				base: {
+					id: uuidv4Like(),
+					createdAt: new Date().getTime(),
+				},
+				Body: values.body,
+			};
+			form.setValues({
+				body: "",
+				authorId: user.id,
+				chatId: chatFocused.base.id,
+			});
+			dispatch(addMessage(newMessage));
+		}
 	};
 	/**
 	 * If a enter has been clicked, this method will check
@@ -93,7 +117,7 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 				<Group spacing={0}>
 					<Group sx={{ flexGrow: 1 }}>
 						<Textarea
-							disabled={chatFocused ? false : true}
+							disabled={chatFocused || errorInput.body ? false : true}
 							sx={{ flexGrow: 1 }}
 							p="sm"
 							radius="lg"
@@ -105,11 +129,12 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 									size="xl"
 									radius="xl"
 									mr="lg"
-									disabled={chatFocused ? false : true}
+									disabled={chatFocused || errorInput.body ? false : true}
 								>
 									<MoodSmile />
 								</ActionIcon>
 							}
+							error={errorInput.body}
 						/>
 					</Group>
 					{showSubmitButton && (

@@ -10,7 +10,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 make: *** No rule to make target `all'.  Stop.
 
 
-# Make data base, printed on Sun Aug 14 14:36:57 2022
+# Make data base, printed on Sun Aug 14 21:02:12 2022
 
 # Variables
 
@@ -19,6 +19,7 @@ make: *** No rule to make target `all'.  Stop.
 # automatic
 ?F = $(notdir $?)
 # environment
+ 
 NVM_INC = /Users/jonasmartinssouza/.nvm/versions/node/v16.15.0/include/node
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
@@ -170,6 +171,7 @@ VSCODE_PID = 32303
 # Pattern-specific Variable Values
 
 # No pattern-specific variable values.
+ 
 
 # Directories
 
@@ -289,7 +291,6 @@ down:
 #  Modification time never checked.
 #  File has not been updated.
 #  commands to execute (from `Makefile', line 16):
- 
 	@echo "Stopping docker compose..."
 	docker-compose -f docker-compose.staging.yml down -v
 	@echo "Done"
@@ -308,6 +309,6 @@ down:
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Sun Aug 14 14:36:57 2022
+# Finished Make data base on Sun Aug 14 21:02:12 2022
 
  
