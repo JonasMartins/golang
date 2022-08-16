@@ -20,6 +20,7 @@
     "@mantine/hooks": "^5.1.6",
     "@mantine/next": "^5.1.6",
     "@reduxjs/toolkit": "^1.8.3",
+    "@urql/exchange-multipart-fetch": "^0.1.14",
     "cookies-next": "^2.1.1",
     "date-fns": "^2.29.1",
     "graphql": "^16.5.0",

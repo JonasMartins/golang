@@ -2,7 +2,8 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import { useState } from "react";
 import { MantineProvider, ColorSchemeProvider, ColorScheme } from "@mantine/core";
-import { createClient, Provider } from "urql";
+import { createClient, Provider, dedupExchange, cacheExchange } from "urql";
+import { multipartFetchExchange } from "@urql/exchange-multipart-fetch";
 import { SERVER_URL } from "@/utils/consts";
 import { store, persistor } from "@/app";
 import { Provider as ReduxProvider } from "react-redux";
@@ -15,6 +16,7 @@ const client = createClient({
 	fetchOptions: {
 		credentials: "include",
 	},
+	exchanges: [dedupExchange, cacheExchange, multipartFetchExchange],
 });
 
 const App = (props: AppProps) => {

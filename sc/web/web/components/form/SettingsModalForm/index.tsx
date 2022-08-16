@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "@mantine/form";
 import { Stack, FileInput, Group, Button } from "@mantine/core";
-import { UploadProfilePicture } from "@/generated/graphql";
+import { UploadProfilePicture, useChangeProfilePictureMutation } from "@/generated/graphql";
 import { Upload } from "tabler-icons-react";
+import { RootState } from "@/app";
+import { useSelector } from "react-redux";
+
 interface SettingsModalFormProps {}
 
 type input = {
-	file: File;
+	file: File | null;
+};
+
+type inputError = {
+	file: string;
 };
 
 const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
+	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
+	const [errorInput, setErrorInput] = useState<inputError>({
+		file: "",
+	});
+	const [{}, updatingSettings] = useChangeProfilePictureMutation();
+
 	const form = useForm({
 		initialValues: {
 			userId: "",
@@ -17,8 +30,24 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 		},
 	});
 
-	const HandleUpdateSettings = (values: UploadProfilePicture) => {
+	const HandleUpdateSettings = async (values: UploadProfilePicture) => {
 		console.log(values);
+		if (!user) return;
+
+		values.userId = user.id;
+
+		const response = await updatingSettings({
+			input: values,
+		});
+
+		console.log("response ", response);
+
+		if (response.data?.changeProfilePicture.errors.length) {
+			setErrorInput(x => ({
+				...x,
+				file: response.data?.changeProfilePicture.errors[0].message || "Server Error",
+			}));
+		}
 	};
 
 	return (
@@ -29,6 +58,7 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 					{...form.getInputProps("file")}
 					label="Change Picture"
 					icon={<Upload size={14} />}
+					error={errorInput.file}
 				/>
 				<Group grow={true} mt="md">
 					<Button
