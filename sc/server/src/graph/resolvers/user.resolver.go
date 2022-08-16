@@ -5,6 +5,7 @@ package resolvers
 import (
 	"context"
 	"fmt"
+	"io"
 	"math"
 	"net/http"
 	"os"
@@ -445,12 +446,45 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 
 func (r *mutationResolver) ChangeProfilePicture(ctx context.Context, input model.UploadProfilePicture) (*model.CreateAction, error) {
 	errArr := []*model.Error{}
+	user := models.User{}
 	result := model.CreateAction{
 		Created: true,
 		Errors:  errArr,
 	}
+	_err := model.Error{
+		Method:  "ChangeProfilePicture",
+		Message: "",
+		Field:   "",
+		Code:    500,
+	}
 
-	fmt.Println("testing")
+	if userId := auth.ForUserIdContext(ctx); len(userId) == 0 {
+		return &result, fmt.Errorf("access denied")
+	}
+
+	if findUser := r.DB.First(&user, "id = ?", input.UserID); findUser.Error != nil {
+		_err.Message = findUser.Error.Error()
+		_err.Field = "userId"
+		result.Errors = append(result.Errors, &_err)
+		return &result, nil
+	}
+
+	fileContent, err := io.ReadAll(input.File.File)
+	if err != nil {
+		_err.Message = err.Error()
+		result.Errors = append(result.Errors, &_err)
+		return &result, nil
+	}
+
+	path, err := utils.HandleUploads(fileContent, input.File.Filename)
+	if err != nil {
+		_err.Message = err.Error()
+		result.Errors = append(result.Errors, &_err)
+		return &result, nil
+	}
+
+	user.Profile = path
+	r.DB.Save(&user)
 
 	return &result, nil
 }

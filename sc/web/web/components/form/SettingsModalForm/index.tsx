@@ -59,6 +59,7 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 					label="Change Picture"
 					icon={<Upload size={14} />}
 					error={errorInput.file}
+					accept="image/png,image/jpeg"
 				/>
 				<Group grow={true} mt="md">
 					<Button

@@ -63,6 +63,8 @@ func Run() error {
 
 func Build() (*Application, error) {
 
+	var mb int64 = 1 << 20
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Application need a .env file.")
@@ -73,7 +75,8 @@ func Build() (*Application, error) {
 	host := os.Getenv("HOST")
 	origin := os.Getenv("ALLOWED_ORIGIN")
 	redisAddr := os.Getenv("REDIS_ADDRESS")
-	if origin == "" || s_port == "" || host == "" || redisAddr == "" {
+	storage := os.Getenv("UPLOAD_STORAGE")
+	if origin == "" || s_port == "" || host == "" || redisAddr == "" || storage == "" {
 		log.Fatal("please add a valid env")
 		os.Exit(1)
 	}
@@ -105,6 +108,10 @@ func Build() (*Application, error) {
 			ReadBufferSize:  1024,
 			WriteBufferSize: 1024,
 		},
+	})
+	srv.AddTransport(transport.MultipartForm{
+		MaxMemory:     32 * mb,
+		MaxUploadSize: 15 * mb,
 	})
 	srv.AddTransport(transport.Options{})
 	srv.AddTransport(transport.GET{})
