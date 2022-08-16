@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "@mantine/form";
 import { Stack, FileInput, Group, Button } from "@mantine/core";
 import { UploadProfilePicture } from "@/generated/graphql";
-
+import { Upload } from "tabler-icons-react";
 interface SettingsModalFormProps {}
 
 type input = {
@@ -27,7 +27,8 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 				<FileInput
 					placeholder="Pick file"
 					{...form.getInputProps("file")}
-					label="Your resume"
+					label="Change Picture"
+					icon={<Upload size={14} />}
 				/>
 				<Group grow={true} mt="md">
 					<Button
