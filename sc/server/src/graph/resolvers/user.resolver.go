@@ -6,6 +6,8 @@ import (
 	"context"
 	"fmt"
 	"io"
+
+	//"io"
 	"math"
 	"net/http"
 	"os"
@@ -475,6 +477,8 @@ func (r *mutationResolver) ChangeProfilePicture(ctx context.Context, input model
 		result.Errors = append(result.Errors, &_err)
 		return &result, nil
 	}
+
+	// tests
 
 	path, err := utils.HandleUploads(fileContent, input.File.Filename)
 	if err != nil {
