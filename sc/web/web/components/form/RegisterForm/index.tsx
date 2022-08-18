@@ -2,7 +2,7 @@ import { RegisterUserInput, useRegisterUserMutation } from "@/generated/graphql"
 import { Button, Group, PasswordInput, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import type { NextPage } from "next";
-import { EyeCheck, EyeOff } from "tabler-icons-react";
+import { IconEyeCheck, IconEyeOff } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -96,7 +96,7 @@ const RegisterForm: NextPage = () => {
 				label="Password"
 				error={input.password}
 				{...form.getInputProps("password")}
-				visibilityToggleIcon={({ reveal }) => (reveal ? <EyeOff /> : <EyeCheck />)}
+				visibilityToggleIcon={({ reveal }) => (reveal ? <IconEyeOff /> : <IconEyeCheck />)}
 			/>
 
 			<PasswordInput
@@ -104,7 +104,7 @@ const RegisterForm: NextPage = () => {
 				required
 				label="Confirm Password"
 				{...form.getInputProps("confirmPassword")}
-				visibilityToggleIcon={({ reveal }) => (reveal ? <EyeOff /> : <EyeCheck />)}
+				visibilityToggleIcon={({ reveal }) => (reveal ? <IconEyeOff /> : <IconEyeCheck />)}
 			/>
 			<Group grow={true} mt="md">
 				<Button variant="gradient" gradient={{ from: "indigo", to: "cyan" }} type="submit">

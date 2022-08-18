@@ -478,8 +478,6 @@ func (r *mutationResolver) ChangeProfilePicture(ctx context.Context, input model
 		return &result, nil
 	}
 
-	// tests
-
 	path, err := utils.HandleUploads(fileContent, input.File.Filename)
 	if err != nil {
 		_err.Message = err.Error()

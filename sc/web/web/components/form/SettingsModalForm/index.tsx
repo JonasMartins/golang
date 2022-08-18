@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "@mantine/form";
 import { Stack, FileInput, Group, Button } from "@mantine/core";
 import { UploadProfilePicture, useChangeProfilePictureMutation } from "@/generated/graphql";
-import { Upload } from "tabler-icons-react";
+import { IconUpload } from "@tabler/icons";
 import { RootState } from "@/app";
 import { useSelector } from "react-redux";
 
@@ -31,7 +31,6 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 	});
 
 	const HandleUpdateSettings = async (values: UploadProfilePicture) => {
-		console.log(values);
 		if (!user) return;
 
 		values.userId = user.id;
@@ -39,8 +38,6 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 		const response = await updatingSettings({
 			input: values,
 		});
-
-		console.log("response ", response);
 
 		if (response.data?.changeProfilePicture.errors.length) {
 			setErrorInput(x => ({
@@ -57,7 +54,7 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 					placeholder="Pick file"
 					{...form.getInputProps("file")}
 					label="Change Picture"
-					icon={<Upload size={14} />}
+					icon={<IconUpload size={14} />}
 					error={errorInput.file}
 					accept="image/png,image/jpeg"
 				/>

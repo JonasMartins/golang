@@ -8,7 +8,7 @@ import { useForm } from "@mantine/form";
 import type { NextPage } from "next";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { MoodSmile, Send } from "tabler-icons-react";
+import { IconMoodSmile, IconSend } from "@tabler/icons";
 
 interface CreateMessageFormProps {
 	showSubmitButton: boolean;
@@ -131,7 +131,7 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 									mr="lg"
 									disabled={chatFocused || errorInput.body ? false : true}
 								>
-									<MoodSmile />
+									<IconMoodSmile />
 								</ActionIcon>
 							}
 							error={errorInput.body}
@@ -145,7 +145,7 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 							component="button"
 							type="submit"
 						>
-							<Send />
+							<IconSend />
 						</ActionIcon>
 					)}
 				</Group>

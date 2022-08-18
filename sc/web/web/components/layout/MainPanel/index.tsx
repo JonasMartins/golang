@@ -17,7 +17,7 @@ import { GetChatTitle } from "@/utils/aux/chat.aux";
 import MessageComp from "@/components/layout/Messages";
 import { MessageType } from "@/features/types/chat";
 import CreateMessageForm from "@/components/form/CreateMessage";
-import { ChevronsDown, ChevronsUp, Typography, TypographyOff } from "tabler-icons-react";
+import { IconChevronsDown, IconChevronsUp, IconTypography, IconTypographyOff } from "@tabler/icons";
 import SettingsModal from "@/components/modal/Settings";
 
 interface MainPanelProps {}
@@ -144,7 +144,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 							variant="outline"
 							disabled={chatFocused ? false : true}
 						>
-							<ChevronsDown />
+							<IconChevronsDown />
 						</ActionIcon>
 					</Tooltip>
 
@@ -157,7 +157,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 							variant="outline"
 							disabled={chatFocused ? false : true}
 						>
-							<ChevronsUp />
+							<IconChevronsUp />
 						</ActionIcon>
 					</Tooltip>
 					<Tooltip withArrow label="Enter new lines messages">
@@ -171,7 +171,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 							variant="outline"
 							disabled={chatFocused ? false : true}
 						>
-							{newLinesMessage ? <Typography /> : <TypographyOff />}
+							{newLinesMessage ? <IconTypography /> : <IconTypographyOff />}
 						</ActionIcon>
 					</Tooltip>
 				</Group>

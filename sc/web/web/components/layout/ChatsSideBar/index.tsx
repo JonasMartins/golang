@@ -1,4 +1,14 @@
-import { Paper, Stack, Group, Title, Text, Sx, Avatar, useMantineColorScheme } from "@mantine/core";
+import {
+	Paper,
+	Stack,
+	Group,
+	Title,
+	Text,
+	Sx,
+	Avatar,
+	Indicator,
+	useMantineColorScheme,
+} from "@mantine/core";
 import type { NextPage } from "next";
 import { ChatType } from "@/features/types/chat";
 import { formatRelative } from "date-fns";
@@ -51,7 +61,9 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 			<Stack>
 				<Group grow align="center" position="apart">
 					<Group>
-						<Avatar radius={"xl"} />
+						<Indicator color="green">
+							<Avatar radius={"xl"} />
+						</Indicator>
 						<Title order={6}>{`${title}`}</Title>
 					</Group>
 					<Text size="xs" align="right" weight={100}>

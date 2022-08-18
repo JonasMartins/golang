@@ -4,7 +4,7 @@ import { MessageType } from "@/features/types/chat";
 import { RootState } from "@/app";
 import { useSelector } from "react-redux";
 import { formatRelative } from "date-fns";
-import { Eye, Calendar } from "tabler-icons-react";
+import { IconEye, IconCalendar } from "@tabler/icons";
 
 interface MessagesProps {
 	message: MessageType;
@@ -43,7 +43,7 @@ const Messages: NextPage<MessagesProps> = ({ message, nextMessageDate }) => {
 					<Stack spacing="sm">
 						<Text size="xs">{message.Body}</Text>
 						<Group position="apart">
-							<Eye
+							<IconEye
 								size={14}
 								color={message.Seen?.includes(user!.id) ? "#05a3f4" : "#797c7b"}
 							/>
@@ -64,7 +64,7 @@ const Messages: NextPage<MessagesProps> = ({ message, nextMessageDate }) => {
 					labelPosition="center"
 					label={
 						<>
-							<Calendar size={20} />
+							<IconCalendar size={20} />
 							<Box ml={5}>{new Date(message.base.createdAt).toDateString()}</Box>
 						</>
 					}

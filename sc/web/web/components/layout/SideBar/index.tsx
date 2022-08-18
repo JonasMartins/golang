@@ -8,7 +8,7 @@ import { Grid, Input, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Search } from "tabler-icons-react";
+import { IconSearch } from "@tabler/icons";
 
 interface SideBarProps {
 	loggedUser: UserJwt;
@@ -43,7 +43,7 @@ const SideBar: React.FC<SideBarProps> = ({ loggedUser }) => {
 			<Grid gutter="sm" align={"center"} grow={true}>
 				<Grid.Col span={webScreen ? 12 : 11}>
 					<Input
-						icon={<Search />}
+						icon={<IconSearch />}
 						value={searchTerm}
 						onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 							setSearchTerm(e.target.value);

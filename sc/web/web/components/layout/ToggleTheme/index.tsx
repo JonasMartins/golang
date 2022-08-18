@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { ActionIcon, Group, Switch, useMantineColorScheme } from "@mantine/core";
-import { Sun, MoonStars, Settings } from "tabler-icons-react";
+import { IconSun, IconMoonStars } from "@tabler/icons";
 import { useState } from "react";
 import React from "react";
 
@@ -22,7 +22,7 @@ const ToggleTheme: NextPage = () => {
 				onClick={handleToggleTheme}
 				title="Toggle color scheme"
 			>
-				{dark ? <Sun /> : <MoonStars />}
+				{dark ? <IconSun /> : <IconMoonStars />}
 			</ActionIcon>
 			<Switch
 				size="lg"

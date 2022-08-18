@@ -1,6 +1,6 @@
 import { RootState } from "@/app";
 import { setOpenSettingsModal } from "@/features/layout/modalSlicer";
-import { Avatar, Modal, Stack, useMantineTheme } from "@mantine/core";
+import { Avatar, Modal, Stack, useMantineTheme, Indicator } from "@mantine/core";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SettingsModalForm from "@/components/form/SettingsModalForm";
@@ -27,7 +27,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({}) => {
 				overlayBlur={3}
 			>
 				<Stack align="center">
-					<Avatar size={"lg"} radius={"lg"} />
+					<Indicator color="green">
+						<Avatar size={"lg"} radius={"lg"} />
+					</Indicator>
 				</Stack>
 				<SettingsModalForm />
 			</Modal>
