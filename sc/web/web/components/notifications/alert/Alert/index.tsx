@@ -1,20 +1,23 @@
 import { Alert, DefaultMantineColor } from "@mantine/core";
 import React from "react";
 import { IconAlertCircle, IconCheck } from "@tabler/icons";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/app";
+import { closeAlert } from "@/features/alert/alertSlice";
 
 export type AlterTypes = {
 	type: "ERROR" | "SUCCESS";
 };
 
-interface GeneralMutationAlertsProps {
-	type: AlterTypes;
-	message: string;
-	title: string;
-}
+interface GeneralMutationAlertsProps {}
 
-const GeneralMutationAlerts: React.FC<GeneralMutationAlertsProps> = ({ type, message, title }) => {
+const GeneralMutationAlerts: React.FC<GeneralMutationAlertsProps> = ({}) => {
+	const alertOpen = useSelector((state: RootState) => state.persistedReducer.alert.open);
+	const alert = useSelector((state: RootState) => state.persistedReducer.alert.alert);
+	const dispatch = useDispatch();
+
 	const handleIcon = () => {
-		switch (type.type) {
+		switch (alert!.type.type) {
 			case "ERROR":
 				return <IconAlertCircle size={16} />;
 			case "SUCCESS":
@@ -25,7 +28,7 @@ const GeneralMutationAlerts: React.FC<GeneralMutationAlertsProps> = ({ type, mes
 	};
 
 	const handleColor = (): DefaultMantineColor => {
-		switch (type.type) {
+		switch (alert!.type.type) {
 			case "ERROR":
 				return "red";
 			case "SUCCESS":
@@ -35,17 +38,27 @@ const GeneralMutationAlerts: React.FC<GeneralMutationAlertsProps> = ({ type, mes
 		}
 	};
 
-	return (
-		<Alert
-			icon={handleIcon()}
-			title={title}
-			color={handleColor()}
-			withCloseButton
-			closeButtonLabel="Close alert"
-		>
-			{message}
-		</Alert>
-	);
+	const handleCloseAlert = () => {
+		dispatch(closeAlert());
+	};
+
+	const content =
+		alert && alertOpen ? (
+			<Alert
+				icon={handleIcon()}
+				title={alert.title}
+				color={handleColor()}
+				withCloseButton
+				closeButtonLabel="Close alert"
+				onClose={handleCloseAlert}
+			>
+				{alert.message}
+			</Alert>
+		) : (
+			<></>
+		);
+
+	return content;
 };
 
 export default GeneralMutationAlerts;

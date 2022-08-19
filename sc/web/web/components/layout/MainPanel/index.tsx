@@ -1,31 +1,33 @@
+import { RootState } from "@/app";
+import CreateMessageForm from "@/components/form/CreateMessage";
+import MessageComp from "@/components/layout/Messages";
 import SettingsMenu from "@/components/layout/SettingsMenu";
 import ToggleTheme from "@/components/layout/ToggleTheme";
+import SettingsModal from "@/components/modal/Settings";
+import GeneralMutationsAlert from "@/components/notifications/alert/Alert";
+import { MessageType } from "@/features/types/chat";
+import { GetChatTitle } from "@/utils/aux/chat.aux";
 import {
+	ActionIcon,
+	Avatar,
+	Grid,
 	Group,
+	Indicator,
+	ScrollArea,
 	Stack,
 	Title,
-	useMantineColorScheme,
-	ScrollArea,
-	ActionIcon,
-	Grid,
 	Tooltip,
-	Avatar,
-	Indicator,
+	useMantineColorScheme,
 } from "@mantine/core";
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import { IconChevronsDown, IconChevronsUp } from "@tabler/icons";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "@/app";
-import { GetChatTitle } from "@/utils/aux/chat.aux";
-import MessageComp from "@/components/layout/Messages";
-import { MessageType } from "@/features/types/chat";
-import CreateMessageForm from "@/components/form/CreateMessage";
-import { IconChevronsDown, IconChevronsUp, IconTypography, IconTypographyOff } from "@tabler/icons";
-import SettingsModal from "@/components/modal/Settings";
 
 interface MainPanelProps {}
 
 const MainPanel: React.FC<MainPanelProps> = () => {
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
+	const alertOpen = useSelector((state: RootState) => state.persistedReducer.alert.open);
 	const messageHasBeenAdded = useSelector(
 		(state: RootState) => state.persistedReducer.chat.hasAddedMessage
 	);
@@ -125,6 +127,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 						justifyContent: "center",
 					})}
 				>
+					{alertOpen && <GeneralMutationsAlert />}
 					<ScrollArea style={{ height: "57vh" }} viewportRef={viewport}>
 						{messages.map((x, i) => (
 							<MessageComp
@@ -167,24 +170,10 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 							<IconChevronsUp />
 						</ActionIcon>
 					</Tooltip>
-					<Tooltip withArrow label="Enter new lines messages">
-						<ActionIcon
-							ml={"sm"}
-							onClick={() => {
-								setNewLinesMessage(!newLinesMessage);
-							}}
-							radius="lg"
-							size="sm"
-							variant="outline"
-							disabled={chatFocused ? false : true}
-						>
-							{newLinesMessage ? <IconTypography /> : <IconTypographyOff />}
-						</ActionIcon>
-					</Tooltip>
 				</Group>
 				<Grid align="center" gutter="xs" grow>
 					<Grid.Col span={12}>
-						<CreateMessageForm showSubmitButton={newLinesMessage} />
+						<CreateMessageForm />
 					</Grid.Col>
 				</Grid>
 			</Stack>

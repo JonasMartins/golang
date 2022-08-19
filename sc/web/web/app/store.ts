@@ -4,6 +4,7 @@ import tokenReducer from "@/features/token/tokenSlice";
 import chatReducer from "@/features/chat/chatSlicer";
 import userReducer from "@/features/user/userSlice";
 import modalReducer from "@/features/layout/modalSlicer";
+import alertReducer from "@/features/alert/alertSlice";
 import storage from "redux-persist/lib/storage";
 import {
 	persistStore,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
 	chat: chatReducer,
 	user: userReducer,
 	modal: modalReducer,
+	alert: alertReducer,
 });
 
 const persistConfig = {

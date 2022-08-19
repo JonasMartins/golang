@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useForm } from "@mantine/form";
-import { Stack, FileInput, Group, Button } from "@mantine/core";
-import { UploadProfilePicture, useChangeProfilePictureMutation } from "@/generated/graphql";
-import { IconUpload } from "@tabler/icons";
 import { RootState } from "@/app";
-import { useSelector } from "react-redux";
-import GeneralMutationsAlert, { AlterTypes } from "@/components/notifications/alert/Alert";
-import { useDispatch } from "react-redux";
+import { AlterTypes } from "@/components/notifications/alert/Alert";
+import { AlertContent, triggerAlert } from "@/features/alert/alertSlice";
 import { setOpenSettingsModal } from "@/features/layout/modalSlicer";
+import { UploadProfilePicture, useChangeProfilePictureMutation } from "@/generated/graphql";
+import { Button, FileInput, Group, Stack } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { IconUpload } from "@tabler/icons";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 interface SettingsModalFormProps {}
 
@@ -44,7 +44,6 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 		});
 
 		// TODO HANDLER HERE MAX FILE SIZE
-		// dispatch(setOpenSettingsModal(false));
 		// TODO: the action to show the alert must be on the
 		// main panel component
 
@@ -54,18 +53,15 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 				...x,
 				file: response.data?.changeProfilePicture.errors[0].message || "Server Error",
 			}));
-			<GeneralMutationsAlert
-				title="Error"
-				message="Error uploading your new image profile"
-				type={typeAlert}
-			/>;
 		} else {
+			dispatch(setOpenSettingsModal(false));
 			const typeAlert: AlterTypes = { type: "SUCCESS" };
-			<GeneralMutationsAlert
-				title="Updated"
-				message="Profile Successfully updated"
-				type={typeAlert}
-			/>;
+			const alert: AlertContent = {
+				message: "Profile successfuly updated",
+				title: "Profile Updated",
+				type: typeAlert,
+			};
+			dispatch(triggerAlert(alert));
 		}
 	};
 

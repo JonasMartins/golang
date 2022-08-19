@@ -10,15 +10,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IconMoodSmile, IconSend } from "@tabler/icons";
 
-interface CreateMessageFormProps {
-	showSubmitButton: boolean;
-}
+interface CreateMessageFormProps {}
 
 type input = {
 	body: string;
 };
 
-const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton }) => {
+const CreateMessageForm: NextPage<CreateMessageFormProps> = ({}) => {
 	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
 	const [errorInput, setErrorInput] = useState<input>({
@@ -36,6 +34,7 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 	});
 
 	const HandleCreateMessage = async (values: CreateMessageInput) => {
+		if (!handleIfMessageBodyHasValidCharacters()) return;
 		if (!user || !chatFocused) {
 			setErrorInput(prevState => ({
 				...prevState,
@@ -106,7 +105,7 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 		<Stack mb="sm" mr="xs" ml="xs">
 			<form
 				onKeyDown={e => {
-					if (handleIfInputCanSubmitOnEnter(e.key) && !showSubmitButton) {
+					if (handleIfInputCanSubmitOnEnter(e.key)) {
 						if (handleIfMessageBodyHasValidCharacters()) {
 							HandleCreateMessage(form.values);
 						}
@@ -137,17 +136,10 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({ showSubmitButton 
 							error={errorInput.body}
 						/>
 					</Group>
-					{showSubmitButton && (
-						<ActionIcon
-							size="xl"
-							radius="xl"
-							color="cyan"
-							component="button"
-							type="submit"
-						>
-							<IconSend />
-						</ActionIcon>
-					)}
+
+					<ActionIcon size="xl" radius="xl" color="cyan" component="button" type="submit">
+						<IconSend />
+					</ActionIcon>
 				</Group>
 			</form>
 		</Stack>
