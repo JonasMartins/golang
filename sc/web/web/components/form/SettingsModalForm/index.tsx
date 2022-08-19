@@ -5,6 +5,9 @@ import { UploadProfilePicture, useChangeProfilePictureMutation } from "@/generat
 import { IconUpload } from "@tabler/icons";
 import { RootState } from "@/app";
 import { useSelector } from "react-redux";
+import GeneralMutationsAlert, { AlterTypes } from "@/components/notifications/alert/Alert";
+import { useDispatch } from "react-redux";
+import { setOpenSettingsModal } from "@/features/layout/modalSlicer";
 
 interface SettingsModalFormProps {}
 
@@ -22,6 +25,7 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 		file: "",
 	});
 	const [{}, updatingSettings] = useChangeProfilePictureMutation();
+	const dispatch = useDispatch();
 
 	const form = useForm({
 		initialValues: {
@@ -39,11 +43,29 @@ const SettingsModalForm: React.FC<SettingsModalFormProps> = ({}) => {
 			input: values,
 		});
 
+		// TODO HANDLER HERE MAX FILE SIZE
+		// dispatch(setOpenSettingsModal(false));
+		// TODO: the action to show the alert must be on the
+		// main panel component
+
 		if (response.data?.changeProfilePicture.errors.length) {
+			const typeAlert: AlterTypes = { type: "ERROR" };
 			setErrorInput(x => ({
 				...x,
 				file: response.data?.changeProfilePicture.errors[0].message || "Server Error",
 			}));
+			<GeneralMutationsAlert
+				title="Error"
+				message="Error uploading your new image profile"
+				type={typeAlert}
+			/>;
+		} else {
+			const typeAlert: AlterTypes = { type: "SUCCESS" };
+			<GeneralMutationsAlert
+				title="Updated"
+				message="Profile Successfully updated"
+				type={typeAlert}
+			/>;
 		}
 	};
 

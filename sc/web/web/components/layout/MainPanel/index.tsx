@@ -9,6 +9,8 @@ import {
 	ActionIcon,
 	Grid,
 	Tooltip,
+	Avatar,
+	Indicator,
 } from "@mantine/core";
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -105,7 +107,12 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 					position="apart"
 					p="sm"
 				>
-					<Title order={4}>{handleSetTitle()}</Title>
+					<Group>
+						<Indicator color="green">
+							<Avatar size={"md"} radius={"lg"} />
+						</Indicator>
+						<Title order={4}>{handleSetTitle()}</Title>
+					</Group>
 					<Group>
 						<ToggleTheme />
 						<SettingsMenu />
