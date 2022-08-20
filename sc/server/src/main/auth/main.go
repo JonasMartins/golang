@@ -2,11 +2,13 @@ package auth
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 
 	jwtLocal "src/main/auth/jwt"
 
+	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/golang-jwt/jwt"
 
 	"gorm.io/gorm"
@@ -111,3 +113,9 @@ func getUserByID(db *gorm.DB, userId string) (*user.User, error) {
 	}
 }
 */
+func WebSocketInit(ctx context.Context, initPayload transport.InitPayload) (context.Context, error) {
+	fmt.Println(initPayload)
+
+	ctxNew := context.WithValue(ctx, userCtxKey, "test")
+	return ctxNew, nil
+}

@@ -9,14 +9,15 @@ import {
 	subscriptionExchange,
 } from "urql";
 
+// import { SubscriptionClient } from "subscriptions-transport-ws";
 import { createClient as createWSClient } from "graphql-ws";
+
 export const CreateUrqlClient = (): Client => {
 	let exchanges: Exchange[] | undefined = [dedupExchange, cacheExchange, multipartFetchExchange];
 	if (typeof window !== "undefined") {
 		const wsClient = createWSClient({
 			url: GRAPHQL_WS_CLIENT,
 		});
-
 		const subsExchange = subscriptionExchange({
 			forwardSubscription: operation => ({
 				subscribe: sink => ({
@@ -24,6 +25,15 @@ export const CreateUrqlClient = (): Client => {
 				}),
 			}),
 		});
+
+		/*
+		const subscriptionClient = new SubscriptionClient(GRAPHQL_WS_CLIENT, { reconnect: true });
+		const subsExchange = subscriptionExchange({
+			forwardSubscription: operation => subscriptionClient.request(operation),
+		});
+
+		*/
+
 		exchanges.push(subsExchange);
 	}
 

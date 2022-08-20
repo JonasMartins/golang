@@ -23,6 +23,10 @@ var _ generated.MessageResolver = (*messageResolver)(nil)
 func (s *subscriptionResolver) MessageSended(ctx context.Context, chatId string) (<-chan *models.Message, error) {
 	chat := models.Chat{}
 
+	if chatId == "" {
+		return nil, nil
+	}
+
 	if userId := auth.ForUserIdContext(ctx); len(userId) == 0 {
 		return nil, fmt.Errorf("access denied")
 	}

@@ -48,15 +48,15 @@ func Run() error {
 		os.Exit(1)
 	}
 
-	router.Use(cors.New(cors.Options{
+	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{origin},
 		AllowCredentials: true,
-	}).Handler)
+	})
 
 	filesDir := http.Dir("/Users/jonasmartinssouza/Documents/Dev/golang/golang/sc/server/public/images")
 
 	router.Handle("/graphql", playground.Handler("Project", "/query"))
-	router.Handle("/query", app.srv)
+	router.Handle("/query", c.Handler(app.srv))
 
 	// palliative solution
 	FileServer(router, "/files", filesDir)
@@ -104,16 +104,19 @@ func Build() (*Application, error) {
 		Directives: generated.DirectiveRoot{},
 	})
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
-	srv := handler.NewDefaultServer(schema)
+	srv := handler.New(schema)
 	srv.AddTransport(&transport.Websocket{
 		KeepAlivePingInterval: 10 * time.Second,
 		Upgrader: websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
-				return r.Host == origin
+				return r.Header["Origin"][0] == origin
 			},
 			ReadBufferSize:  1024,
 			WriteBufferSize: 1024,
 		},
+		// InitFunc: func(ctx context.Context, initPayload transport.InitPayload) (context.Context, error) {
+		// 	return auth.WebSocketInit(ctx, initPayload)
+		// },
 	})
 	srv.AddTransport(transport.MultipartForm{
 		MaxMemory:     32 * mb,

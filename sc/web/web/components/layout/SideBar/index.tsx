@@ -22,14 +22,14 @@ const SideBar: React.FC<SideBarProps> = ({ loggedUser }) => {
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
 	const [chatsState, setChatsState] = useState<ChatType[] | undefined>(chatsFromReducer);
 
-	const resultNewMessage = useMessageSendedSubscription({
+	const [resultNewMessage] = useMessageSendedSubscription({
 		variables: {
 			chatId: chatFocused ? chatFocused.base.id : "",
 		},
 	});
 
 	useEffect(() => {
-		console.log("New message ", resultNewMessage);
+		console.log("New message ", resultNewMessage.data?.messageSended);
 	}, [resultNewMessage]);
 
 	const chatsEle = (
