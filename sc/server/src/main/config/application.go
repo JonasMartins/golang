@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"src/graph/generated"
@@ -52,8 +53,13 @@ func Run() error {
 		AllowCredentials: true,
 	}).Handler)
 
+	filesDir := http.Dir("/Users/jonasmartinssouza/Documents/Dev/golang/golang/sc/server/public/images")
+
 	router.Handle("/graphql", playground.Handler("Project", "/query"))
 	router.Handle("/query", app.srv)
+
+	// palliative solution
+	FileServer(router, "/files", filesDir)
 
 	app.logger.Printf("server running at: http://%s:%d/graphql", app.host, app.port)
 	app.logger.Fatal(http.ListenAndServe(fmt.Sprintf("%s%d", ":", app.port), router))
@@ -135,4 +141,25 @@ func Build() (*Application, error) {
 	}
 
 	return &app, nil
+}
+
+// solution for now, allowing the server to display the images
+// but in the future, those images will be stored on a aws bucket
+func FileServer(r chi.Router, path string, root http.FileSystem) {
+	if strings.ContainsAny(path, "{}*") {
+		panic("FileServer does not permit any URL parameters.")
+	}
+
+	if path != "/" && path[len(path)-1] != '/' {
+		r.Get(path, http.RedirectHandler(path+"/", http.StatusMovedPermanently).ServeHTTP)
+		path += "/"
+	}
+	path += "*"
+
+	r.Get(path, func(w http.ResponseWriter, r *http.Request) {
+		rctx := chi.RouteContext(r.Context())
+		pathPrefix := strings.TrimSuffix(rctx.RoutePattern(), "/*")
+		fs := http.StripPrefix(pathPrefix, http.FileServer(root))
+		fs.ServeHTTP(w, r)
+	})
 }

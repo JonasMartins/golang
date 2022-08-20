@@ -18,6 +18,7 @@ import {
 	Title,
 	Tooltip,
 	useMantineColorScheme,
+	Box,
 } from "@mantine/core";
 import { IconChevronsDown, IconChevronsUp } from "@tabler/icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -127,8 +128,12 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 						justifyContent: "center",
 					})}
 				>
-					{alertOpen && <GeneralMutationsAlert />}
-					<ScrollArea style={{ height: "57vh" }} viewportRef={viewport}>
+					{alertOpen && (
+						<Box p="sm" m="sm">
+							<GeneralMutationsAlert />
+						</Box>
+					)}
+					<ScrollArea style={{ height: "70vh" }} viewportRef={viewport}>
 						{messages.map((x, i) => (
 							<MessageComp
 								key={x.base.id}
