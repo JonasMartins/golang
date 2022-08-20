@@ -1,23 +1,14 @@
+import { persistor, store } from "@/app";
+import Loader from "@/components/layout/Loader";
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { useState } from "react";
-import { MantineProvider, ColorSchemeProvider, ColorScheme } from "@mantine/core";
-import { createClient, Provider, dedupExchange, cacheExchange } from "urql";
-import { multipartFetchExchange } from "@urql/exchange-multipart-fetch";
-import { SERVER_URL } from "@/utils/consts";
-import { store, persistor } from "@/app";
 import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import Loader from "@/components/layout/Loader";
+import { Provider } from "urql";
+import { CreateUrqlClient } from "@/main/config/clients";
 import "@fontsource/comfortaa";
-
-const client = createClient({
-	url: SERVER_URL,
-	fetchOptions: {
-		credentials: "include",
-	},
-	exchanges: [dedupExchange, cacheExchange, multipartFetchExchange],
-});
 
 const App = (props: AppProps) => {
 	const { Component, pageProps } = props;
@@ -34,7 +25,7 @@ const App = (props: AppProps) => {
 					content="minimum-scale=1, initial-scale=1, width=device-width"
 				/>
 			</Head>
-			<Provider value={client}>
+			<Provider value={CreateUrqlClient()}>
 				<ReduxProvider store={store}>
 					<PersistGate loading={<Loader />} persistor={persistor}>
 						<ColorSchemeProvider

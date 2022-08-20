@@ -351,6 +351,23 @@ export const GetUsersChatsDocument = gql`
 export function useGetUsersChatsQuery(options: Omit<Urql.UseQueryArgs<GetUsersChatsQueryVariables>, 'query'>) {
   return Urql.useQuery<GetUsersChatsQuery>({ query: GetUsersChatsDocument, ...options });
 };
+export const MessageSendedDocument = gql`
+    subscription MessageSended($chatId: String!) {
+  messageSended(chatId: $chatId) {
+    base {
+      id
+      createdAt
+    }
+    Body
+    AuthorId
+    ChatId
+  }
+}
+    `;
+
+export function useMessageSendedSubscription<TData = MessageSendedSubscription>(options: Omit<Urql.UseSubscriptionArgs<MessageSendedSubscriptionVariables>, 'query'> = {}, handler?: Urql.SubscriptionHandler<MessageSendedSubscription, TData>) {
+  return Urql.useSubscription<MessageSendedSubscription, TData, MessageSendedSubscriptionVariables>({ query: MessageSendedDocument, ...options }, handler);
+};
 export type CreateMessageMutationVariables = Exact<{
   input: CreateMessageInput;
 }>;
@@ -390,6 +407,13 @@ export type GetUsersChatsQueryVariables = Exact<{
 
 
 export type GetUsersChatsQuery = { __typename?: 'Query', getUsersChats: { __typename?: 'ChatsResponse', errors: Array<{ __typename?: 'Error', message: string }>, chats: Array<{ __typename?: 'Chat', base: { __typename?: 'Base', id: string, updatedAt: any }, Members: Array<{ __typename?: 'User', name: string, base: { __typename?: 'Base', id: string } }>, Messages: Array<{ __typename?: 'Message', Body: string, ChatId: string, Seen?: Array<string> | null, base: { __typename?: 'Base', id: string, createdAt: any }, Author: { __typename?: 'User', name: string } }> }> } };
+
+export type MessageSendedSubscriptionVariables = Exact<{
+  chatId: Scalars['String'];
+}>;
+
+
+export type MessageSendedSubscription = { __typename?: 'Subscription', messageSended: { __typename?: 'Message', Body: string, AuthorId: string, ChatId: string, base: { __typename?: 'Base', id: string, createdAt: any } } };
 
 import { IntrospectionQuery } from 'graphql';
 export default {

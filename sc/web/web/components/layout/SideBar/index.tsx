@@ -6,9 +6,10 @@ import { GetChatTitle } from "@/utils/aux/chat.aux";
 import { UserJwt } from "@/utils/hooks";
 import { Grid, Input, Stack } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { IconSearch } from "@tabler/icons";
+import { useMessageSendedSubscription } from "@/generated/graphql";
 
 interface SideBarProps {
 	loggedUser: UserJwt;
@@ -18,7 +19,18 @@ const SideBar: React.FC<SideBarProps> = ({ loggedUser }) => {
 	const webScreen = useMediaQuery("(min-width: 900px)");
 	const [searchTerm, setSearchTerm] = useState("");
 	const chatsFromReducer = useSelector((state: RootState) => state.persistedReducer.chat.chats);
+	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
 	const [chatsState, setChatsState] = useState<ChatType[] | undefined>(chatsFromReducer);
+
+	const resultNewMessage = useMessageSendedSubscription({
+		variables: {
+			chatId: chatFocused ? chatFocused.base.id : "",
+		},
+	});
+
+	useEffect(() => {
+		console.log("New message ", resultNewMessage);
+	}, [resultNewMessage]);
 
 	const chatsEle = (
 		<Stack
