@@ -20,16 +20,29 @@ const SideBar: React.FC<SideBarProps> = ({ loggedUser }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const chatsFromReducer = useSelector((state: RootState) => state.persistedReducer.chat.chats);
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
+	const newMessage = useSelector(
+		(state: RootState) => state.persistedReducer.chat.hasAddedMessage
+	);
 	const [chatsState, setChatsState] = useState<ChatType[] | undefined>(chatsFromReducer);
+
+	const handleGetFocusedChatOrNewMessage = () => {
+		if (newMessage) {
+			return newMessage.ChatId;
+		}
+		if (chatFocused) {
+			return chatFocused.base.id;
+		}
+	};
 
 	const [resultNewMessage] = useMessageSendedSubscription({
 		variables: {
-			chatId: chatFocused ? chatFocused.base.id : "",
+			chatId: handleGetFocusedChatOrNewMessage() || "",
 		},
 	});
 
 	useEffect(() => {
 		console.log("New message ", resultNewMessage.data?.messageSended);
+		console.log("New message 1", resultNewMessage.error);
 	}, [resultNewMessage]);
 
 	const chatsEle = (

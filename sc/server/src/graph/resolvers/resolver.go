@@ -8,12 +8,14 @@ package resolvers
 // It serves as dependency injection for your app, add any dependencies you require here.
 import (
 	"src/graph/generated"
+	"sync"
 
 	"gorm.io/gorm"
 )
 
 type Resolver struct {
-	DB *gorm.DB
+	DB    *gorm.DB
+	Chats sync.Map
 }
 
 func (r *Resolver) Mutation() generated.MutationResolver {

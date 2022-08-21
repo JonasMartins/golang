@@ -8,7 +8,8 @@ import (
 
 	"src/graph/model"
 	"src/infra/orm/gorm/models"
-	"src/infra/orm/gorm/models/base"
+
+	// "src/infra/orm/gorm/models/base"
 	"src/main/auth"
 
 	uuid "github.com/satori/go.uuid"
@@ -17,12 +18,15 @@ import (
 type subscriptionResolver struct{ *Resolver }
 type messageResolver struct{ *Resolver }
 
+var addMessageChannelObserver = map[string]chan *models.Message{}
+
 var _ generated.SubscriptionResolver = (*subscriptionResolver)(nil)
 var _ generated.MessageResolver = (*messageResolver)(nil)
 
 func (s *subscriptionResolver) MessageSended(ctx context.Context, chatId string) (<-chan *models.Message, error) {
-	chat := models.Chat{}
 
+	//chat := models.Chat{}
+	fmt.Println("called subs back ", chatId)
 	if chatId == "" {
 		return nil, nil
 	}
@@ -31,9 +35,9 @@ func (s *subscriptionResolver) MessageSended(ctx context.Context, chatId string)
 		return nil, fmt.Errorf("access denied")
 	}
 
-	if foundChats := s.DB.Where("id = ?", chatId).Find(&chat); foundChats.Error != nil {
-		return nil, foundChats.Error
-	}
+	// if foundChats := s.DB.Where("id = ?", chatId).Find(&chat); foundChats.Error != nil {
+	// 	return nil, foundChats.Error
+	// }
 
 	id := uuid.NewV4()
 
@@ -41,26 +45,29 @@ func (s *subscriptionResolver) MessageSended(ctx context.Context, chatId string)
 
 	go func() {
 		<-ctx.Done()
-		chat.MessageObservers.Delete(id)
+		//chat.MessageObservers.Delete(id)
+		delete(addMessageChannelObserver, id.String())
 	}()
 
-	chat.MessageObservers.Store(id, &models.MessageObserver{
-		UserId:  "Test",
-		Message: events,
-	})
+	addMessageChannelObserver[id.String()] = events
 
-	base := base.Base{
-		ID:        id,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-	}
+	// chat.MessageObservers.Store(id, &models.MessageObserver{
+	// 	UserId:  "Test",
+	// 	Message: events,
+	// })
 
-	events <- &models.Message{
-		Base:     base,
-		Body:     "Test",
-		AuthorId: "f05e5ca4-7300-4c76-af95-f1be0f1aa80c",
-		ChatId:   chatId,
-	}
+	// base := base.Base{
+	// 	ID:        id,
+	// 	CreatedAt: time.Now(),
+	// 	UpdatedAt: time.Now(),
+	// }
+
+	// events <- &models.Message{
+	// 	Base:     base,
+	// 	Body:     "Test",
+	// 	AuthorId: "f05e5ca4-7300-4c76-af95-f1be0f1aa80c",
+	// 	ChatId:   chatId,
+	// }
 
 	return events, nil
 }
@@ -115,11 +122,17 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input model.Create
 			return &result, nil
 		}
 
-		chat.MessageObservers.Range(func(_, v any) bool {
-			observer := v.(*models.MessageObserver)
-			observer.Message <- &message
-			return true
-		})
+		// chat.MessageObservers.Range(func(_, v any) bool {
+		// 	observer := v.(*models.MessageObserver)
+		// 	fmt.Println("observer ", observer)
+		// 	fmt.Println("msg ", message)
+		// 	observer.Message <- &message
+		// 	return true
+		// })
+
+		for _, observer := range addMessageChannelObserver {
+			observer <- &message
+		}
 
 		if updateChat := r.DB.Model(&chat).Where("id = ?", input.ChatID).Update("updated_at", time.Now()); updateChat.Error != nil {
 			_err.Message = updateChat.Error.Error()
