@@ -19,5 +19,5 @@ type Mutation {
 }
 
 type Subscription {
-  messageSended(chatId: String!): Message!
+  messageSended: Message!
 }

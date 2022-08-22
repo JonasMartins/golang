@@ -1,6 +1,6 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { ChatType, MessageType } from "@/features/types/chat";
+import { ChatType, MessageType, MessageSubscription } from "@/features/types/chat";
 
 export interface ChatState {
 	value: ChatType | null;
@@ -73,6 +73,32 @@ export const chatSlice = createSlice({
 			state.hasAddedMessage = null;
 			state.value = null;
 		},
+
+		updadeChatsFromCommingNewMessageSubscription: (
+			state,
+			action: PayloadAction<MessageSubscription>
+		) => {
+			let index = state.chats.findIndex(x => {
+				return (x.base.id = action.payload.ChatId);
+			});
+
+			if (index > -1) {
+				let author = state.chats[index].Members.find(x => {
+					return x.base.id === action.payload.AuthorId;
+				});
+				if (author && author.base.id) {
+					state.chats[index].Messages.push({
+						Author: {
+							name: author.name,
+						},
+						base: action.payload.base,
+						Body: action.payload.Body,
+						ChatId: action.payload.ChatId,
+						Seen: action.payload.Seen,
+					});
+				}
+			}
+		},
 	},
 	// extraReducers: buider => {
 	// 	buider.addCase(PURGE, state => {
@@ -88,6 +114,7 @@ export const {
 	setChats,
 	clearState,
 	clearMessageAddedOnChangeChat,
+	updadeChatsFromCommingNewMessageSubscription,
 } = chatSlice.actions;
 
 const chatReducer = chatSlice.reducer;

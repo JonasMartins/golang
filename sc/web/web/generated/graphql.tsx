@@ -213,11 +213,6 @@ export type Subscription = {
   messageSended: Message;
 };
 
-
-export type SubscriptionMessageSendedArgs = {
-  chatId: Scalars['String'];
-};
-
 export type UploadProfilePicture = {
   file: Scalars['Upload'];
   userId: Scalars['String'];
@@ -352,8 +347,8 @@ export function useGetUsersChatsQuery(options: Omit<Urql.UseQueryArgs<GetUsersCh
   return Urql.useQuery<GetUsersChatsQuery>({ query: GetUsersChatsDocument, ...options });
 };
 export const MessageSendedDocument = gql`
-    subscription MessageSended($chatId: String!) {
-  messageSended(chatId: $chatId) {
+    subscription MessageSended {
+  messageSended {
     base {
       id
       createdAt
@@ -361,6 +356,7 @@ export const MessageSendedDocument = gql`
     Body
     AuthorId
     ChatId
+    Seen
   }
 }
     `;
@@ -408,12 +404,10 @@ export type GetUsersChatsQueryVariables = Exact<{
 
 export type GetUsersChatsQuery = { __typename?: 'Query', getUsersChats: { __typename?: 'ChatsResponse', errors: Array<{ __typename?: 'Error', message: string }>, chats: Array<{ __typename?: 'Chat', base: { __typename?: 'Base', id: string, updatedAt: any }, Members: Array<{ __typename?: 'User', name: string, base: { __typename?: 'Base', id: string } }>, Messages: Array<{ __typename?: 'Message', Body: string, ChatId: string, Seen?: Array<string> | null, base: { __typename?: 'Base', id: string, createdAt: any }, Author: { __typename?: 'User', name: string } }> }> } };
 
-export type MessageSendedSubscriptionVariables = Exact<{
-  chatId: Scalars['String'];
-}>;
+export type MessageSendedSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MessageSendedSubscription = { __typename?: 'Subscription', messageSended: { __typename?: 'Message', Body: string, AuthorId: string, ChatId: string, base: { __typename?: 'Base', id: string, createdAt: any } } };
+export type MessageSendedSubscription = { __typename?: 'Subscription', messageSended: { __typename?: 'Message', Body: string, AuthorId: string, ChatId: string, Seen?: Array<string> | null, base: { __typename?: 'Base', id: string, createdAt: any } } };
 
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -1297,18 +1291,7 @@ export default {
                 "ofType": null
               }
             },
-            "args": [
-              {
-                "name": "chatId",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
+            "args": []
           }
         ],
         "interfaces": []

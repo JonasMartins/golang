@@ -137,7 +137,7 @@ type ComplexityRoot struct {
 	}
 
 	Subscription struct {
-		MessageSended func(childComplexity int, chatID string) int
+		MessageSended func(childComplexity int) int
 	}
 
 	User struct {
@@ -186,7 +186,7 @@ type QueryResolver interface {
 	GetChatByID(ctx context.Context, chatID string) (*model.ChatResponse, error)
 }
 type SubscriptionResolver interface {
-	MessageSended(ctx context.Context, chatID string) (<-chan *models.Message, error)
+	MessageSended(ctx context.Context) (<-chan *models.Message, error)
 }
 
 type executableSchema struct {
@@ -596,12 +596,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Subscription_messageSended_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Subscription.MessageSended(childComplexity, args["chatId"].(string)), true
+		return e.complexity.Subscription.MessageSended(childComplexity), true
 
 	case "User.base":
 		if e.complexity.User.Base == nil {
@@ -803,7 +798,7 @@ type Mutation {
 }
 
 type Subscription {
-  messageSended(chatId: String!): Message!
+  messageSended: Message!
 }
 `, BuiltIn: false},
 	{Name: "../schema/responses/chat.responses.graphql", Input: `type ChatsResponse {
@@ -1150,21 +1145,6 @@ func (ec *executionContext) field_Query_users_args(ctx context.Context, rawArgs 
 		}
 	}
 	args["offset"] = arg1
-	return args, nil
-}
-
-func (ec *executionContext) field_Subscription_messageSended_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["chatId"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("chatId"))
-		arg0, err = ec.unmarshalNString2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["chatId"] = arg0
 	return args, nil
 }
 
@@ -3751,7 +3731,7 @@ func (ec *executionContext) _Subscription_messageSended(ctx context.Context, fie
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Subscription().MessageSended(rctx, fc.Args["chatId"].(string))
+		return ec.resolvers.Subscription().MessageSended(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3805,17 +3785,6 @@ func (ec *executionContext) fieldContext_Subscription_messageSended(ctx context.
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Message", field.Name)
 		},
-	}
-	defer func() {
-		if r := recover(); r != nil {
-			err = ec.Recover(ctx, r)
-			ec.Error(ctx, err)
-		}
-	}()
-	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Subscription_messageSended_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
-		ec.Error(ctx, err)
-		return
 	}
 	return fc, nil
 }

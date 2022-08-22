@@ -23,51 +23,21 @@ var addMessageChannelObserver = map[string]chan *models.Message{}
 var _ generated.SubscriptionResolver = (*subscriptionResolver)(nil)
 var _ generated.MessageResolver = (*messageResolver)(nil)
 
-func (s *subscriptionResolver) MessageSended(ctx context.Context, chatId string) (<-chan *models.Message, error) {
-
-	//chat := models.Chat{}
-	fmt.Println("called subs back ", chatId)
-	if chatId == "" {
-		return nil, nil
-	}
+func (s *subscriptionResolver) MessageSended(ctx context.Context) (<-chan *models.Message, error) {
 
 	if userId := auth.ForUserIdContext(ctx); len(userId) == 0 {
 		return nil, fmt.Errorf("access denied")
 	}
 
-	// if foundChats := s.DB.Where("id = ?", chatId).Find(&chat); foundChats.Error != nil {
-	// 	return nil, foundChats.Error
-	// }
-
 	id := uuid.NewV4()
-
 	events := make(chan *models.Message, 1)
 
 	go func() {
 		<-ctx.Done()
-		//chat.MessageObservers.Delete(id)
 		delete(addMessageChannelObserver, id.String())
 	}()
 
 	addMessageChannelObserver[id.String()] = events
-
-	// chat.MessageObservers.Store(id, &models.MessageObserver{
-	// 	UserId:  "Test",
-	// 	Message: events,
-	// })
-
-	// base := base.Base{
-	// 	ID:        id,
-	// 	CreatedAt: time.Now(),
-	// 	UpdatedAt: time.Now(),
-	// }
-
-	// events <- &models.Message{
-	// 	Base:     base,
-	// 	Body:     "Test",
-	// 	AuthorId: "f05e5ca4-7300-4c76-af95-f1be0f1aa80c",
-	// 	ChatId:   chatId,
-	// }
 
 	return events, nil
 }
@@ -121,14 +91,6 @@ func (r *mutationResolver) CreateMessage(ctx context.Context, input model.Create
 			result.Errors = append(result.Errors, &_err)
 			return &result, nil
 		}
-
-		// chat.MessageObservers.Range(func(_, v any) bool {
-		// 	observer := v.(*models.MessageObserver)
-		// 	fmt.Println("observer ", observer)
-		// 	fmt.Println("msg ", message)
-		// 	observer.Message <- &message
-		// 	return true
-		// })
 
 		for _, observer := range addMessageChannelObserver {
 			observer <- &message

@@ -1,5 +1,5 @@
-subscription MessageSended($chatId: String!) {
-	messageSended(chatId: $chatId) {
+subscription MessageSended {
+	messageSended {
 		base {
 			id
 			createdAt
@@ -7,5 +7,6 @@ subscription MessageSended($chatId: String!) {
 		Body
 		AuthorId
 		ChatId
+		Seen
 	}
 }

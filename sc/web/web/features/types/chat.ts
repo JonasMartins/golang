@@ -36,6 +36,11 @@ export type Title = {
 
 export type ChatTypeTitled = ChatType | Title;
 
+export type AuthorMessage = {
+	__typename?: "User";
+	name: string;
+};
+
 export type MessageType = {
 	__typename?: "Message";
 	Body: string;
@@ -49,5 +54,18 @@ export type MessageType = {
 	Author: {
 		__typename?: "User";
 		name: string;
+	};
+};
+
+export type MessageSubscription = {
+	__typename?: "Message";
+	Body: string;
+	ChatId: string;
+	AuthorId: string;
+	Seen?: Array<string> | null;
+	base: {
+		__typename?: "Base";
+		id: string;
+		createdAt: any;
 	};
 };
