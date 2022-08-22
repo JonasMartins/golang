@@ -111,7 +111,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 					p="sm"
 				>
 					<Group>
-						<Indicator color="green">
+						<Indicator color="green" position="bottom-end">
 							<Avatar size={"md"} radius={"lg"} />
 						</Indicator>
 						<Title order={4}>{handleSetTitle()}</Title>

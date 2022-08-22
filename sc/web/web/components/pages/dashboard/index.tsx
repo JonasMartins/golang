@@ -50,7 +50,7 @@ const Dashboard: NextPage = () => {
 		setTimeout(() => {
 			setLoadEffect(false);
 		}, 500);
-	}, [user, handleGetData]);
+	}, [user]);
 
 	useEffect(() => {
 		if (result.data?.getUsersChats.chats.length) {
