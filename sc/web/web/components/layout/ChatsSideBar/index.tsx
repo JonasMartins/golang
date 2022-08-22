@@ -9,6 +9,7 @@ import {
 	Indicator,
 	useMantineColorScheme,
 	Badge,
+	ColorSwatch,
 } from "@mantine/core";
 import type { NextPage } from "next";
 import { ChatType } from "@/features/types/chat";
@@ -26,8 +27,12 @@ interface ChatsSideBarProps {
 const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 	const dispatch = useDispatch();
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
+	const newMessage = useSelector(
+		(state: RootState) => state.persistedReducer.chat.hasAddedMessage
+	);
 	const loggedUser = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const [unseenMessagesCount, setUnseenMessagesCount] = useState(0);
+	const [lastUpdated, setLastUpdated] = useState(new Date(chat.base.updatedAt));
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === "dark";
 
@@ -62,6 +67,16 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 	}, [chat, loggedUser]);
 
 	useEffect(() => {
+		if (newMessage && newMessage.ChatId === chat.base.id) {
+			console.log("update! ");
+			console.log(newMessage.base.createdAt);
+			console.log(unseenMessagesCount + 1);
+			setLastUpdated(new Date(newMessage.base.createdAt));
+			setUnseenMessagesCount(unseenMessagesCount + 1);
+		}
+	}, [newMessage]);
+
+	useEffect(() => {
 		handleGetUnSeenMessagesCount();
 		return () => {
 			setUnseenMessagesCount(0);
@@ -90,12 +105,14 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 					</Group>
 					<Group sx={{ justifyContent: "flex-end" }}>
 						<Text size="xs" align="right" weight={100}>
-							{formatRelative(new Date(chat.base.updatedAt), new Date())}
+							{formatRelative(lastUpdated, new Date())}
 						</Text>
 						{unseenMessagesCount > 0 ? (
-							<Badge size="sm" color={"red"} variant="filled">
-								{unseenMessagesCount}
-							</Badge>
+							<ColorSwatch color={"red"} size={20} sx={{ color: "#fff" }}>
+								<Text size="xs" weight={500}>
+									{unseenMessagesCount}
+								</Text>
+							</ColorSwatch>
 						) : (
 							<></>
 						)}

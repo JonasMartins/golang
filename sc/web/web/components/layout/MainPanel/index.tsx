@@ -91,8 +91,10 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	}, [messageHasBeenAdded, chatFocused]);
 
 	useEffect(() => {
-		scrollToBottom();
-	}, [messages]);
+		if (messageHasBeenAdded) {
+			scrollToBottom();
+		}
+	}, [messages.length, messageHasBeenAdded]);
 
 	useEffect(() => {
 		return () => {

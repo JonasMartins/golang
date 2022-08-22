@@ -87,7 +87,7 @@ export const chatSlice = createSlice({
 					return x.base.id === action.payload.AuthorId;
 				});
 				if (author && author.base.id) {
-					state.chats[index].Messages.push({
+					let message: MessageType = {
 						Author: {
 							name: author.name,
 						},
@@ -95,7 +95,9 @@ export const chatSlice = createSlice({
 						Body: action.payload.Body,
 						ChatId: action.payload.ChatId,
 						Seen: action.payload.Seen,
-					});
+					};
+					state.hasAddedMessage = message;
+					state.chats[index].Messages.push(message);
 				}
 			}
 		},
