@@ -30,7 +30,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = () => {
 	};
 
 	return (
-		<Menu shadow="md" transition="scale-y">
+		<Menu shadow="md" transition="scale-y" withinPortal>
 			<Menu.Target>
 				<ActionIcon>
 					<IconDots size={14} />

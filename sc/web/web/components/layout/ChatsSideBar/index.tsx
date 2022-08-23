@@ -8,7 +8,6 @@ import {
 	Avatar,
 	Indicator,
 	useMantineColorScheme,
-	Badge,
 	ColorSwatch,
 } from "@mantine/core";
 import type { NextPage } from "next";
@@ -68,9 +67,6 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 
 	useEffect(() => {
 		if (newMessage && newMessage.ChatId === chat.base.id) {
-			console.log("update! ");
-			console.log(newMessage.base.createdAt);
-			console.log(unseenMessagesCount + 1);
 			setLastUpdated(new Date(newMessage.base.createdAt));
 			setUnseenMessagesCount(unseenMessagesCount + 1);
 		}

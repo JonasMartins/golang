@@ -20,7 +20,7 @@ import {
 	useMantineColorScheme,
 	Box,
 } from "@mantine/core";
-import { IconChevronsDown, IconChevronsUp } from "@tabler/icons";
+import { IconChevronsDown } from "@tabler/icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -36,7 +36,6 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const [messages, setMessages] = useState<MessageType[]>([]);
 	const { colorScheme } = useMantineColorScheme();
-	const [newLinesMessage, setNewLinesMessage] = useState(false);
 
 	const viewport = useRef<HTMLDivElement>(null);
 
@@ -57,15 +56,6 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 		}
 	};
 
-	const scrollToTop = () => {
-		if (viewport !== undefined) {
-			viewport.current?.scrollTo({
-				top: 0,
-				behavior: "smooth",
-			});
-		}
-	};
-
 	const handleSettingMessagesToState = useCallback(() => {
 		if (chatFocused) {
 			for (let i = 0; i < chatFocused.Messages.length; i++) {
@@ -75,6 +65,10 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 		}
 	}, [chatFocused]);
 
+	/**
+	 * Handles initial setup, this is triggered when the user
+	 * switch chats
+	 */
 	useEffect(() => {
 		handleSettingMessagesToState();
 		return () => {
@@ -82,6 +76,11 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 		};
 	}, [chatFocused, handleSettingMessagesToState]);
 
+	/**
+	 *  Handle when a new message appears on messageHasBeenAdded
+	 *  and updates the component state messages if the message
+	 *  belongs to this chat
+	 */
 	useEffect(() => {
 		if (!chatFocused || !messageHasBeenAdded) return;
 
@@ -103,7 +102,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 	}, []);
 
 	const content = (
-		<Stack mb="sm" justify="space-between" sx={{ height: "100vh" }}>
+		<Stack mb="sm" justify="space-between">
 			<Stack>
 				<Group
 					sx={theme => ({
@@ -135,7 +134,7 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 							<GeneralMutationsAlert />
 						</Box>
 					)}
-					<ScrollArea style={{ height: "70vh" }} viewportRef={viewport}>
+					<ScrollArea style={{ height: "70vh" }} viewportRef={viewport} offsetScrollbars>
 						{messages.map((x, i) => (
 							<MessageComp
 								key={x.base.id}
@@ -162,19 +161,6 @@ const MainPanel: React.FC<MainPanelProps> = () => {
 							disabled={chatFocused ? false : true}
 						>
 							<IconChevronsDown />
-						</ActionIcon>
-					</Tooltip>
-
-					<Tooltip withArrow label="Scroll to top">
-						<ActionIcon
-							ml={"sm"}
-							onClick={scrollToTop}
-							radius="lg"
-							size="sm"
-							variant="outline"
-							disabled={chatFocused ? false : true}
-						>
-							<IconChevronsUp />
 						</ActionIcon>
 					</Tooltip>
 				</Group>

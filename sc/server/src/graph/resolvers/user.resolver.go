@@ -364,7 +364,7 @@ func (r *queryResolver) GetUsersChats(ctx context.Context, userId string) (*mode
 			INNER JOIN users u1 on m.author_id = u1.id
 			WHERE m.chat_id = cm.chat_id
 			ORDER BY m.created_at DESC
-			LIMIT 10
+			LIMIT 30
 		) AS m1 ON m1.chat_id = cm.chat_id
 		WHERE u.id = ? 
 		ORDER BY c.updated_at DESC

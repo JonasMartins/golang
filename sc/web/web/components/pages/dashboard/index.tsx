@@ -64,6 +64,7 @@ const Dashboard: NextPage = () => {
 		) : (
 			<Grid
 				gutter={0}
+				grow
 				sx={theme => ({
 					backgroundColor: dark ? theme.colors.dark[4] : theme.colors.gray[2],
 					height: "100vh",
