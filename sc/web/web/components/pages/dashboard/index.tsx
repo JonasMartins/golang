@@ -1,24 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import MainPanel from "@/components/layout/MainPanel";
-import SideBar from "@/components/layout/SideBar";
-import { Grid, useMantineColorScheme } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-import type { NextPage } from "next";
-import { useUser } from "@/utils/hooks";
-import React, { useCallback, useEffect, useState } from "react";
-import Loader from "@/components/layout/Loader";
-import { GetUsersChatsDocument, GetUsersChatsQuery } from "@/generated/graphql";
-import { useQuery } from "urql";
+import NavbarLayout from "@/components/layout/Navbar";
 import { setChats as setChatsFromRedux } from "@/features/chat/chatSlicer";
 import { setLoggedUser } from "@/features/user/userSlice";
+import { GetUsersChatsDocument, GetUsersChatsQuery } from "@/generated/graphql";
+import { useUser } from "@/utils/hooks";
+import {
+	AppShell,
+	// Aside,
+	Footer,
+	Header,
+	// MediaQuery,
+	Navbar,
+	ScrollArea,
+	Text,
+	useMantineTheme,
+} from "@mantine/core";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useQuery } from "urql";
+import Loader from "@/components/layout/Loader";
+import SideBar from "@/components/layout/SideBar";
+import Chat from "@/components/layout/Chat";
+import CreateMessageForm from "@/components/form/CreateMessage";
 
-const Dashboard: NextPage = () => {
-	const webScreen = useMediaQuery("(min-width: 900px)");
+interface DashboardProps {}
+
+const Dashboard: React.FC<DashboardProps> = () => {
+	const theme = useMantineTheme();
+	const [opened, setOpened] = useState(false);
 	const user = useUser();
 	const dispatch = useDispatch();
-	const { colorScheme } = useMantineColorScheme();
-	const dark = colorScheme === "dark";
 	const [userId, setUserId] = useState<string>("");
 	const [loadEffect, setLoadEffect] = useState(false);
 	const [result, fetch] = useQuery<GetUsersChatsQuery>({
@@ -27,7 +38,7 @@ const Dashboard: NextPage = () => {
 		variables: {
 			userId,
 		},
-		requestPolicy: "cache-and-network",
+		//requestPolicy: "cache-and-network",
 	});
 
 	const handleGetData = useCallback(() => {
@@ -58,45 +69,47 @@ const Dashboard: NextPage = () => {
 		}
 	}, [result.fetching, result.data?.getUsersChats.chats.length, dispatch]);
 
-	const web =
-		!user || loadEffect || result.fetching ? (
-			<Loader />
-		) : (
-			<Grid
-				gutter={0}
-				grow
-				sx={theme => ({
-					backgroundColor: dark ? theme.colors.dark[4] : theme.colors.gray[2],
-					height: "100vh",
-				})}
-			>
-				<Grid.Col span={4} sx={{ borderRightStyle: "double" }}>
-					<SideBar loggedUser={user} />
-				</Grid.Col>
-				<Grid.Col span={8}>
-					<MainPanel />
-				</Grid.Col>
-			</Grid>
-		);
-
-	const mobile =
-		!user || loadEffect || result.fetching ? (
-			<Loader />
-		) : (
-			<Grid
-				gutter={0}
-				sx={theme => ({
-					backgroundColor: dark ? theme.colors.dark[5] : theme.colors.gray[2],
-					height: "100vh",
-				})}
-			>
-				<Grid.Col span={12}>
-					<SideBar loggedUser={user} />
-				</Grid.Col>
-			</Grid>
-		);
-
-	return webScreen ? web : mobile;
+	return !user || loadEffect || result.fetching ? (
+		<Loader />
+	) : (
+		<AppShell
+			styles={{
+				main: {
+					background:
+						theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[0],
+				},
+			}}
+			navbarOffsetBreakpoint="sm"
+			asideOffsetBreakpoint="sm"
+			navbar={
+				<Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 300, lg: 500 }}>
+					<Navbar.Section grow component={ScrollArea} mx="-xs" px="xs">
+						<SideBar loggedUser={user} />
+					</Navbar.Section>
+				</Navbar>
+			}
+			/*
+			aside={
+				<MediaQuery smallerThan="sm" styles={{ display: "none" }}>
+					<Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
+						<Text>Application sidebar</Text>
+					</Aside>
+				</MediaQuery>
+			} */
+			footer={
+				<Footer height={110} p="xs">
+					<CreateMessageForm />
+				</Footer>
+			}
+			header={
+				<Header height={60} p="md">
+					<NavbarLayout opened={opened} setOpened={setOpened} />
+				</Header>
+			}
+		>
+			<Chat />
+		</AppShell>
+	);
 };
 
 export default Dashboard;

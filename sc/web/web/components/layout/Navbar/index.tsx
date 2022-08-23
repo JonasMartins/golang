@@ -7,9 +7,10 @@ import {
 	MediaQuery,
 	useMantineColorScheme,
 	useMantineTheme,
+	Text,
 } from "@mantine/core";
 import { IconMoonStars, IconSun } from "@tabler/icons";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface NavbarProps {
 	opened: boolean;
@@ -18,7 +19,26 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ opened, setOpened }) => {
 	const theme = useMantineTheme();
+	const [sizeScreen, getSizeScreen] = useState({
+		dynamicWidth: window.innerWidth,
+		dynamicHeight: window.innerHeight,
+	});
+
 	const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+
+	const setDimension = () => {
+		getSizeScreen({
+			dynamicHeight: window.innerHeight,
+			dynamicWidth: window.innerWidth,
+		});
+	};
+
+	useEffect(() => {
+		window.addEventListener("resize", setDimension);
+		return () => {
+			window.removeEventListener("resize", setDimension);
+		};
+	}, [sizeScreen]);
 
 	return (
 		<div style={{ display: "flex", alignItems: "center", height: "100%" }}>
@@ -41,6 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({ opened, setOpened }) => {
 							<IconMoonStars size={16} />
 						)}
 					</ActionIcon>
+					<Text>{sizeScreen.dynamicHeight}</Text>
 				</Group>
 				<SettingsMenu />
 			</Group>

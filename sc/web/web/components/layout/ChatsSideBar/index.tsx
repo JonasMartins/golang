@@ -104,7 +104,7 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 							{formatRelative(lastUpdated, new Date())}
 						</Text>
 						{unseenMessagesCount > 0 ? (
-							<ColorSwatch color={"red"} size={20} sx={{ color: "#fff" }}>
+							<ColorSwatch color={"green"} size={30} sx={{ color: "#fff" }}>
 								<Text size="xs" weight={500}>
 									{unseenMessagesCount}
 								</Text>

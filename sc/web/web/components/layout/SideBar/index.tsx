@@ -1,16 +1,14 @@
 import { RootState } from "@/app";
 import ChatsSideBar from "@/components/layout/ChatsSideBar";
-import SettingsMenu from "@/components/layout/SettingsMenu";
-import { ChatType } from "@/features/types/chat";
 import { updadeChatsFromCommingNewMessageSubscription } from "@/features/chat/chatSlicer";
+import { ChatType } from "@/features/types/chat";
+import { useMessageSendedSubscription } from "@/generated/graphql";
 import { GetChatTitle } from "@/utils/aux/chat.aux";
 import { UserJwt } from "@/utils/hooks";
 import { Grid, Input, Stack } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { IconSearch } from "@tabler/icons";
-import { useMessageSendedSubscription } from "@/generated/graphql";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 interface SideBarProps {
 	loggedUser: UserJwt;
@@ -18,7 +16,6 @@ interface SideBarProps {
 
 const SideBar: React.FC<SideBarProps> = ({ loggedUser }) => {
 	const dispatch = useDispatch();
-	const webScreen = useMediaQuery("(min-width: 900px)");
 	const [searchTerm, setSearchTerm] = useState("");
 	const chatsFromReducer = useSelector((state: RootState) => state.persistedReducer.chat.chats);
 	const [chatsState, setChatsState] = useState<ChatType[] | undefined>(chatsFromReducer);
@@ -57,7 +54,7 @@ const SideBar: React.FC<SideBarProps> = ({ loggedUser }) => {
 	return (
 		<Stack p="md">
 			<Grid gutter="sm" align={"center"} grow={true}>
-				<Grid.Col span={webScreen ? 12 : 11}>
+				<Grid.Col span={12}>
 					<Input
 						icon={<IconSearch />}
 						value={searchTerm}
@@ -82,11 +79,7 @@ const SideBar: React.FC<SideBarProps> = ({ loggedUser }) => {
 						placeholder="Search a chat"
 					/>
 				</Grid.Col>
-				{!webScreen && (
-					<Grid.Col span={1}>
-						<SettingsMenu />
-					</Grid.Col>
-				)}
+
 				{chatsEle}
 			</Grid>
 		</Stack>

@@ -1,22 +1,77 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import NavbarLayout from "@/components/layout/Navbar";
+import { setChats as setChatsFromRedux } from "@/features/chat/chatSlicer";
+import { setLoggedUser } from "@/features/user/userSlice";
+import { GetUsersChatsDocument, GetUsersChatsQuery } from "@/generated/graphql";
+import { useUser } from "@/utils/hooks";
 import {
 	AppShell,
-	Aside,
+	// Aside,
 	Footer,
 	Header,
-	MediaQuery,
+	// MediaQuery,
 	Navbar,
+	ScrollArea,
 	Text,
 	useMantineTheme,
 } from "@mantine/core";
-import { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useQuery } from "urql";
+import Loader from "@/components/layout/Loader";
+import SideBar from "@/components/layout/SideBar";
+import Chat from "@/components/layout/Chat";
+import CreateMessageForm from "@/components/form/CreateMessage";
 
 interface AppShellDemoProps {}
 
 const AppShellDemo: React.FC<AppShellDemoProps> = () => {
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
-	return (
+	const user = useUser();
+	const dispatch = useDispatch();
+	const [userId, setUserId] = useState<string>("");
+	const [loadEffect, setLoadEffect] = useState(false);
+	const [result, fetch] = useQuery<GetUsersChatsQuery>({
+		query: GetUsersChatsDocument,
+		pause: true,
+		variables: {
+			userId,
+		},
+		//requestPolicy: "cache-and-network",
+	});
+
+	const handleGetData = useCallback(() => {
+		if (userId.length) {
+			fetch();
+		}
+	}, [userId, fetch]);
+
+	useEffect(() => {
+		setLoadEffect(true);
+		if (!user) return;
+
+		if (user.id) {
+			dispatch(setLoggedUser(user));
+			setUserId(user.id);
+		}
+
+		handleGetData();
+
+		setTimeout(() => {
+			setLoadEffect(false);
+		}, 500);
+	}, [user]);
+
+	useEffect(() => {
+		if (result.data?.getUsersChats.chats.length) {
+			dispatch(setChatsFromRedux(result.data.getUsersChats.chats));
+		}
+	}, [result.fetching, result.data?.getUsersChats.chats.length, dispatch]);
+
+	return !user || loadEffect || result.fetching ? (
+		<Loader />
+	) : (
 		<AppShell
 			styles={{
 				main: {
@@ -27,29 +82,32 @@ const AppShellDemo: React.FC<AppShellDemoProps> = () => {
 			navbarOffsetBreakpoint="sm"
 			asideOffsetBreakpoint="sm"
 			navbar={
-				<Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-					<Text>Application navbar</Text>
+				<Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 300, lg: 500 }}>
+					<Navbar.Section grow component={ScrollArea} mx="-xs" px="xs">
+						<SideBar loggedUser={user} />
+					</Navbar.Section>
 				</Navbar>
 			}
+			/*
 			aside={
 				<MediaQuery smallerThan="sm" styles={{ display: "none" }}>
 					<Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
 						<Text>Application sidebar</Text>
 					</Aside>
 				</MediaQuery>
-			}
+			} */
 			footer={
-				<Footer height={60} p="md">
-					Application footer
+				<Footer height={110} p="xs">
+					<CreateMessageForm />
 				</Footer>
 			}
 			header={
-				<Header height={70} p="md">
+				<Header height={60} p="md">
 					<NavbarLayout opened={opened} setOpened={setOpened} />
 				</Header>
 			}
 		>
-			<Text>Resize app to see responsive navbar in action</Text>
+			<Chat />
 		</AppShell>
 	);
 };

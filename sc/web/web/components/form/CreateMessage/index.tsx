@@ -3,7 +3,7 @@ import { addMessage } from "@/features/chat/chatSlicer";
 import { MessageType } from "@/features/types/chat";
 import { CreateMessageInput, useCreateMessageMutation } from "@/generated/graphql";
 import { uuidv4Like } from "@/utils/aux/chat.aux";
-import { ActionIcon, Group, Stack, Textarea } from "@mantine/core";
+import { ActionIcon, Group, Stack, Textarea, Navbar } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import type { NextPage } from "next";
 import { useState } from "react";
@@ -102,7 +102,7 @@ const CreateMessageForm: NextPage<CreateMessageFormProps> = ({}) => {
 	};
 
 	return (
-		<Stack mb="sm" mr="xs" ml="xs">
+		<Stack>
 			<form
 				onKeyDown={e => {
 					if (handleIfInputCanSubmitOnEnter(e.key)) {
