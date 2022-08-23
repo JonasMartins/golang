@@ -1,19 +1,35 @@
 import type { NextPage } from "next";
-import { Paper, Stack, Group, Text, Sx, useMantineColorScheme, Divider, Box } from "@mantine/core";
+import {
+	Paper,
+	Stack,
+	Group,
+	Text,
+	Sx,
+	useMantineColorScheme,
+	Divider,
+	Box,
+	Accordion,
+	ActionIcon,
+} from "@mantine/core";
 import { MessageType } from "@/features/types/chat";
 import { RootState } from "@/app";
 import { useSelector } from "react-redux";
 import { formatRelative } from "date-fns";
-import { IconEye, IconCalendar } from "@tabler/icons";
+import { IconEye, IconCalendar, IconChevronDown } from "@tabler/icons";
 
 interface MessagesProps {
 	message: MessageType;
 	nextMessageDate: Date;
+	messagesUnSeenIndicator: boolean;
 }
 
 const DAY_IN_MILI = 86400000;
 
-const Messages: NextPage<MessagesProps> = ({ message, nextMessageDate }) => {
+const Messages: NextPage<MessagesProps> = ({
+	message,
+	nextMessageDate,
+	messagesUnSeenIndicator,
+}) => {
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === "dark";
 	const user = useSelector((state: RootState) => state.persistedReducer.user.value);
@@ -38,6 +54,17 @@ const Messages: NextPage<MessagesProps> = ({ message, nextMessageDate }) => {
 
 	return (
 		<Stack p="xs" mt="xs">
+			{messagesUnSeenIndicator && (
+				<Paper radius="lg" p={1} withBorder>
+					<Group position="center" align="center">
+						<Text size={"sm"}>Unseen Messages</Text>
+						<ActionIcon>
+							<IconChevronDown size={15} />
+						</ActionIcon>
+					</Group>
+				</Paper>
+			)}
+
 			<Group sx={{ justifyContent: messageAuthor ? "flex-end" : "flex-start" }}>
 				<Paper sx={dark ? darkSx : lightSx} shadow="md" p="xs" radius={"lg"}>
 					<Stack spacing="sm">

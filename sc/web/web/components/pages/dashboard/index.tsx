@@ -64,7 +64,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
 	}, [user]);
 
 	useEffect(() => {
-		if (result.data?.getUsersChats.chats.length) {
+		if (result.data?.getUsersChats.chats.length && user) {
 			dispatch(setChatsFromRedux(result.data.getUsersChats.chats));
 		}
 	}, [result.fetching, result.data?.getUsersChats.chats.length, dispatch]);

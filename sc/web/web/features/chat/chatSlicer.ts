@@ -2,11 +2,17 @@ import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { ChatType, MessageType, MessageSubscription } from "@/features/types/chat";
 
+export type ChatsAndUnSeenMessagesCount = {
+	id: string;
+	count: number;
+};
+
 export interface ChatState {
 	value: ChatType | null;
 	hasAddedMessage: MessageType | null;
 	searchTerm: string;
 	chats: ChatType[];
+	chatsAndUnseenMessagesCount: ChatsAndUnSeenMessagesCount[];
 }
 
 export const chatAdapter = createEntityAdapter<ChatType>({
@@ -19,6 +25,7 @@ const initialState: ChatState = {
 	hasAddedMessage: null,
 	searchTerm: "",
 	chats: [],
+	chatsAndUnseenMessagesCount: [],
 };
 
 export const chatSlice = createSlice({
@@ -33,6 +40,28 @@ export const chatSlice = createSlice({
 			});
 			if (index !== -1) {
 				state.value = state.chats[index];
+			}
+		},
+
+		setUnseenMessagesCount: (state, action: PayloadAction<string>) => {
+			let count = 0;
+			for (var i = 0; i < state.chats.length; i++) {
+				for (var j = 0; j < state.chats[i].Messages.length; j++) {
+					if (
+						state.chats[i].Messages[j].Seen &&
+						!state.chats[i].Messages[j].Seen?.includes(action.payload)
+					) {
+						count++;
+					}
+				}
+				if (state.chatsAndUnseenMessagesCount) {
+					console.log("adding");
+					state.chatsAndUnseenMessagesCount.push({
+						count,
+						id: action.payload,
+					});
+				}
+				count = 0;
 			}
 		},
 
@@ -117,6 +146,7 @@ export const {
 	clearState,
 	clearMessageAddedOnChangeChat,
 	updadeChatsFromCommingNewMessageSubscription,
+	setUnseenMessagesCount,
 } = chatSlice.actions;
 
 const chatReducer = chatSlice.reducer;

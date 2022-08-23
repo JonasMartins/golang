@@ -13,6 +13,9 @@ interface ChatProps {}
 const Chat: React.FC<ChatProps> = () => {
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
 	const alertOpen = useSelector((state: RootState) => state.persistedReducer.alert.open);
+	const loggedUser = useSelector((state: RootState) => state.persistedReducer.user.value);
+	const [unseenMessagesCount, setUnseenMessagesCount] = useState(0);
+	const [hasUnSeenMessagesIndicator, setHasUnSeenMessagesIndicator] = useState("");
 	const messageHasBeenAdded = useSelector(
 		(state: RootState) => state.persistedReducer.chat.hasAddedMessage
 	);
@@ -31,13 +34,23 @@ const Chat: React.FC<ChatProps> = () => {
 	const [messages, setMessages] = useState<MessageType[]>([]);
 
 	const handleSettingMessagesToState = useCallback(() => {
-		if (chatFocused) {
+		let lastUnseenMessageId = true;
+		if (chatFocused && loggedUser) {
+			let count = 0;
 			for (let i = 0; i < chatFocused.Messages.length; i++) {
 				const m: MessageType = chatFocused.Messages[i];
+				if (!m.Seen?.includes(loggedUser.id)) {
+					if (lastUnseenMessageId) {
+						lastUnseenMessageId = false;
+						setHasUnSeenMessagesIndicator(m.base.id);
+					}
+					count++;
+				}
 				setMessages(x => [...x, m]);
 			}
+			setUnseenMessagesCount(count);
 		}
-	}, [chatFocused]);
+	}, [chatFocused, loggedUser]);
 
 	const scrollToBottom = () => {
 		if (viewport !== undefined) {
@@ -55,6 +68,8 @@ const Chat: React.FC<ChatProps> = () => {
 		handleSettingMessagesToState();
 		return () => {
 			setMessages([]);
+			setUnseenMessagesCount(0);
+			setHasUnSeenMessagesIndicator("");
 		};
 	}, [chatFocused, handleSettingMessagesToState]);
 
@@ -81,6 +96,8 @@ const Chat: React.FC<ChatProps> = () => {
 	useEffect(() => {
 		return () => {
 			setMessages([]);
+			setUnseenMessagesCount(0);
+			setHasUnSeenMessagesIndicator("");
 		};
 	}, []);
 
@@ -115,7 +132,7 @@ const Chat: React.FC<ChatProps> = () => {
 							<Indicator
 								offset={-7}
 								position="top-start"
-								label={5}
+								label={unseenMessagesCount}
 								color="#007c00"
 								size={30}
 							>
@@ -132,6 +149,9 @@ const Chat: React.FC<ChatProps> = () => {
 										i + 1 < messages.length
 											? new Date(messages[i + 1].base.createdAt)
 											: new Date(x.base.createdAt)
+									}
+									messagesUnSeenIndicator={
+										hasUnSeenMessagesIndicator === x.base.id
 									}
 								/>
 							))}
