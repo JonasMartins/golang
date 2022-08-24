@@ -12,8 +12,10 @@ import {
 	// MediaQuery,
 	Navbar,
 	ScrollArea,
-	Text,
+	BackgroundImage,
 	useMantineTheme,
+	useMantineColorScheme,
+	Box,
 } from "@mantine/core";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -26,6 +28,8 @@ import CreateMessageForm from "@/components/form/CreateMessage";
 interface DashboardProps {}
 
 const Dashboard: React.FC<DashboardProps> = () => {
+	const lightBg = "images/light-background.jpg";
+	const darkBg = "images/dark-background.jpg";
 	const theme = useMantineTheme();
 	const [opened, setOpened] = useState(false);
 	const user = useUser();
@@ -38,9 +42,10 @@ const Dashboard: React.FC<DashboardProps> = () => {
 		variables: {
 			userId,
 		},
-		//requestPolicy: "cache-and-network",
+		requestPolicy: "cache-and-network",
 	});
 
+	const { colorScheme } = useMantineColorScheme();
 	const handleGetData = useCallback(() => {
 		if (userId.length) {
 			fetch();
@@ -107,7 +112,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
 				</Header>
 			}
 		>
-			<Chat />
+			<BackgroundImage src={colorScheme === "dark" ? darkBg : lightBg}>
+				<Chat />
+			</BackgroundImage>
 		</AppShell>
 	);
 };

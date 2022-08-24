@@ -3,7 +3,7 @@ import MessageComp from "@/components/layout/Messages";
 import SettingsModal from "@/components/modal/Settings";
 import GeneralMutationsAlert from "@/components/notifications/alert/Alert";
 import { MessageType } from "@/features/types/chat";
-import { Box, Stack, ScrollArea, Group, ActionIcon, Text, Indicator } from "@mantine/core";
+import { ActionIcon, Box, Group, Indicator, ScrollArea, Stack } from "@mantine/core";
 import { IconChevronsDown } from "@tabler/icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,18 +11,24 @@ import { useSelector } from "react-redux";
 interface ChatProps {}
 
 const Chat: React.FC<ChatProps> = () => {
-	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
 	const alertOpen = useSelector((state: RootState) => state.persistedReducer.alert.open);
 	const loggedUser = useSelector((state: RootState) => state.persistedReducer.user.value);
+	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
+
+	const [messages, setMessages] = useState<MessageType[]>([]);
 	const [unseenMessagesCount, setUnseenMessagesCount] = useState(0);
+	const [chatMembersIds, setChatMembersIds] = useState<string[]>([]);
+	const [scrollPosition, onScrollPositionChange] = useState({ x: 0, y: 0 });
 	const [hasUnSeenMessagesIndicator, setHasUnSeenMessagesIndicator] = useState("");
 	const messageHasBeenAdded = useSelector(
 		(state: RootState) => state.persistedReducer.chat.hasAddedMessage
 	);
+
 	const [sizeScreen, getSizeScreen] = useState({
 		dynamicWidth: window.innerWidth,
 		dynamicHeight: window.innerHeight,
 	});
+
 	const setDimension = () => {
 		getSizeScreen({
 			dynamicHeight: window.innerHeight,
@@ -31,11 +37,18 @@ const Chat: React.FC<ChatProps> = () => {
 	};
 
 	const viewport = useRef<HTMLDivElement>(null);
-	const [messages, setMessages] = useState<MessageType[]>([]);
 
+	/**
+	 * 	Initial setup to set the focused chat messages
+	 * 	to this component
+	 */
 	const handleSettingMessagesToState = useCallback(() => {
 		let lastUnseenMessageId = true;
 		if (chatFocused && loggedUser) {
+			chatFocused.Members.map(x => {
+				setChatMembersIds(prev => [...prev, x.base.id]);
+			});
+
 			let count = 0;
 			for (let i = 0; i < chatFocused.Messages.length; i++) {
 				const m: MessageType = chatFocused.Messages[i];
@@ -52,6 +65,9 @@ const Chat: React.FC<ChatProps> = () => {
 		}
 	}, [chatFocused, loggedUser]);
 
+	/**
+	 * Method that scrolls the scroll area to absolute bottom
+	 */
 	const scrollToBottom = () => {
 		if (viewport !== undefined) {
 			viewport.current?.scrollTo({
@@ -70,6 +86,7 @@ const Chat: React.FC<ChatProps> = () => {
 			setMessages([]);
 			setUnseenMessagesCount(0);
 			setHasUnSeenMessagesIndicator("");
+			setChatMembersIds([]);
 		};
 	}, [chatFocused, handleSettingMessagesToState]);
 
@@ -86,6 +103,9 @@ const Chat: React.FC<ChatProps> = () => {
 		}
 	}, [messageHasBeenAdded, chatFocused]);
 
+	/**
+	 * UseEffect to monitoring the window's resizing
+	 */
 	useEffect(() => {
 		window.addEventListener("resize", setDimension);
 		return () => {
@@ -93,11 +113,15 @@ const Chat: React.FC<ChatProps> = () => {
 		};
 	}, [sizeScreen]);
 
+	/**
+	 * Cleaning states when components is about to end
+	 */
 	useEffect(() => {
 		return () => {
 			setMessages([]);
 			setUnseenMessagesCount(0);
 			setHasUnSeenMessagesIndicator("");
+			setChatMembersIds([]);
 		};
 	}, []);
 
@@ -119,28 +143,46 @@ const Chat: React.FC<ChatProps> = () => {
 					type="hover"
 					viewportRef={viewport}
 					offsetScrollbars
+					onScrollPositionChange={onScrollPositionChange}
 				>
 					<Group>
 						<ActionIcon
 							sx={{ position: "fixed", bottom: 120 }}
 							onClick={scrollToBottom}
-							radius="xl"
-							size="xl"
+							radius="lg"
+							size="lg"
 							variant="outline"
 							disabled={chatFocused ? false : true}
 						>
 							<Indicator
-								offset={-7}
+								offset={-3}
 								position="top-start"
 								label={unseenMessagesCount}
 								color="#007c00"
 								size={30}
+								hidden={chatFocused ? false : true}
 							>
 								<IconChevronsDown />
 							</Indicator>
 						</ActionIcon>
 
 						<Stack sx={{ flexGrow: 1, marginLeft: 50 }}>
+							{/**
+							 *	Props:
+							 * 	message: the main message object to be rendered
+							 * 	nextMessageDate: The date from the next message, if there is no
+							 * 	next message them it comes the current message creation date
+							 * 	messageUnseenIndicator: Boolean, true if the current message is unread
+							 * 	by the current logged user
+							 * 	chatMembersIds: all the chat members ids
+							 *  scrollPosition: a number with the current y index position so it
+							 * 	can calculate if this message is visible during the scroll act
+							 * 	currentPageHeight: the page current height minus the navbat and footer
+							 * 	so it is the exacly main messages panel height
+							 *
+							 * @param param0
+							 * @returns
+							 */}
 							{messages.map((x, i) => (
 								<MessageComp
 									key={x.base.id}
@@ -153,6 +195,9 @@ const Chat: React.FC<ChatProps> = () => {
 									messagesUnSeenIndicator={
 										hasUnSeenMessagesIndicator === x.base.id
 									}
+									chatMembersIds={chatMembersIds}
+									scrollPosition={scrollPosition.y}
+									currentPageHeight={sizeScreen.dynamicHeight - 202}
 								/>
 							))}
 						</Stack>
