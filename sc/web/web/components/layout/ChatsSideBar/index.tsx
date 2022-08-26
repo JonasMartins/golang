@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
 	Paper,
 	Stack,
@@ -25,63 +26,26 @@ interface ChatsSideBarProps {
 
 const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 	const dispatch = useDispatch();
+	const [thisUnseenMessagesCount, setThisUnseenMessagesCount] = useState(0);
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
+
 	const newMessage = useSelector(
 		(state: RootState) => state.persistedReducer.chat.hasAddedMessage
 	);
-	const loggedUser = useSelector((state: RootState) => state.persistedReducer.user.value);
-	const [unseenMessagesCount, setUnseenMessagesCount] = useState(0);
 	const [lastUpdated, setLastUpdated] = useState(new Date(chat.base.updatedAt));
 	const { colorScheme } = useMantineColorScheme();
 	const dark = colorScheme === "dark";
-
 	let isChatInfocus = chatFocused?.base.id === chat.base.id;
-
-	const lightSx: Sx = {
-		cursor: "pointer",
-		backgroundColor: isChatInfocus ? "#b2ffcb" : "#fff",
-		"&:hover": {
-			backgroundColor: isChatInfocus ? "#99e1ba" : "#dde0e2",
-		},
-	};
-
-	const darkSx: Sx = {
-		cursor: "pointer",
-		backgroundColor: isChatInfocus ? "#07666c" : "#1A1B1E",
-		"&:hover": {
-			backgroundColor: isChatInfocus ? "#075257" : "#070707",
-		},
-	};
-
-	const handleGetUnSeenMessagesCount = useCallback(() => {
-		if (loggedUser) {
-			let count = 0;
-			chat.Messages.map(x => {
-				if (!x.Seen?.includes(loggedUser.id)) {
-					count++;
-				}
-			});
-			setUnseenMessagesCount(count);
-		}
-	}, [chat, loggedUser]);
 
 	useEffect(() => {
 		if (newMessage && newMessage.ChatId === chat.base.id) {
 			setLastUpdated(new Date(newMessage.base.createdAt));
-			setUnseenMessagesCount(unseenMessagesCount + 1);
 		}
 	}, [newMessage]);
 
-	useEffect(() => {
-		handleGetUnSeenMessagesCount();
-		return () => {
-			setUnseenMessagesCount(0);
-		};
-	}, []);
-
 	return (
 		<Paper
-			sx={dark ? darkSx : lightSx}
+			sx={getStyle(dark, isChatInfocus)}
 			shadow="md"
 			p="xs"
 			radius="md"
@@ -103,10 +67,10 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 						<Text size="xs" align="right" weight={100}>
 							{formatRelative(lastUpdated, new Date())}
 						</Text>
-						{unseenMessagesCount > 0 ? (
+						{thisUnseenMessagesCount > 0 ? (
 							<ColorSwatch color={"green"} size={30} sx={{ color: "#fff" }}>
 								<Text size="xs" weight={500}>
-									{unseenMessagesCount}
+									{thisUnseenMessagesCount}
 								</Text>
 							</ColorSwatch>
 						) : (
@@ -121,3 +85,23 @@ const ChatsSideBar: NextPage<ChatsSideBarProps> = ({ chat, title }) => {
 };
 
 export default ChatsSideBar;
+
+const getStyle = (dark: boolean, isChatInfocus: boolean): Sx => {
+	const lightSx: Sx = {
+		cursor: "pointer",
+		backgroundColor: isChatInfocus ? "#b2ffcb" : "#fff",
+		"&:hover": {
+			backgroundColor: isChatInfocus ? "#99e1ba" : "#dde0e2",
+		},
+	};
+
+	const darkSx: Sx = {
+		cursor: "pointer",
+		backgroundColor: isChatInfocus ? "#07666c" : "#1A1B1E",
+		"&:hover": {
+			backgroundColor: isChatInfocus ? "#075257" : "#070707",
+		},
+	};
+
+	return dark ? darkSx : lightSx;
+};

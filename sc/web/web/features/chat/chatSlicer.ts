@@ -2,17 +2,27 @@ import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { ChatType, MessageType, MessageSubscription } from "@/features/types/chat";
 
-export type ChatsAndUnSeenMessagesCount = {
-	id: string;
-	count: number;
+export type MessagesUnreadSet = {
+	messageId: string;
+	seen: string[];
 };
 
+export type CacheInputsSet = {
+	userId: string;
+	messageId: string;
+};
+
+export interface ChatMessagesUnreadSet {
+	data: Record<string, Array<MessagesUnreadSet>>;
+}
+
 export interface ChatState {
+	chats: ChatType[];
+	searchTerm: string;
 	value: ChatType | null;
 	hasAddedMessage: MessageType | null;
-	searchTerm: string;
-	chats: ChatType[];
-	chatsAndUnseenMessagesCount: ChatsAndUnSeenMessagesCount[];
+	recentUpdatedMessages: Array<CacheInputsSet>;
+	chatsUnseenCount: ChatMessagesUnreadSet;
 }
 
 export const chatAdapter = createEntityAdapter<ChatType>({
@@ -21,11 +31,12 @@ export const chatAdapter = createEntityAdapter<ChatType>({
 });
 
 const initialState: ChatState = {
-	value: null,
-	hasAddedMessage: null,
-	searchTerm: "",
 	chats: [],
-	chatsAndUnseenMessagesCount: [],
+	value: null,
+	searchTerm: "",
+	hasAddedMessage: null,
+	recentUpdatedMessages: [],
+	chatsUnseenCount: { data: {} },
 };
 
 export const chatSlice = createSlice({
@@ -43,28 +54,6 @@ export const chatSlice = createSlice({
 			}
 		},
 
-		setUnseenMessagesCount: (state, action: PayloadAction<string>) => {
-			let count = 0;
-			for (var i = 0; i < state.chats.length; i++) {
-				for (var j = 0; j < state.chats[i].Messages.length; j++) {
-					if (
-						state.chats[i].Messages[j].Seen &&
-						!state.chats[i].Messages[j].Seen?.includes(action.payload)
-					) {
-						count++;
-					}
-				}
-				if (state.chatsAndUnseenMessagesCount) {
-					console.log("adding");
-					state.chatsAndUnseenMessagesCount.push({
-						count,
-						id: action.payload,
-					});
-				}
-				count = 0;
-			}
-		},
-
 		addMessage: (state, action: PayloadAction<MessageType | null>) => {
 			state.hasAddedMessage = action.payload;
 			if (action.payload) {
@@ -77,6 +66,38 @@ export const chatSlice = createSlice({
 				}
 			}
 		},
+
+		/**
+		 * 	Recieves a userId and a message id, if this message
+		 *  has not been seen, then, this method will look into
+		 *  the current focused chat and will add this userId into
+		 * 	message's seen array
+		 * @param state
+		 * @param action
+		 * @returns
+		 */
+		updateUnseenMessage: (state, action: PayloadAction<CacheInputsSet>) => {
+			for (let x of state.recentUpdatedMessages) {
+				if (
+					x.messageId === action.payload.messageId &&
+					x.userId === action.payload.userId
+				) {
+					return;
+				}
+			}
+			state.recentUpdatedMessages.push({
+				messageId: action.payload.messageId,
+				userId: action.payload.userId,
+			});
+			if (state.value && state.chatsUnseenCount.data[state.value.base.id]) {
+				for (let x of state.chatsUnseenCount.data[state.value.base.id]) {
+					if (x.messageId === action.payload.messageId) {
+						x.seen.push(action.payload.userId);
+					}
+				}
+			}
+		},
+
 		/**
 		 * Every time a chat change its focus, then
 		 * the most recent added message must be seted to null
@@ -94,6 +115,33 @@ export const chatSlice = createSlice({
 
 		setChats: (state, action: PayloadAction<ChatType[]>) => {
 			state.chats = action.payload;
+			/**
+			 *  Set the unseen messages count when the chats comes
+			 *  from first request
+			 */
+			let auxObj: ChatMessagesUnreadSet = { data: {} };
+			// starting chatsUnseen sctructure
+			for (var i = 0; i < action.payload.length; i++) {
+				auxObj.data[action.payload[i].base.id] = new Array<MessagesUnreadSet>();
+			}
+
+			state.chatsUnseenCount = auxObj;
+			// setting also the unseen messages struct
+			for (var i = 0; i < action.payload.length; i++) {
+				for (var j = 0; j < action.payload[i].Messages.length; j++) {
+					if (action.payload[i].Messages[j].Seen) {
+						if (
+							action.payload[i].Messages[j].Seen!.length <
+							action.payload[i].Members.length
+						) {
+							state.chatsUnseenCount.data[action.payload[i].base.id].push({
+								messageId: action.payload[i].Messages[j].base.id,
+								seen: action.payload[i].Messages[j].Seen || [],
+							});
+						}
+					}
+				}
+			}
 		},
 
 		clearState: state => {
@@ -101,6 +149,8 @@ export const chatSlice = createSlice({
 			state.searchTerm = "";
 			state.hasAddedMessage = null;
 			state.value = null;
+			state.chatsUnseenCount = { data: {} };
+			state.recentUpdatedMessages = [];
 		},
 
 		updadeChatsFromCommingNewMessageSubscription: (
@@ -139,14 +189,13 @@ export const chatSlice = createSlice({
 });
 
 export const {
-	setFocusedChat,
-	addMessage,
-	setSearchTerm,
 	setChats,
+	addMessage,
 	clearState,
+	setSearchTerm,
+	setFocusedChat,
 	clearMessageAddedOnChangeChat,
 	updadeChatsFromCommingNewMessageSubscription,
-	setUnseenMessagesCount,
 } = chatSlice.actions;
 
 const chatReducer = chatSlice.reducer;

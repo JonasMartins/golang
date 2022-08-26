@@ -11,9 +11,7 @@ const Login: NextPage = () => {
 	const [activeTab, setActiveTab] = useState<string | null>("Login");
 	return (
 		<Stack justify="flex-start">
-			<Group position="right" m="md">
-				<ToggleTheme />
-			</Group>
+			<Group position="right" m="md"></Group>
 			<Stack spacing="md" justify="center" align="stretch">
 				<Title align="center">{activeTab}</Title>
 				<Grid>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { RootState } from "@/app";
 import MessageComp from "@/components/layout/Messages";
 import SettingsModal from "@/components/modal/Settings";
@@ -6,11 +7,12 @@ import { MessageType } from "@/features/types/chat";
 import { ActionIcon, Box, Group, Indicator, ScrollArea, Stack } from "@mantine/core";
 import { IconChevronsDown } from "@tabler/icons";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 interface ChatProps {}
 
 const Chat: React.FC<ChatProps> = () => {
+	const dispatch = useDispatch();
 	const alertOpen = useSelector((state: RootState) => state.persistedReducer.alert.open);
 	const loggedUser = useSelector((state: RootState) => state.persistedReducer.user.value);
 	const chatFocused = useSelector((state: RootState) => state.persistedReducer.chat.value);
@@ -39,29 +41,33 @@ const Chat: React.FC<ChatProps> = () => {
 	const viewport = useRef<HTMLDivElement>(null);
 
 	/**
+	 * Callback method called when a message component
+	 * saw the message, then, its going to trigger this method,
+	 * decreasing the unseen messages count
+	 */
+	const handlUpdateSeenMessageCallback = (messageId: string) => {
+		console.log("called ", messageId);
+		if (unseenMessagesCount > 0) {
+			//dispatch(updateUnSeenMessagesCountByChat());
+			//setUnseenMessagesCount(unseenMessagesCount - 1);
+		}
+	};
+
+	/**
 	 * 	Initial setup to set the focused chat messages
 	 * 	to this component
 	 */
 	const handleSettingMessagesToState = useCallback(() => {
-		let lastUnseenMessageId = true;
 		if (chatFocused && loggedUser) {
 			chatFocused.Members.map(x => {
 				setChatMembersIds(prev => [...prev, x.base.id]);
 			});
 
-			let count = 0;
 			for (let i = 0; i < chatFocused.Messages.length; i++) {
 				const m: MessageType = chatFocused.Messages[i];
-				if (!m.Seen?.includes(loggedUser.id)) {
-					if (lastUnseenMessageId) {
-						lastUnseenMessageId = false;
-						setHasUnSeenMessagesIndicator(m.base.id);
-					}
-					count++;
-				}
+
 				setMessages(x => [...x, m]);
 			}
-			setUnseenMessagesCount(count);
 		}
 	}, [chatFocused, loggedUser]);
 
@@ -76,6 +82,7 @@ const Chat: React.FC<ChatProps> = () => {
 			});
 		}
 	};
+
 	/**
 	 * Handles initial setup, this is triggered when the user
 	 * switch chats
@@ -155,6 +162,7 @@ const Chat: React.FC<ChatProps> = () => {
 							disabled={chatFocused ? false : true}
 						>
 							<Indicator
+								disabled={unseenMessagesCount === 0}
 								offset={-3}
 								position="top-start"
 								label={unseenMessagesCount}
@@ -198,6 +206,7 @@ const Chat: React.FC<ChatProps> = () => {
 									chatMembersIds={chatMembersIds}
 									scrollPosition={scrollPosition.y}
 									currentPageHeight={sizeScreen.dynamicHeight - 202}
+									updateSeenMessage={handlUpdateSeenMessageCallback}
 								/>
 							))}
 						</Stack>

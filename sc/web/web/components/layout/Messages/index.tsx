@@ -25,6 +25,7 @@ interface MessagesProps {
 	chatMembersIds: string[];
 	scrollPosition: number;
 	currentPageHeight: number;
+	updateSeenMessage: (messageId: string) => void;
 }
 
 const DAY_IN_MILI = 86400000;
@@ -51,6 +52,7 @@ const Messages: NextPage<MessagesProps> = ({
 	chatMembersIds,
 	scrollPosition,
 	currentPageHeight,
+	updateSeenMessage,
 }) => {
 	const refEl = useRef<HTMLDivElement>(null);
 	const { colorScheme } = useMantineColorScheme();
@@ -81,11 +83,10 @@ const Messages: NextPage<MessagesProps> = ({
 	 *  state is false, meaning the user havent seen the message, then will
 	 * 	be updated to true, making the eye icon turn blue
 	 */
-	const handleUpdateSeenMessageLocally = useCallback(() => {
-		if (!messageSeen) {
-			setMessageSeen(true);
-		}
-	}, [messageSeen]);
+	const handleUpdateSeenMessageLocally = () => {
+		setMessageSeen(true);
+		updateSeenMessage(message.base.id);
+	};
 
 	useEffect(() => {
 		if (!refEl) {
