@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul 18 09:04:14 2022
+# Make data base, printed on Mon Sep 19 22:50:04 2022
 
 # Variables
 
@@ -14,8 +14,6 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 GDK_BACKEND = x11
 # environment
 LC_ALL = C
-# environment
-NO_AT_BRIDGE = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
@@ -57,17 +55,17 @@ OLDPWD = /home/jonas
 # environment
 NVM_INC = /home/jonas/.nvm/versions/node/v16.15.0/include/node
 # environment
-VSCODE_CODE_CACHE_PATH = /home/jonas/.config/Code/CachedData/b06ae3b2d2dbfe28bca3134cc6be65935cdfea6a
+VSCODE_CODE_CACHE_PATH = /home/jonas/.config/Code/CachedData/784b0177c56c607789f9638da7b6bf3230d47a8c
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.OQEDP1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.3LEGS1
 # default
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
 # environment
-GNOME_TERMINAL_SERVICE = :1.137
+GNOME_TERMINAL_SERVICE = :1.123
 # makefile
 MAKEFLAGS = pqrR
 # makefile
@@ -101,13 +99,13 @@ MAKEFILE_LIST := Makefile
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 18656
+VSCODE_PID = 378063
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/5077,unix/jonas-Lenovo-BS145-15IWL:/tmp/.ICE-unix/5077
+SESSION_MANAGER = local/jonas-Lenovo-BS145-15IWL:@/tmp/.ICE-unix/2643,unix/jonas-Lenovo-BS145-15IWL:/tmp/.ICE-unix/2643
 # automatic
 *F = $(notdir $*)
 # environment
@@ -131,7 +129,7 @@ XMODIFIERS = @im=ibus
 # environment
 SHLVL = 1
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/155482f0_d541_47fb_99af_5b0e50262809
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/f81026cc_4c7c_4383_a6ea_add950b2714c
 # environment
 MAKELEVEL := 0
 # default
@@ -175,7 +173,7 @@ LOGNAME = jonas
 # makefile
 .DEFAULT_GOAL := status
 # environment
-SYSTEMD_EXEC_PID = 11615
+SYSTEMD_EXEC_PID = 6912
 # environment
 DISPLAY = :0
 # environment
@@ -211,7 +209,7 @@ QT_IM_MODULE = ibus
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-70be7676-1.69.1-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-70be7676-1.71.0-main.sock
 # environment
 TERM = xterm-256color
 # environment
@@ -239,7 +237,7 @@ GDMSESSION = ubuntu
 # environment
 LC_IDENTIFICATION = pt_BR.UTF-8
 # variable set hash-table stats:
-# Load=114/1024=11%, Rehash=0, Collisions=10/144=7%
+# Load=113/1024=11%, Rehash=0, Collisions=10/143=7%
 
 # Pattern-specific Variable Values
 
@@ -247,9 +245,9 @@ LC_IDENTIFICATION = pt_BR.UTF-8
 
 # Directories
 
-# . (device 2050, inode 6949895): 11 files, no impossibilities.
+# . (device 2050, inode 6949895): 12 files, no impossibilities.
 
-# 11 files, no impossibilities in 1 directories.
+# 12 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -295,11 +293,11 @@ push:
 #  Modification time never checked.
 #  File has not been updated.
 
-# Not a target:
-all:
  
 make: *** No rule to make target 'all'.  Stop.
 
+# Not a target:
+all:
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
@@ -321,12 +319,12 @@ status:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 20 / storage = 153 B / avg = 7 B
-# current buf: size = 8162 B / used = 153 B / count = 20 / avg = 7 B
+# strcache buffers: 1 (0) / strings = 21 / storage = 162 B / avg = 7 B
+# current buf: size = 8162 B / used = 162 B / count = 21 / avg = 7 B
 
-# strcache performance: lookups = 28 / hit rate = 28%
+# strcache performance: lookups = 29 / hit rate = 27%
 # hash-table stats:
-# Load=20/8192=0%, Rehash=0, Collisions=0/28=0%
-# Finished Make data base on Mon Jul 18 09:04:14 2022
+# Load=21/8192=0%, Rehash=0, Collisions=0/29=0%
+# Finished Make data base on Mon Sep 19 22:50:04 2022
 
  
