@@ -1,0 +1,4 @@
+One of Docker's best practice is keeping the image size small,
+by having only the binary file then we make our image even 
+smaller from the previous one. To achieve this we will use a
+technique called multistage build which means we will build our image with multiple steps.
