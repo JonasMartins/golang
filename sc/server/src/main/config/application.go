@@ -53,13 +53,13 @@ func Run() error {
 		AllowCredentials: true,
 	})
 
-	filesDir := http.Dir("/Users/jonasmartinssouza/Documents/Dev/golang/golang/sc/server/public/images")
+	// filesDir := http.Dir("/Users/jonasmartinssouza/Documents/Dev/golang/golang/sc/server/public/images")
 
 	router.Handle("/graphql", playground.Handler("Project", "/query"))
 	router.Handle("/query", c.Handler(app.srv))
 
 	// palliative solution
-	FileServer(router, "/files", filesDir)
+	// FileServer(router, "/files", filesDir)
 
 	app.logger.Printf("server running at: http://%s:%d/graphql", app.host, app.port)
 	app.logger.Fatal(http.ListenAndServe(fmt.Sprintf("%s%d", ":", app.port), router))

@@ -1,0 +1,23 @@
+{
+  "folders": [
+	{
+		"path": "sandbox/mikro/broker-service"
+	},
+	{
+		"path": "sandbox/mikro/authentication-service"
+	},
+	{
+		"path": "sandbox/mikro/listener-service"
+	},
+	{
+		"path": "sandbox/mikro/logger-service"
+	},
+	{
+		"path": "sandbox/mikro/mail-service"
+	},
+	{
+		"path": "sandbox/mikro/project"
+	}
+],
+  "settings": {}
+}

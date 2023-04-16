@@ -1,0 +1,7 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/jonas/Documentos/dev/golang/sc/bin'
+echo "Starting docker images..."
+docker-compose -f docker-compose.staging.yml up
+echo "Docker images started"
+make: Leaving directory '/home/jonas/Documentos/dev/golang/sc/bin'
+ 

@@ -1,0 +1,370 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.3
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Sun Nov 27 14:20:23 2022
+
+# Variables
+
+# environment
+GDK_BACKEND = x11
+# environment
+LC_ALL = C
+# environment
+GNOME_SHELL_SESSION_MODE = ubuntu
+# environment
+SSH_AGENT_LAUNCHER = gnome-keyring
+# environment
+NVIM = /run/user/1000/nvim.612037.0
+# environment
+MANDATORY_PATH = /usr/share/gconf/ubuntu.mandatory.path
+# environment
+VSCODE_CWD = /home/jonas/Documentos/dev/examples/prolog
+# environment
+WINDOWPATH = 2
+# environment
+NVIM_LOG_FILE = /home/jonas/.local/state/nvim/log
+# environment
+LUNARVIM_CACHE_DIR = /home/jonas/.cache/lvim
+# environment
+NVM_DIR = /home/jonas/.nvm
+# default
+MAKE_COMMAND := make
+# environment
+QT_ACCESSIBILITY = 1
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /home/jonas/Documentos/dev/golang/sc/bin
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# environment
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+# environment
+OLDPWD = /home/jonas/Documentos/dev/examples/prolog
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# automatic
+%F = $(notdir $%)
+# environment
+NVM_INC = /home/jonas/.nvm/versions/node/v16.17.1/include/node
+# environment
+VSCODE_CODE_CACHE_PATH = /home/jonas/.config/Code/CachedData/6261075646f055b99068d3688932416f2346dd3b
+# environment
+LANG = C
+# environment
+XAUTHORITY = /run/user/1000/gdm/Xauthority
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
+# environment
+GNOME_TERMINAL_SERVICE = :1.187
+# makefile
+MAKEFLAGS = pqrR
+# environment
+LUNARVIM_RUNTIME_DIR = /home/jonas/.local/share/lunarvim
+# makefile
+CURDIR := /home/jonas/Documentos/dev/golang/sc/bin
+# makefile (from 'Makefile', line 1)
+SERVER_BINARY = serverApp
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+MFLAGS = -pqrR
+# environment
+SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
+# default
+.SHELLFLAGS := -c
+# environment
+NVM_BIN = /home/jonas/.nvm/versions/node/v16.17.1/bin
+# environment
+XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+P9K_SSH = 0
+# environment
+XDG_SESSION_DESKTOP = ubuntu
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST := Makefile
+# automatic
+@F = $(notdir $@)
+# environment
+ZSH = /home/jonas/.oh-my-zsh
+# environment
+VSCODE_PID = 615508
+# environment
+XDG_SESSION_TYPE = x11
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+SESSION_MANAGER = local/jonas-HP-ProDesk-400-G5-SFF:@/tmp/.ICE-unix/2092,unix/jonas-HP-ProDesk-400-G5-SFF:/tmp/.ICE-unix/2092
+# automatic
+*F = $(notdir $*)
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+VIMRUNTIME = /usr/share/nvim/runtime
+# environment
+P9K_TTY = old
+# environment
+VSCODE_NLS_CONFIG = {"locale":"pt-br","availableLanguages":{"*":"pt-br"},"_languagePackId":"b2a596efb1baf6871dcb16cfb1962735.pt-br","_translationsConfigFile":"/home/jonas/.config/Code/clp/b2a596efb1baf6871dcb16cfb1962735.pt-br/tcf.json","_cacheRoot":"/home/jonas/.config/Code/clp/b2a596efb1baf6871dcb16cfb1962735.pt-br","_resolvedLanguagePackCoreLocation":"/home/jonas/.config/Code/clp/b2a596efb1baf6871dcb16cfb1962735.pt-br/6261075646f055b99068d3688932416f2346dd3b","_corruptedFile":"/home/jonas/.config/Code/clp/b2a596efb1baf6871dcb16cfb1962735.pt-br/corrupted.info","_languagePackSupport":true}
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+GNOME_DESKTOP_SESSION_ID = this-is-deprecated
+# makefile
+SHELL = /bin/sh
+# default
+MAKECMDGOALS := all
+# environment
+XMODIFIERS = @im=ibus
+# environment
+SHLVL = 2
+# environment
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/2c5d6679_19b8_4a2e_a48f_185eaa0664e0
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+PATH = /home/jonas/.local/bin:/home/jonas/.local/share/nvim/mason/bin:/home/jonas/.nvm/versions/node/v16.17.1/bin:/home/jonas/.local/bin:/home/jonas/.cargo/bin:/home/jonas/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/usr/local/go/bin:/usr/local/go/bin:/home/jonas/go/bin
+# default
+MAKEFILES := 
+# environment
+LANGUAGE = pt_BR:pt:en
+# automatic
+^F = $(notdir $^)
+# environment
+USERNAME = jonas
+# automatic
+?F = $(notdir $?)
+# environment
+XDG_CURRENT_DESKTOP = Unity
+# environment
+LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+# automatic
++F = $(notdir $+)
+# environment
+LESS = -R
+# environment
+DESKTOP_SESSION = ubuntu
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+LOGNAME = jonas
+# makefile
+.DEFAULT_GOAL := up
+# environment
+SYSTEMD_EXEC_PID = 2404
+# environment
+DISPLAY = :1
+# environment
+USER = jonas
+# environment
+GTK_MODULES = gail:atk-bridge
+# environment
+DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
+# default
+MAKE_VERSION := 4.3
+# environment
+PAGER = less
+# environment
+_ = /usr/bin/code
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
+# environment
+COLORTERM = truecolor
+# environment
+NVM_CD_FLAGS = -q
+# environment
+XDG_SESSION_CLASS = user
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /home/jonas
+# environment
+QT_IM_MODULE = ibus
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-70be7676-1.73.1-main.sock
+# environment
+TERM = xterm-256color
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# default
+SUFFIXES := 
+# environment
+_P9K_TTY = /dev/pts/1
+# environment
+VSCODE_CLI = 1
+# environment
+LUNARVIM_CONFIG_DIR = /home/jonas/.config/lvim
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+VTE_VERSION = 6800
+# environment
+LUNARVIM_BASE_DIR = /home/jonas/.local/share/lunarvim/lvim
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
+# environment
+XDG_MENU_PREFIX = gnome-
+# environment
+GDMSESSION = ubuntu
+# variable set hash-table stats:
+# Load=113/1024=11%, Rehash=0, Collisions=13/143=9%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 2050, inode 3671601): 8 files, no impossibilities.
+
+# 8 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+up_build: build_server
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 9):
+	@echo "Stopping docker images (if running...)"
+	docker-compose -f docker-compose.staging.yml down
+	@echo "Building and starting docker images..."
+	docker-compose -f docker-compose.staging.yml up --build -d
+	@echo "Docker images built and started."
+
+lint:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 26):
+	@echo "Running linter"
+	cd ../server/src && golangci-lint run
+	@echo "Formatting..."
+	cd ../server/src && go fmt ./
+ 
+make: *** No rule to make target 'all'.  Stop.
+
+	@echo "Done"
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-10-22 21:56:18.38326889
+#  File has been updated.
+#  Successfully updated.
+
+up:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 4):
+	@echo "Starting docker images..."
+	docker-compose -f docker-compose.staging.yml up
+	@echo "Docker images started"
+
+build_server:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 21):
+	@echo "Building server binary..."
+	cd ../server/src && env GOOS=linux CGO_ENABLED=0 go build -o ${SERVER_BINARY} ./server.go
+	@echo "Done"
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+all:
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+
+test:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 35):
+	@echo "Running all tests"
+	cd ../server/test && go test ./...
+
+local:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 32):
+	@echo "Running development local"
+	cd ../server/src && go run server.go
+
+down:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 16):
+	@echo "Stopping docker compose..."
+	docker-compose -f docker-compose.staging.yml down -v
+	@echo "Done"
+
+schema_generate:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 39):
+	@echo "Rebuild graphql's schema changes"
+	cd ../server/src && go generate ./...
+
+# files hash-table stats:
+# Load=12/1024=1%, Rehash=0, Collisions=0/24=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 21 / storage = 194 B / avg = 9 B
+# current buf: size = 8162 B / used = 194 B / count = 21 / avg = 9 B
+
+# strcache performance: lookups = 34 / hit rate = 38%
+# hash-table stats:
+# Load=21/8192=0%, Rehash=0, Collisions=0/34=0%
+# Finished Make data base on Sun Nov 27 14:20:23 2022
+
+ 

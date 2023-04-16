@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../sc/server"
+		},
+		{
+			"path": "../../sc/web"
+		},
+		{
+			"path": "../../sc/bin"
+		}
+	],
+	"settings": {}
+}
