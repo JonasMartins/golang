@@ -1,0 +1,7 @@
+api:
+  port: 4000
+  domain: "localhost"
+db:
+  driver: "mysql"
+  conn: "dev:dev@tcp(127.0.0.1:3305)/project?parseTime=true"
+

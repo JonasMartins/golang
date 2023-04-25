@@ -44,7 +44,7 @@ dev-start:
 # test: combine all tests through the entire project
 test:
 	@ echo "Running general tests..."
-	@ rm -f ./${BINARY_TEST} || true && go test ./test/... -c -o ${BINARY_TEST} && ./${BINARY_TEST} -test.v -test.bench=.
+	@ rm -f ./out/${BINARY_TEST} || true && go test ./test/... -c -o ./out/${BINARY_TEST} && ./out/${BINARY_TEST} -test.v -test.bench=.
 	@ echo "Finish running general tests"
 
 .PHONY: dev
