@@ -12,6 +12,18 @@ func New() *Utils {
 	return &Utils{}
 }
 
+func (u *Utils) GetRelativeRootDir() (*string, error) {
+	fullRoot, err := u.GetRootDir()
+	if err != nil {
+		return nil, err
+	}
+	arr := strings.Split(*fullRoot, "/")
+
+	src := arr[len(arr)-2]
+
+	return &src, nil
+}
+
 // * Return the project root as a string
 func (u *Utils) GetRootDir() (*string, error) {
 	var result string = ""

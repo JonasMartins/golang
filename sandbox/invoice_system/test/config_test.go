@@ -26,12 +26,12 @@ func TestGetRoot(t *testing.T) {
 
 	u := utils.New()
 
-	got, err := u.GetRootDir()
+	got, err := u.GetRelativeRootDir()
 	if err != nil {
 		t.Logf("Err %v", err)
 	}
 
-	want := "/home/jonas/Documentos/dev/golang/sandbox/invoice_system/src/"
+	want := "src"
 	if *got != want {
 		t.Errorf("got %s, wanted %s", *got, want)
 	}
