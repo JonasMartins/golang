@@ -1,4 +1,4 @@
-CREATE SCHEMA `project`;
+-- CREATE DATABASE IF NOT EXISTS `project`;
 
 CREATE TABLE `project`.`users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -10,7 +10,6 @@ CREATE TABLE `project`.`users` (
   `deleted_at` timestamp,
   `created_at` timestamp NOT NULL DEFAULT NOW(),
   `updated_at` timestamp NOT NULL DEFAULT NOW() ON UPDATE NOW()
-  UNIQUE (`email`)
 );
 
 CREATE TABLE `project`.`invoices` (

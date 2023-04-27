@@ -30,7 +30,6 @@ build-dev: build-broker
 ## build-broker: build de broker service executable
 build-broker:
 	@ rm -f ./out/${BINARY_BROKER} || true && GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -o ./out/${BINARY_BROKER} ./src/services/broker/cmd/*.go 
-	
 
 .PHONY: down-dev
 ## down-dev: down dev containers
@@ -53,6 +52,15 @@ dev-stop:
 dev-start:
 	@ echo "Start dev containers"
 	@ docker start development-template-http-mysql development-template-http-mysql-db
+
+.PHONY: migrate-up
+## migrate-up: run migrations command
+migrate-up:
+	@ echo "Running migrations up"
+	@ docker run -v {{ migration dir }}:/migrations --network host migrate/migrate -path=/migrations/ -database postgres://localhost:5432/database up 2
+
+
+
 
 # Local ###################################################################################
 
