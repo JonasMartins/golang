@@ -1,5 +1,6 @@
 BINARY_TEST = _test
 BINARY_DEV = _dev
+BINARY_BROKER = _broker
 DONE_MESSAGE = "Finished Operation"
 
 .PHONY: help
@@ -11,20 +12,35 @@ help:
 
 .PHONY: up-dev
 ## up-dev: build up the related containers
-up-dev:
-	@ echo "Up dev container"
-	@ docker compose -f docker/development/docker-compose.yml --verbose up --build --remove-orphans -d
+up-dev: build-broker up-broker
+
+
+.PHONY: up-broker
+## up-broker: up docker for broker service
+up-broker:
+	@ echo "Up broker container"
+	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --verbose up --build --remove-orphans -d
+	@ echo ${DONE_MESSAGE}
 
 .PHONY: build-dev
 ## build-dev: build de executable
-build-dev:
-	@ rm -f ./${BINARY_DEV} || true && GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -o ${BINARY_DEV} ./src/cmd/*.go 
+build-dev: build-broker
+
+.PHONY: build-broker
+## build-broker: build de broker service executable
+build-broker:
+	@ rm -f ./out/${BINARY_BROKER} || true && GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -o ./out/${BINARY_BROKER} ./src/services/broker/cmd/*.go 
 	
+
 .PHONY: down-dev
-## down-dev: down the related containers
+## down-dev: down dev containers
+down-dev: down-broker
+
+.PHONY: down-broker
+## down-broker: down the broker service related containers
 down-dev:
-	@ echo "Down dev container"
-	@ docker compose -f docker/development/docker-compose.yml down -v
+	@ echo "Down broker container"
+	@ docker compose -f src/services/broker/docker/development/docker-compose.yml down -v
 
 .PHONY: dev-stop
 ## dev-stop: stop the related containers

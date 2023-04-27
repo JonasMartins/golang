@@ -26,10 +26,10 @@ services:
   #     KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
   template-http-mysql:
-    container_name: micro-kafka-template-financial-dev
+    container_name: micro-go-template-broker-dev
     build:
-      context: ../../
-      dockerfile: docker/development/Dockerfile
+      context: ../../../../../
+      dockerfile: src/services/broker/docker/development/Dockerfile
     ports:
       - "4000:4000"
     depends_on:
@@ -37,18 +37,18 @@ services:
     networks:
       - dev
   db:
-    container_name: micro-kafka-template-db
+    container_name: micro-go-template-db
     image: mysql:latest
     ports:
-      - "3305:3306"
+      - "3307:3306"
     environment:
       - "MYSQL_ROOT_PASSWORD=root_secret"
       - "MYSQL_USER=dev"
       - "MYSQL_PASSWORD=dev"
       - "MYSQL_DATABASE=project"
-    volumes:
-      - ../../db-mysql:/var/lib/mysql
-      - ../../../../../schema/001_schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    # volumes:
+      # bind volume, mysql always create a new volume - ../../db-mysql:/var/lib/mysql
+      # - ./001_schema.sql:/docker-entrypoint-initdb.d/001_schema.sql
     networks:
       - dev 
 volumes:

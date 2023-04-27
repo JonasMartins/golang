@@ -1,0 +1,14 @@
+Exec make up-dev, will create and start database
+
+
+enter it:
+docker exec -it cms-server-db bash
+
+mysql -u dev -p
+type the password
+
+show databases;
+
+use cms-server-dev;
+
+show tables;
