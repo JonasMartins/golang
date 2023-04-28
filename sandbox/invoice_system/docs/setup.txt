@@ -1,0 +1,9 @@
+development:
+
+make up-dev
+
+will start project and db
+
+make migrate-up
+
+will run the migrations

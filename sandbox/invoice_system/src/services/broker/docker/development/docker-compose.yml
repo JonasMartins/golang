@@ -46,11 +46,28 @@ services:
       - "MYSQL_USER=dev"
       - "MYSQL_PASSWORD=dev"
       - "MYSQL_DATABASE=project"
-    # volumes:
-      # bind volume, mysql always create a new volume - ../../db-mysql:/var/lib/mysql
-      # - ./001_schema.sql:/docker-entrypoint-initdb.d/001_schema.sql
     networks:
-      - dev 
+      - dev
+  migrate:
+    image: migrate/migrate:v4.15.2
+    profiles: ["tools"]
+    volumes:
+      - ./../../internal/repository/mysql/migrations:/migrations
+    networks:
+      - dev
+    entrypoint:
+      [ 
+        "migrate",
+        "-path",
+        "/migrations",
+        "-database",
+        "mysql://root:root_secret@tcp(db:3306)/project",
+      ]
+    command: ["up"]
+    links:
+      - db
+    depends_on:
+      - db
 volumes:
   db-mysql:
 networks:

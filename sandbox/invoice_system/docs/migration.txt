@@ -35,8 +35,21 @@ baixar o .deb correto e instalar
 create migration command
 migrate create -ext sql -dir src/services/broker/internal/repository/mysql/migrations -seq init_schema
 
+docker:
+docker compose -f docker-compose.dev.yml --profile tools run --rm migrate create -ext sql -dir /migrations create_user_table 
+
+
 run:
+
+entrar no docker do banco e criar o db "project"
+
 
 dentro da raiz do projeto:
 
 migrate -path src/services/broker/internal/repository/mysql/migrations -database "mysql://root:root_secret@tcp(localhost:3307)/project" -verbose up
+
+se der erro e a gerar erro "Dirty"
+
+migrate -path src/services/broker/internal/repository/mysql/migrations -database "mysql://root:root_secret@tcp(localhost:3307)/project" force 1
+
+e roda novamente up ou down

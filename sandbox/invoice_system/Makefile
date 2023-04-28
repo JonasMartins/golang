@@ -1,3 +1,7 @@
+#===================##===================##===================##===================##===================##===================##===================##===================#
+#====== ENV ======##====== ENV ======##====== ENV ======##====== ENV ======##====== ENV ======##====== ENV ======##====== ENV ======##====== ENV ======#
+#===================##===================##===================##===================##===================##===================##===================##===================#
+
 BINARY_TEST = _test
 BINARY_DEV = _dev
 BINARY_BROKER = _broker
@@ -8,12 +12,15 @@ DONE_MESSAGE = "Finished Operation"
 help:
 	@ echo "Usage: make [target]\n"
 	@ sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-# Docker ###################################################################################
+
+
+#===================##===================##===================##===================##===================##===================##===================##===================#
+#====== DOCKER ======##====== DOCKER ======##====== DOCKER ======##====== DOCKER ======##====== DOCKER ======##====== DOCKER ======##====== DOCKER ======##====== DOCKER ======#
+#===================##===================##===================##===================##===================##===================##===================##===================#
 
 .PHONY: up-dev
 ## up-dev: build up the related containers
 up-dev: build-broker up-broker
-
 
 .PHONY: up-broker
 ## up-broker: up docker for broker service
@@ -45,24 +52,36 @@ down-dev:
 ## dev-stop: stop the related containers
 dev-stop:
 	@ echo "Stop dev containers"
-	@ docker stop development-template-http-mysql development-template-http-mysql-db
+	@ docker stop micro-go-template-broker-dev micro-go-template-db
 
 .PHONY: dev-start
 ## dev-start: start the related containers
 dev-start:
 	@ echo "Start dev containers"
-	@ docker start development-template-http-mysql development-template-http-mysql-db
+	@ docker start micro-go-template-broker-dev micro-go-template-db
 
 .PHONY: migrate-up
-## migrate-up: run migrations command
+## migrate-up: run migrations up command
 migrate-up:
 	@ echo "Running migrations up"
-	@ docker run -v {{ migration dir }}:/migrations --network host migrate/migrate -path=/migrations/ -database postgres://localhost:5432/database up 2
+	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --profile tools run --rm migrate up
+
+.PHONY: migrate-down
+## migrate-down: run migrations down command
+migrate-down:
+	@ echo "Running migrations down"
+	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --profile tools run --rm migrate up
+
+.PHONY: migrate-fix
+## migrate-down: run migrations fix command
+migrate-fix:
+	@ echo "Running migrations fix"
+	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --profile tools run --rm migrate force 1
 
 
-
-
-# Local ###################################################################################
+#===================##===================##===================##===================##===================##===================##===================##===================#
+#====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======##====== LOCAL ======#
+#===================##===================##===================##===================##===================##===================##===================##===================#
 
 .PHONY: test
 # test: combine all tests through the entire project
@@ -84,7 +103,10 @@ clean:
 	@ rm -f ./${BINARY_DEV} ./${BINARY_TEST} || true
 	@ echo ${DONE_MESSAGE}
 
-# Git ###################################################################################
+
+#===================##===================##===================##===================##===================##===================##===================##===================#
+#====== GIT ======##====== GIT ======##====== GIT ======##====== GIT ======##====== GIT ======##====== GIT ======##====== GIT ======##====== GIT ======#
+#===================##===================##===================##===================##===================##===================##===================##===================#
 
 .PHONY: commit
 ## commit: add and commit files to develop branch
