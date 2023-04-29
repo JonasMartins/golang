@@ -103,6 +103,10 @@ clean:
 	@ rm -f ./${BINARY_DEV} ./${BINARY_TEST} || true
 	@ echo ${DONE_MESSAGE}
 
+.PHONY: proto
+## proto: compiles .proto files
+proto:
+	@ docker run -v ${PWD}:/defs namely/protoc-all -f src/proto/api.proto -l go -o . 
 
 #===================##===================##===================##===================##===================##===================##===================##===================#
 #====== GIT ======##====== GIT ======##====== GIT ======##====== GIT ======##====== GIT ======##====== GIT ======##====== GIT ======##====== GIT ======#

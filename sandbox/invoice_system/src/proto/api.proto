@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package project.proto;
+
+option go_package = "/src/gen";
+
+import "google/protobuf/timestamp.proto";
+
+service FinancialService {
+    rpc AddInvoice(AddInvoiceRequest) returns (BasicResponse) {}
+}
+
+message AddInvoiceRequest {
+    uint32 clientId = 1;
+    google.protobuf.Timestamp dueDate = 2;
+    double value = 3;
+}
+
+message User {
+    Base base = 1;
+    string firtsName = 2;
+    string lastName = 3;
+    string email = 4;
+}
+
+message Invoice {
+    Base base = 1;
+    uint32 clientId = 2;
+    double value = 3;
+    google.protobuf.Timestamp dueDate = 4;
+}
+
+
+message Base {
+    uint32 id = 1;
+    string uuid = 2;
+    google.protobuf.Timestamp deleted_at = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+    uint32 version = 6;
+}
+
+message BasicResponse {
+    int32 referenceId = 1;
+    bool success = 2;
+    string message = 3;
+}

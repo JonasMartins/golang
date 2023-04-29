@@ -3,5 +3,5 @@ api:
   domain: "localhost"
 db:
   driver: "mysql"
-  conn: "dev:dev@tcp(127.0.0.1:3305)/project?parseTime=true"
+  conn: "dev:dev@tcp(127.0.0.1:3307)/project?parseTime=true"
 
