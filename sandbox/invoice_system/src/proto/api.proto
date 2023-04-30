@@ -12,7 +12,7 @@ service FinancialService {
 
 message AddInvoiceRequest {
     uint32 clientId = 1;
-    google.protobuf.Timestamp dueDate = 2;
+    string dueDate = 2;
     double value = 3;
 }
 
