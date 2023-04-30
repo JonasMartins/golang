@@ -6,6 +6,8 @@ import (
 	"project/src/gen"
 	"project/src/pkg/utils"
 	"project/src/services/financial/configs"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Repository struct {
@@ -24,7 +26,7 @@ func New() (*Repository, error) {
 	return &Repository{Db: db}, nil
 }
 
-func (r *Repository) InsertInvoice(ctx context.Context, params *gen.AddInvoiceRequest) (*gen.BasicResponse, error) {
+func (r *Repository) AddInvoice(ctx context.Context, params *gen.AddInvoiceRequest) (*gen.BasicResponse, error) {
 	tx, err := r.Db.BeginTx(ctx, nil)
 	if err != nil {
 		return nil, err

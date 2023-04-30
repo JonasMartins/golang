@@ -5,6 +5,7 @@
 BINARY_TEST = _test
 BINARY_DEV = _dev
 BINARY_BROKER = _broker
+BINARY_FINANCIAL = _financial
 DONE_MESSAGE = "Finished Operation"
 
 .PHONY: help
@@ -12,6 +13,12 @@ DONE_MESSAGE = "Finished Operation"
 help:
 	@ echo "Usage: make [target]\n"
 	@ sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
+
+.PHONY: gen-cert
+## gen-cert: run generate certificates script
+gen-cert:
+	@ cd cert && ./gen-dev.sh && cd ..
+	@ echo "Task Done"
 
 
 #===================##===================##===================##===================##===================##===================##===================##===================#
@@ -29,24 +36,42 @@ up-broker:
 	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --verbose up --build --remove-orphans -d
 	@ echo ${DONE_MESSAGE}
 
+.PHONY: up-financial
+## up-financial: up docker for financial service
+up-financial:
+	@ echo "Up financial container"
+	@ docker compose -f src/services/financial/docker/development/docker-compose.yml --verbose up --build --remove-orphans -d
+	@ echo ${DONE_MESSAGE}
+
 .PHONY: build-dev
 ## build-dev: build de executable
-build-dev: build-broker
+build-dev: build-broker build-financial
 
 .PHONY: build-broker
 ## build-broker: build de broker service executable
 build-broker:
 	@ rm -f ./out/${BINARY_BROKER} || true && GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -o ./out/${BINARY_BROKER} ./src/services/broker/cmd/*.go 
 
+.PHONY: build-financial
+## build-financial: build de broker service executable
+build-financial:
+	@ rm -f ./out/${BINARY_FINANCIAL} || true && GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -o ./out/${BINARY_FINANCIAL} ./src/services/financial/cmd/*.go 
+
 .PHONY: down-dev
 ## down-dev: down dev containers
-down-dev: down-broker
+down-dev: down-broker down-financial
 
 .PHONY: down-broker
 ## down-broker: down the broker service related containers
-down-dev:
+down-broker:
 	@ echo "Down broker container"
 	@ docker compose -f src/services/broker/docker/development/docker-compose.yml down -v
+
+.PHONY: down-financial
+## down-financial: down the financial service related containers
+down-financial:
+	@ echo "Down financial container"
+	@ docker compose -f src/services/financial/docker/development/docker-compose.yml down -v
 
 .PHONY: dev-stop
 ## dev-stop: stop the related containers
@@ -59,6 +84,13 @@ dev-stop:
 dev-start:
 	@ echo "Start dev containers"
 	@ docker start micro-go-template-broker-dev micro-go-template-db
+
+
+.PHONY: migrate-create
+## migrate-create: run migrations create command usage => make migrate-create migration-name=something
+migrate-create:
+	@ echo "Running migrations create"
+	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --profile tools run --rm migrate create -ext sql -dir /migrations -seq $(migration-name)
 
 .PHONY: migrate-up
 ## migrate-up: run migrations up command
@@ -73,7 +105,7 @@ migrate-down:
 	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --profile tools run --rm migrate up
 
 .PHONY: migrate-fix
-## migrate-down: run migrations fix command
+## migrate-fix: run migrations fix command
 migrate-fix:
 	@ echo "Running migrations fix"
 	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --profile tools run --rm migrate force 1

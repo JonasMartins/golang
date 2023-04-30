@@ -3,6 +3,7 @@ module project
 go 1.20
 
 require (
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/hashicorp/consul/api v1.20.0
 	google.golang.org/genproto v0.0.0-20230110181048-76db0878b65f
 	google.golang.org/grpc v1.54.0

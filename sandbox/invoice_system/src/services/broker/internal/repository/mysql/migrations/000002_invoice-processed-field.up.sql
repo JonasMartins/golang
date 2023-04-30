@@ -1,0 +1,1 @@
+ALTER TABLE `project`.`invoices` ADD COLUMN `processed` BOOLEAN AFTER `due_date`;

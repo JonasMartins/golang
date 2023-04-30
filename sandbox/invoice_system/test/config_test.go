@@ -10,7 +10,7 @@ import (
 func TestGetFilePath(t *testing.T) {
 
 	u := utils.New()
-	f, err := u.GetFilePath(&[]string{"configs", "base.yaml"})
+	f, err := u.GetFilePath(&[]string{"src", "services", "broker", "configs", "base.yaml"})
 	if err != nil {
 		t.Logf("Err %v", err)
 	}
@@ -31,7 +31,7 @@ func TestGetRoot(t *testing.T) {
 		t.Logf("Err %v", err)
 	}
 
-	want := "src"
+	want := "invoice_system"
 	if *got != want {
 		t.Errorf("got %s, wanted %s", *got, want)
 	}

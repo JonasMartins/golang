@@ -44,7 +44,7 @@ func (u *Utils) GetRootDir() (*string, error) {
 		}
 	}
 
-	result += "invoice_system/src/"
+	result += "invoice_system/"
 
 	return &result, nil
 }

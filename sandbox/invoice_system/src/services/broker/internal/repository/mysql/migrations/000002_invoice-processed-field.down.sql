@@ -1,0 +1,1 @@
+ALTER TABLE `project`.`invoices` DROP COLUMN `processed`;

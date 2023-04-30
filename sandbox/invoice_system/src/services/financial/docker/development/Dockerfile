@@ -1,11 +1,11 @@
 ## small image
-FROM golang:alpine
+FROM alpine:latest
 
-ARG BINARY_DEV=_dev
+ARG BINARY_DEV=_financial
 
 WORKDIR /app
 
-COPY src/configs/base.yaml /app/http-mysql/src/configs/
-COPY ./$BINARY_DEV /app
+COPY src/services/financial/configs/base.yaml /app/invoice_system/src/services/financial/configs/base.yaml
+COPY out/$BINARY_DEV /app
 
-CMD ["/app/_dev"]
+CMD ["/app/_financial"]

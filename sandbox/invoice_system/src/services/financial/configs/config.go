@@ -13,8 +13,9 @@ type Config struct {
 }
 
 type apiConfig struct {
-	Domain string `yaml:"domain"`
-	Port   int    `yaml:"port"`
+	Domain           string `yaml:"domain"`
+	Port             int    `yaml:"port"`
+	LoadBalancerAddr string `yaml:"load_balancer_addr"`
 }
 
 type dbConfig struct {
@@ -26,7 +27,7 @@ type dbConfig struct {
 // * with all the avaliable configs
 func LoadConfig() (*Config, error) {
 	utils := utils.New()
-	path, err := utils.GetFilePath(&[]string{"services", "financial", "configs", "base.yaml"})
+	path, err := utils.GetFilePath(&[]string{"src", "services", "financial", "configs", "base.yaml"})
 	if err != nil {
 		return nil, err
 	}
