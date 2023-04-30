@@ -8,6 +8,8 @@ services:
       dockerfile: src/services/financial/docker/development/Dockerfile
     ports:
       - "4001:4001"
+    depends_on:
+      - consul
     networks:
       - dev
 networks:

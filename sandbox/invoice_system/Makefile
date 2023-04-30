@@ -27,21 +27,17 @@ gen-cert:
 
 .PHONY: up-dev
 ## up-dev: build up the related containers
-up-dev: build-broker up-broker build-financial up-financial
+up-dev: build-broker build-financial up-broker
 
 .PHONY: up-broker
 ## up-broker: up docker for broker service
 up-broker:
 	@ echo "Up broker container"
-	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --verbose up --build --remove-orphans -d
+	@ docker compose -f src/services/broker/docker/development/docker-compose.yml \
+	-f src/services/financial/docker/development/docker-compose.yml \
+	--verbose up --build --remove-orphans -d
 	@ echo ${DONE_MESSAGE}
 
-.PHONY: up-financial
-## up-financial: up docker for financial service
-up-financial:
-	@ echo "Up financial container"
-	@ docker compose -f src/services/financial/docker/development/docker-compose.yml --verbose up --build -d
-	@ echo ${DONE_MESSAGE}
 
 .PHONY: build-dev
 ## build-dev: build de executable
