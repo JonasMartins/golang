@@ -27,7 +27,7 @@ gen-cert:
 
 .PHONY: up-dev
 ## up-dev: build up the related containers
-up-dev: build-broker up-broker
+up-dev: build-broker up-broker build-financial up-financial
 
 .PHONY: up-broker
 ## up-broker: up docker for broker service
@@ -40,7 +40,7 @@ up-broker:
 ## up-financial: up docker for financial service
 up-financial:
 	@ echo "Up financial container"
-	@ docker compose -f src/services/financial/docker/development/docker-compose.yml --verbose up --build --remove-orphans -d
+	@ docker compose -f src/services/financial/docker/development/docker-compose.yml --verbose up --build -d
 	@ echo ${DONE_MESSAGE}
 
 .PHONY: build-dev
@@ -77,14 +77,13 @@ down-financial:
 ## dev-stop: stop the related containers
 dev-stop:
 	@ echo "Stop dev containers"
-	@ docker stop micro-go-template-broker-dev micro-go-template-db
+	@ docker stop micro-go-template-broker-dev micro-go-template-db micro-go-template-financial-dev dev-consul
 
 .PHONY: dev-start
 ## dev-start: start the related containers
 dev-start:
 	@ echo "Start dev containers"
-	@ docker start micro-go-template-broker-dev micro-go-template-db
-
+	@ docker start micro-go-template-broker-dev micro-go-template-db micro-go-template-financial-dev dev-consul
 
 .PHONY: migrate-create
 ## migrate-create: run migrations create command usage => make migrate-create migration-name=something
