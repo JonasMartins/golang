@@ -1,0 +1,1 @@
+insert into `users` (uuid, first_name, last_name, email) values ("681f230a-ac63-4eb4-a32e-06d5e31ed8d8", "Admin", "Admin", "admin@email.com");

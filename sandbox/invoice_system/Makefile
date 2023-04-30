@@ -103,7 +103,7 @@ migrate-down:
 ## migrate-fix: run migrations fix command
 migrate-fix:
 	@ echo "Running migrations fix"
-	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --profile tools run --rm migrate force 1
+	@ docker compose -f src/services/broker/docker/development/docker-compose.yml --profile tools run --rm migrate force 2
 
 
 #===================##===================##===================##===================##===================##===================##===================##===================#

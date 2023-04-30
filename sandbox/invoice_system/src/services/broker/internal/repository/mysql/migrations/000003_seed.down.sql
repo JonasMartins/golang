@@ -1,0 +1,1 @@
+update `project.users` set deleted_at = NOW() where u.email = "admin@email.com"; 
